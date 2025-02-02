@@ -15,3 +15,13 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+/Backend/mvnw.cmd
+/Backend/mvnw
+/Backend/.settings/
+/Backend/.mvn/
+/Backend/.factorypath
+/Backend/HELP.md
+/Backend/.gitattributes
+/Backend/src/main/resources/application.properties
+
