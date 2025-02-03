@@ -1,7 +1,7 @@
 package lv.venta.model;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -9,6 +9,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,22 +33,44 @@ public class Lesson {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Setter(value = AccessLevel.NONE)
 	private int lessonId;
-	
-	private Course course; //fk
-	
-	private Lecturer lecturer; // can be more than 1(class is split into 2 groups) //fk
-	
-	private Classroom classRoom; //fk
-	
-	private List<Student> studentList; //list of students attending //fk
-	
+
+	@ManyToOne
+	@JoinColumn(name = "CourseId")
+	@ToString.Exclude
+	private Course course;
+
+	@ManyToMany
+	@JoinTable(name = "Lesson_Lecturer", joinColumns = @JoinColumn(name = "LessonId"), inverseJoinColumns = @JoinColumn(name = "UserId"))
+	@ToString.Exclude
+	private List<Lecturer> lecturers; // can be more than 1(class is split into 2 groups)
+
+	@ManyToMany
+	@JoinTable(name = "Lesson_Classroom", joinColumns = @JoinColumn(name = "LessonId"), inverseJoinColumns = @JoinColumn(name = "ClassroomId"))
+	@ToString.Exclude
+	private List<Classroom> classrooms; // can be more than 1(class is split into 2 groups)
+
+	@ManyToMany
+	@JoinTable(name = "Lesson_Student", joinColumns = @JoinColumn(name = "LessonId"), inverseJoinColumns = @JoinColumn(name = "UserId"))
+	@ToString.Exclude
+	private List<Student> students; // list of students attending
+
 	private boolean isOnline;
-	
+
 	private String onlineInformation;
-	
-//	private int studentId; is this needed?
-	private LocalDate date; // TODO make this into a list
-	
-	private LocalTime time; // TODO make this into a list
+
+	private List<Date> date; // TODO make this into a list(so the db doesnt have to store multiples of the
+	// same lesson just with different times)
+
+	private List<Time> time; // TODO make this into a list
+
+	public Lesson(Course course, List<Classroom> classrooms, boolean isOnline, String onlineInformation,
+			List<Date> date, List<Time> time) {
+		setCourse(course);
+		setClassrooms(classrooms);
+		setOnline(isOnline);
+		setOnlineInformation(onlineInformation);
+		setDate(date);
+		setTime(time);
+	}
 
 }

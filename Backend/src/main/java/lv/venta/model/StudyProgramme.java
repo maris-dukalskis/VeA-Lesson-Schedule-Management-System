@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -34,6 +35,14 @@ public class StudyProgramme {
 
 	private int year; // 1st 2nd 3rd etc
 
-	private List<Course> courses; //fk
+	@OneToMany(mappedBy = "studyProgramme")
+	@ToString.Exclude
+	private List<Course> courses;
+
+	@OneToMany(mappedBy = "studyProgramme")
+	@ToString.Exclude
+	private List<Student> students;
+
+	private boolean isIndividual;
 
 }

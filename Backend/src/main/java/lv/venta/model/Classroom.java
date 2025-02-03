@@ -1,10 +1,13 @@
 package lv.venta.model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,6 +28,9 @@ public class Classroom {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Setter(value = AccessLevel.NONE)
 	private int classroomId;
+
+	@ManyToMany(mappedBy = "classrooms")
+	private List<Lesson> lessons;
 
 	private String building;
 
