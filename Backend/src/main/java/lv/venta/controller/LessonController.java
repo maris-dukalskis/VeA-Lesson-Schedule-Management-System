@@ -11,6 +11,6 @@ import lv.venta.service.ILessonService;
 public class LessonController {
 
 	@Autowired
-	ILessonService lessonService;
+	private ILessonService lessonService;
 
 }

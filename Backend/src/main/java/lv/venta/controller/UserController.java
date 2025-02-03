@@ -11,5 +11,5 @@ import lv.venta.service.IUserService;
 public class UserController {
 
 	@Autowired
-	IUserService userService;
+	private IUserService userService;
 }

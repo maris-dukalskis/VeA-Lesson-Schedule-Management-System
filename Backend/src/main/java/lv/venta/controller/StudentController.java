@@ -11,5 +11,5 @@ import lv.venta.service.IStudentService;
 public class StudentController {
 
 	@Autowired
-	IStudentService studentService;
+	private IStudentService studentService;
 }

@@ -11,6 +11,6 @@ import lv.venta.service.IStudyProgrammeService;
 public class StudyProgrammeController {
 
 	@Autowired
-	IStudyProgrammeService studyProgrammeService;
+	private IStudyProgrammeService studyProgrammeService;
 
 }

@@ -11,6 +11,6 @@ import lv.venta.service.ILecturerService;
 public class LecturerController {
 
 	@Autowired
-	ILecturerService lecturerService;
+	private ILecturerService lecturerService;
 
 }
