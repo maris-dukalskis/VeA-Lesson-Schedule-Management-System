@@ -32,6 +32,8 @@ public class StudyProgramme {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Setter(value = AccessLevel.NONE)
 	private int studyProgrammeId;
+	
+	private String name;
 
 	private int year; // 1st 2nd 3rd etc
 
