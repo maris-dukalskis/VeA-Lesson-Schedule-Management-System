@@ -17,7 +17,7 @@ class BaseService {
         return axios.post(`${this.baseUrl}/insert`, data);
     }
 
-    update(data, id) {
+    update(id, data) {
         return axios.put(`${this.baseUrl}/update/${id}`, data);
     }
 
