@@ -19,7 +19,7 @@ public class CourseServiceImpl implements ICourseService {
 	@Override
 	public ArrayList<Course> selectAllCourses() throws Exception {
 		if (courseRepo.count() == 0)
-			throw new Exception("Course table is empty");
+			return new ArrayList<Course>();
 		return (ArrayList<Course>) courseRepo.findAll();
 	}
 

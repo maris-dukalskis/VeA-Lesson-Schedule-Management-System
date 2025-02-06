@@ -19,7 +19,7 @@ public class LecturerServiceImpl implements ILecturerService {
 	@Override
 	public ArrayList<Lecturer> selectAllLecturers() throws Exception {
 		if (lecturerRepo.count() == 0)
-			throw new Exception("Lecturer table is empty");
+			return new ArrayList<Lecturer>();
 		return (ArrayList<Lecturer>) lecturerRepo.findAll();
 	}
 

@@ -19,7 +19,7 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public ArrayList<User> selectAllUsers() throws Exception {
 		if (userRepo.count() == 0)
-			throw new Exception("User table is empty");
+			return new ArrayList<User>();
 		return (ArrayList<User>) userRepo.findAll();
 	}
 

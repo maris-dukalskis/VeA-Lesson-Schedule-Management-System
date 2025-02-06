@@ -18,9 +18,7 @@ const ClassroomCreate = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-
             const response = await classroomServiceInstance.insert(formData);
-            console.log(response);
             setMessage("Classroom created successfully!");
             setFormData({ building: "", number: "", equipmentDescription: "" });
         } catch (error) {

@@ -38,7 +38,6 @@ const ClassroomUpdate = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log(id);
             await classroomServiceInstance.update(id, formData);
             setMessage("Classroom updated successfully!");
         } catch (error) {

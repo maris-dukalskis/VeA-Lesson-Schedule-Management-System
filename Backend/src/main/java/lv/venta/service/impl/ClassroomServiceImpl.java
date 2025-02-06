@@ -19,7 +19,7 @@ public class ClassroomServiceImpl implements IClassroomService {
 	@Override
 	public ArrayList<Classroom> selectAllClassrooms() throws Exception {
 		if (classroomRepo.count() == 0)
-			throw new Exception("Classroom table is empty");
+			return new ArrayList<Classroom>();
 		return (ArrayList<Classroom>) classroomRepo.findAll();
 	}
 

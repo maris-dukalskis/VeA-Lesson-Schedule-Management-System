@@ -19,7 +19,7 @@ public class StudyProgrammeServiceImpl implements IStudyProgrammeService {
 	@Override
 	public ArrayList<StudyProgramme> selectAllStudyProgrammes() throws Exception {
 		if (studyProgrammeRepo.count() == 0)
-			throw new Exception("StudyProgramme table is empty");
+			return new ArrayList<StudyProgramme>();
 		return (ArrayList<StudyProgramme>) studyProgrammeRepo.findAll();
 	}
 

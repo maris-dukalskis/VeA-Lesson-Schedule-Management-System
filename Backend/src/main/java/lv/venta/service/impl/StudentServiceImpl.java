@@ -19,7 +19,7 @@ public class StudentServiceImpl implements IStudentService {
 	@Override
 	public ArrayList<Student> selectAllStudents() throws Exception {
 		if (studentRepo.count() == 0)
-			throw new Exception("Student table is empty");
+			return new ArrayList<Student>();
 		return (ArrayList<Student>) studentRepo.findAll();
 	}
 

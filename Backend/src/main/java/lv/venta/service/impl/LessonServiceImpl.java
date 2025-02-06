@@ -19,7 +19,7 @@ public class LessonServiceImpl implements ILessonService {
 	@Override
 	public ArrayList<Lesson> selectAllLessons() throws Exception {
 		if (lessonRepo.count() == 0)
-			throw new Exception("Lesson table is empty");
+			return new ArrayList<Lesson>();
 		return (ArrayList<Lesson>) lessonRepo.findAll();
 	}
 
