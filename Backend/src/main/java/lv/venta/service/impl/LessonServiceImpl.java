@@ -42,7 +42,12 @@ public class LessonServiceImpl implements ILessonService {
 	public Lesson insertNewLesson(Lesson lesson) throws Exception {
 		if (lesson == null)
 			throw new Exception("Lesson object cannot be null");
-		List<Lesson> lessons = selectAllLessons();
+		List<Lesson> lessons = new ArrayList<>();
+		try {
+			lessons = selectAllLessons();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		if (!lessons.isEmpty()) {
 			for (Lesson dbLesson : lessons) {
 				if (dbLesson.getCourse().equals(lesson.getCourse())) { // TODO this might need to be changed(if

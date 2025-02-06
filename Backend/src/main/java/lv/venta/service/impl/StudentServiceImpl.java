@@ -42,7 +42,12 @@ public class StudentServiceImpl implements IStudentService {
 	public Student insertNewStudent(Student student) throws Exception {
 		if (student == null)
 			throw new Exception("Student object cannot be null");
-		List<Student> students = selectAllStudents();
+		List<Student> students = new ArrayList<>();
+		try {
+			students = selectAllStudents();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		if (!students.isEmpty()) {
 			for (Student dbStudent : students) {
 				if (dbStudent.getMatriculeNumber() == student.getMatriculeNumber()) {

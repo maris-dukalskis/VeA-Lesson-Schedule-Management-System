@@ -42,7 +42,12 @@ public class LecturerServiceImpl implements ILecturerService {
 	public Lecturer insertNewLecturer(Lecturer lecturer) throws Exception {
 		if (lecturer == null)
 			throw new Exception("Lecturer object cannot be null");
-		List<Lecturer> lecturers = selectAllLecturers();
+		List<Lecturer> lecturers = new ArrayList<>();
+		try {
+			lecturers = selectAllLecturers();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		if (!lecturers.isEmpty()) {
 			for (Lecturer dbLecturer : lecturers) {
 				if (dbLecturer.getFullName().equals(lecturer.getFullName())

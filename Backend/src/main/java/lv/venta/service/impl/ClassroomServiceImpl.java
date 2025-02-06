@@ -42,7 +42,12 @@ public class ClassroomServiceImpl implements IClassroomService {
 	public Classroom insertNewClassroom(Classroom classroom) throws Exception {
 		if (classroom == null)
 			throw new Exception("Classroom object cannot be null");
-		List<Classroom> classrooms = selectAllClassrooms();
+		List<Classroom> classrooms = new ArrayList<>();
+		try {
+			classrooms = selectAllClassrooms();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		if (!classrooms.isEmpty()) {
 			for (Classroom dbClassroom : classrooms) {
 				if (dbClassroom.getBuilding().equals(classroom.getBuilding())

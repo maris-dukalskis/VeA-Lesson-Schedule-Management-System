@@ -42,7 +42,12 @@ public class CourseServiceImpl implements ICourseService {
 	public Course insertNewCourse(Course course) throws Exception {
 		if (course == null)
 			throw new Exception("Course object cannot be null");
-		List<Course> courses = selectAllCourses();
+		List<Course> courses = new ArrayList<>();
+		try {
+			courses = selectAllCourses();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		if (!courses.isEmpty()) {
 			for (Course dbCourse : courses) {
 				if (dbCourse.getName().equals(course.getName())) {

@@ -44,7 +44,12 @@ public class UserServiceImpl implements IUserService {
 	public User insertNewUser(User user) throws Exception {
 		if (user == null)
 			throw new Exception("User object cannot be null");
-		List<User> users = selectAllUsers();
+		List<User> users = new ArrayList<>();
+		try {
+			users = selectAllUsers();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		if (!users.isEmpty()) {
 			for (User dbUser : users) {
 				if (dbUser.getFullName().equals(user.getFullName()) && dbUser.getEmail().equals(user.getEmail())) {

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lv.venta.model.Student;
 import lv.venta.model.StudyProgramme;
 import lv.venta.repo.IStudyProgrammeRepo;
 import lv.venta.service.IStudyProgrammeService;
@@ -42,7 +43,12 @@ public class StudyProgrammeServiceImpl implements IStudyProgrammeService {
 	public StudyProgramme insertNewStudyProgramme(StudyProgramme studyProgramme) throws Exception {
 		if (studyProgramme == null)
 			throw new Exception("StudyProgramme object cannot be null");
-		List<StudyProgramme> studyProgrammes = selectAllStudyProgrammes();
+		List<StudyProgramme> studyProgrammes = new ArrayList<>();
+		try {
+			studyProgrammes = selectAllStudyProgrammes();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		if (!studyProgrammes.isEmpty()) {
 			for (StudyProgramme dbStudyProgramme : studyProgrammes) {
 				if (dbStudyProgramme.getName().equals(studyProgramme.getName())
