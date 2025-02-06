@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,8 @@ import lombok.ToString;
 public class Lecturer extends User {
 
 	private Role role;
+	
+	@Min(value = 0, message = "The value must be positive")
 	private int hours; // how many hours they can teach per semester
 
 	@ManyToMany(mappedBy = "lecturers")

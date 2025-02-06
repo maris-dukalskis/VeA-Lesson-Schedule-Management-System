@@ -7,6 +7,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class Student extends User {
 	@ManyToMany(mappedBy = "students")
 	private List<Lesson> lessons;
 
+	@Min(value = 0, message = "The value must be positive")
 	private int matriculeNumber;
 
 	public Student(String fullName, String email, StudyProgramme studyProgramme, int matriculeNumber) {

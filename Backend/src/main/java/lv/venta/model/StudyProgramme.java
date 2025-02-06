@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,7 @@ public class StudyProgramme {
 	
 	private String name;
 
+	@Min(value = 0, message = "The value must be positive")
 	private int year; // 1st 2nd 3rd etc
 
 	@OneToMany(mappedBy = "studyProgramme")
