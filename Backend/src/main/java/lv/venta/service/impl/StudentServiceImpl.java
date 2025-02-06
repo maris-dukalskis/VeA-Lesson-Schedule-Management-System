@@ -46,7 +46,6 @@ public class StudentServiceImpl implements IStudentService {
 		try {
 			students = selectAllStudents();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		if (!students.isEmpty()) {
 			for (Student dbStudent : students) {

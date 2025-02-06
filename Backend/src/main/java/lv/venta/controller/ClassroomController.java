@@ -40,6 +40,7 @@ public class ClassroomController {
 
 	@GetMapping("/get/{id}")
 	public ResponseEntity<?> getClassroomById(@PathVariable("id") int id) {
+		System.out.println(1);
 		try {
 			return new ResponseEntity<Classroom>(classroomService.selectClassroomById(id), HttpStatus.OK);
 		} catch (Exception e) {

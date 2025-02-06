@@ -46,7 +46,6 @@ public class LecturerServiceImpl implements ILecturerService {
 		try {
 			lecturers = selectAllLecturers();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		if (!lecturers.isEmpty()) {
 			for (Lecturer dbLecturer : lecturers) {

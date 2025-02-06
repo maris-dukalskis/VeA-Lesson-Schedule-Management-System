@@ -6,8 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lv.venta.model.Lecturer;
-import lv.venta.model.StudyProgramme;
 import lv.venta.model.User;
 import lv.venta.repo.IUserRepo;
 import lv.venta.service.IUserService;
@@ -48,7 +46,6 @@ public class UserServiceImpl implements IUserService {
 		try {
 			users = selectAllUsers();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		if (!users.isEmpty()) {
 			for (User dbUser : users) {

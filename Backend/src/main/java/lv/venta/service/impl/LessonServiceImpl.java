@@ -46,7 +46,6 @@ public class LessonServiceImpl implements ILessonService {
 		try {
 			lessons = selectAllLessons();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		if (!lessons.isEmpty()) {
 			for (Lesson dbLesson : lessons) {

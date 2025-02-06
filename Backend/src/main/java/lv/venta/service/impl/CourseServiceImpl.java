@@ -46,7 +46,6 @@ public class CourseServiceImpl implements ICourseService {
 		try {
 			courses = selectAllCourses();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		if (!courses.isEmpty()) {
 			for (Course dbCourse : courses) {

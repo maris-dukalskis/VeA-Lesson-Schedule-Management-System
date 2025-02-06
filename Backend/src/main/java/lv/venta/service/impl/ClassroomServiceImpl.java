@@ -46,7 +46,6 @@ public class ClassroomServiceImpl implements IClassroomService {
 		try {
 			classrooms = selectAllClassrooms();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		if (!classrooms.isEmpty()) {
 			for (Classroom dbClassroom : classrooms) {
