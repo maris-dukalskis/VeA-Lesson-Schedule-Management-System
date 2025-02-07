@@ -2,6 +2,8 @@ package lv.venta.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,6 +39,7 @@ public class Course {
 
 	@OneToMany(mappedBy = "course")
 	@ToString.Exclude
+	@JsonIgnore
 	private List<Lesson> lessons;
 
 	@ManyToOne
@@ -44,9 +47,10 @@ public class Course {
 	@ToString.Exclude
 	private StudyProgramme studyProgramme;
 
-	public Course(String name, String description) {
+	public Course(String name, String description, StudyProgramme studyProgramme) {
 		setName(name);
 		setDescription(description);
+		setStudyProgramme(studyProgramme);
 	}
 
 }

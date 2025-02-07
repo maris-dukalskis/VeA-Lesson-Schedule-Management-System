@@ -2,6 +2,8 @@ package lv.venta.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
@@ -27,6 +29,7 @@ public class Student extends User {
 	private StudyProgramme studyProgramme;
 
 	@ManyToMany(mappedBy = "students")
+	@JsonIgnore
 	private List<Lesson> lessons;
 
 	@Min(value = 0, message = "The value must be positive")

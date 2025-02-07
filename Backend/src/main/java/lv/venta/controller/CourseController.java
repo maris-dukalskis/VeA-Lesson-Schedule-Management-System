@@ -53,6 +53,7 @@ public class CourseController {
 		try {
 			return new ResponseEntity<Course>(courseService.insertNewCourse(course), HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

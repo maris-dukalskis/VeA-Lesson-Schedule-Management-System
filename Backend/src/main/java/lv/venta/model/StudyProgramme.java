@@ -2,6 +2,8 @@ package lv.venta.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,7 +35,7 @@ public class StudyProgramme {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Setter(value = AccessLevel.NONE)
 	private int studyProgrammeId;
-	
+
 	private String name;
 
 	@Min(value = 0, message = "The value must be positive")
@@ -41,12 +43,20 @@ public class StudyProgramme {
 
 	@OneToMany(mappedBy = "studyProgramme")
 	@ToString.Exclude
+	@JsonIgnore
 	private List<Course> courses;
 
 	@OneToMany(mappedBy = "studyProgramme")
 	@ToString.Exclude
+	@JsonIgnore
 	private List<Student> students;
 
 	private boolean isIndividual;
+
+	public StudyProgramme(String name, int year, boolean isIndividual) {
+		setName(name);
+		setYear(year);
+		setIndividual(isIndividual);
+	}
 
 }

@@ -2,6 +2,8 @@ package lv.venta.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
@@ -25,6 +27,7 @@ public class Lecturer extends User {
 	private int hours; // how many hours they can teach per semester
 
 	@ManyToMany(mappedBy = "lecturers")
+	@JsonIgnore
 	private List<Lesson> lessons;
 
 	public Lecturer(String fullName, String email, Role role, int hours) {
