@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,12 +16,9 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @ToString
-@Table(name = "Lecturer")
 @Entity
 public class Lecturer extends User {
 
-	private Role role;
-	
 	@Min(value = 0, message = "The value must be positive")
 	private int hours; // how many hours they can teach per semester
 
@@ -31,9 +27,8 @@ public class Lecturer extends User {
 	private List<Lesson> lessons;
 
 	public Lecturer(String fullName, String email, Role role, int hours) {
-		super(fullName, email);
-		this.role = role;
-		this.hours = hours;
+		super(fullName, email, role);
+		setHours(hours);
 	}
 
 }

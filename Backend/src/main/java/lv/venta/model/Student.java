@@ -8,7 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,6 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @ToString
-@Table(name = "Student")
 @Entity
 public class Student extends User {
 
@@ -36,7 +34,7 @@ public class Student extends User {
 	private int matriculeNumber;
 
 	public Student(String fullName, String email, StudyProgramme studyProgramme, int matriculeNumber) {
-		super(fullName, email);
+		super(fullName, email, Role.STUDENT);
 		setStudyProgramme(studyProgramme);
 		setMatriculeNumber(matriculeNumber);
 	}

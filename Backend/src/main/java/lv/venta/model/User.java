@@ -1,5 +1,7 @@
 package lv.venta.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +22,7 @@ import lombok.ToString;
 @ToString
 @Table(name = "User")
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User {
 
 	@Id
@@ -33,9 +35,17 @@ public class User {
 
 	private String email;
 
-	public User(String fullName, String email) {
+	private Role role;
+
+	@JsonProperty("dtype")
+	public String getDtype() {
+		return this.getClass().getSimpleName();
+	}
+
+	public User(String fullName, String email, Role role) {
 		setFullName(fullName);
 		setEmail(email);
+		setRole(role);
 	}
 
 }

@@ -64,8 +64,8 @@ public class LessonServiceImpl implements ILessonService {
 		oldLesson.setCourse(lesson.getCourse());
 		oldLesson.setOnline(lesson.isOnline());
 		oldLesson.setOnlineInformation(lesson.getOnlineInformation());
-		oldLesson.setDate(lesson.getDate());
-		oldLesson.setTime(lesson.getTime());
+		oldLesson.setDates(lesson.getDates());
+		oldLesson.setTimes(lesson.getTimes());
 		lessonRepo.save(oldLesson);
 		return oldLesson;
 	}

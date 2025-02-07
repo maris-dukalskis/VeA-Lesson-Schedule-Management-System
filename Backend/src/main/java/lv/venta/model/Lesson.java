@@ -58,19 +58,19 @@ public class Lesson {
 
 	private String onlineInformation;
 
-	private List<Date> date; // TODO make this into a list(so the db doesnt have to store multiples of the
+	private List<Date> dates; // TODO make this into a list(so the db doesnt have to store multiples of the
 	// same lesson just with different times)
 
-	private List<Time> time; // TODO make this into a list
+	private List<Time> times; // TODO make this into a list
 
 	public Lesson(Course course, List<Classroom> classrooms, boolean isOnline, String onlineInformation,
-			List<Date> date, List<Time> time) {
+			List<Date> dates, List<Time> times) {
 		setCourse(course);
 		setClassrooms(classrooms);
 		setOnline(isOnline);
 		setOnlineInformation(onlineInformation);
-		setDate(date);
-		setTime(time);
+		setDates(dates);
+		setTimes(times);
 	}
 
 }
