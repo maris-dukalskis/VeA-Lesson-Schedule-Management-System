@@ -1,10 +1,17 @@
 import logo from './logo.svg';
 import './App.css';
-import ClassroomCreate from './components/crud/Classroom/ClassroomCreate';
 import { Route, Routes } from 'react-router-dom';
-import ClassroomList  from './components/crud/Classroom/ClassroomList';
-import ClassroomUpdate from './components/crud/Classroom/ClassroomUpdate';
+import ClassroomCreate from './components/crud/Classroom/ClassroomCreate';
+import ClassroomList from './components/crud/Classroom/ClassroomList';
+import ClassroomEdit from './components/crud/Classroom/ClassroomEdit';
 
+import CourseCreate from './components/crud/Course/CourseCreate';
+import CourseList from './components/crud/Course/CourseList';
+import CourseEdit from './components/crud/Course/CourseEdit';
+
+import StudyProgrammeCreate from './components/crud/StudyProgramme/StudyProgrammeCreate';
+import StudyProgrammeList from './components/crud/StudyProgramme/StudyProgrammeList';
+import StudyProgrammeEdit from './components/crud/StudyProgramme/StudyProgrammeEdit';
 
 function App() {
   return (
@@ -18,7 +25,15 @@ function App() {
               <Route path="/logout" element={<Logout />} /> */}
               <Route path="/classroom/create" element={<ClassroomCreate />} />
               <Route path="/classroom/list" element={<ClassroomList />} />
-              <Route path="/classroom/update/:id" element={<ClassroomUpdate />} />
+              <Route path="/classroom/edit/:id" element={<ClassroomEdit />} />
+
+              <Route path="/course/create" element={<CourseCreate />} />
+              <Route path="/course/list" element={<CourseList />} />
+              <Route path="/course/edit/:id" element={<CourseEdit />} />
+
+              <Route path="/studyprogramme/create" element={<StudyProgrammeCreate />} />
+              <Route path="/studyprogramme/list" element={<StudyProgrammeList />} />
+              <Route path="/studyprogramme/edit/:id" element={<StudyProgrammeEdit />} />
             </Routes>
 
           </div>
