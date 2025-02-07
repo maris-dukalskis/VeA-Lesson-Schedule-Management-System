@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+
 import { Route, Routes } from 'react-router-dom';
 import ClassroomCreate from './components/crud/Classroom/ClassroomCreate';
 import ClassroomList from './components/crud/Classroom/ClassroomList';
@@ -12,6 +13,12 @@ import CourseEdit from './components/crud/Course/CourseEdit';
 import StudyProgrammeCreate from './components/crud/StudyProgramme/StudyProgrammeCreate';
 import StudyProgrammeList from './components/crud/StudyProgramme/StudyProgrammeList';
 import StudyProgrammeEdit from './components/crud/StudyProgramme/StudyProgrammeEdit';
+
+import UserCreate from './components/crud/User/UserCreate';
+import UserList from './components/crud/User/UserList';
+import UserEdit from './components/crud/User/UserEdit';
+
+import LessonCreate from './components/crud/Lesson/LessonCreate';
 
 function App() {
   return (
@@ -34,6 +41,12 @@ function App() {
               <Route path="/studyprogramme/create" element={<StudyProgrammeCreate />} />
               <Route path="/studyprogramme/list" element={<StudyProgrammeList />} />
               <Route path="/studyprogramme/edit/:id" element={<StudyProgrammeEdit />} />
+
+              <Route path="/user/create" element={<UserCreate />} />
+              <Route path="/user/list" element={<UserList />} />
+              <Route path="/user/edit/:id" element={<UserEdit />} />
+
+              <Route path="/lesson/create" element={<LessonCreate />} />
             </Routes>
 
           </div>
