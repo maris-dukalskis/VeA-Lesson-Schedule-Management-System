@@ -31,7 +31,7 @@ const ClassroomList = () => {
     };
 
     const handleEdit = (id) => {
-        navigate(`/classroom/update/${id}`);
+        navigate(`/classroom/edit/${id}`);
     };
 
     const handleDelete = async () => {
@@ -52,7 +52,6 @@ const ClassroomList = () => {
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Building</th>
                         <th>Number</th>
                         <th>Actions</th>
@@ -61,7 +60,6 @@ const ClassroomList = () => {
                 <tbody>
                     {classrooms.map((classroom) => (
                         <tr key={classroom.classroomId}>
-                            <td>{classroom.classroomId}</td>
                             <td>{classroom.building}</td>
                             <td>{classroom.number}</td>
                             <td>
@@ -101,7 +99,6 @@ const ClassroomList = () => {
                 <Modal.Body>
                     {selectedClassroom && (
                         <>
-                            <p><strong>ID:</strong> {selectedClassroom.classroomId}</p>
                             <p><strong>Building:</strong> {selectedClassroom.building}</p>
                             <p><strong>Number:</strong> {selectedClassroom.number}</p>
                             <p><strong>Equipment Description:</strong> {selectedClassroom.equipmentDescription}</p>

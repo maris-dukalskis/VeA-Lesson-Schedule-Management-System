@@ -3,7 +3,7 @@ import classroomServiceInstance from "../../../api/ClassroomService";
 import { Container, Card, Form, Button, Alert } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
-const ClassroomUpdate = () => {
+const ClassroomEdit = () => {
     const { id } = useParams();
     const [formData, setFormData] = useState({
         building: "",
@@ -49,7 +49,7 @@ const ClassroomUpdate = () => {
         <Container className="mt-5">
             <Card className="shadow-lg p-4">
                 <Card.Body>
-                    <h2 className="text-center mb-4">Update Classroom</h2>
+                    <h2 className="text-center mb-4">Edit Classroom</h2>
                     {message && <Alert variant={message.includes("Error") ? "danger" : "success"}>{message}</Alert>}
                     {loading ? (
                         <p className="text-center">Loading...</p>
@@ -97,4 +97,4 @@ const ClassroomUpdate = () => {
     );
 };
 
-export default ClassroomUpdate;
+export default ClassroomEdit;
