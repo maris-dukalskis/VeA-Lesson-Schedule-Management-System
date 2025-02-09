@@ -16,7 +16,6 @@ const CourseCreate = () => {
         const fetchStudyProgrammes = async () => {
             try {
                 const response = await studyProgrammeServiceInstance.getAll();
-                console.log(response);
                 setStudyProgrammes(response.data);
             } catch (error) {
                 console.error("Error fetching study programmes", error);

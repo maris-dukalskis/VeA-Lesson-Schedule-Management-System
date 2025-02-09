@@ -1,0 +1,17 @@
+import BaseService from './BaseService';
+import axios from 'axios';
+
+class LessonDateTimeService extends BaseService {
+    constructor() {
+        super(process.env.REACT_APP_BACKEND_URL + '/lessondatetime');
+    }
+
+    getAllByLessonId(id) {
+        return axios.get(`${this.baseUrl}/get/all/${id}`);
+    }
+
+}
+
+const lessonDateTimeServiceInstance = new LessonDateTimeService();
+
+export default lessonDateTimeServiceInstance;

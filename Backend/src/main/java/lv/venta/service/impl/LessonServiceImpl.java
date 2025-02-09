@@ -49,8 +49,9 @@ public class LessonServiceImpl implements ILessonService {
 		}
 		if (!lessons.isEmpty()) {
 			for (Lesson dbLesson : lessons) {
-				if (dbLesson.getCourse().equals(lesson.getCourse())) { // TODO this might need to be changed(if
-																		// lesson:course is 1:1)
+				if (dbLesson.getCourse().getCourseId() == lesson.getCourse().getCourseId()) { // TODO this might need to
+																								// be changed(if
+					// lesson:course is 1:1)
 					throw new Exception("Lesson already exists");
 				}
 			}
@@ -64,8 +65,9 @@ public class LessonServiceImpl implements ILessonService {
 		oldLesson.setCourse(lesson.getCourse());
 		oldLesson.setOnline(lesson.isOnline());
 		oldLesson.setOnlineInformation(lesson.getOnlineInformation());
-		oldLesson.setDates(lesson.getDates());
-		oldLesson.setTimes(lesson.getTimes());
+		oldLesson.setClassrooms(lesson.getClassrooms());
+		oldLesson.setLecturers(lesson.getLecturers());
+		oldLesson.setStudents(lesson.getStudents());
 		lessonRepo.save(oldLesson);
 		return oldLesson;
 	}

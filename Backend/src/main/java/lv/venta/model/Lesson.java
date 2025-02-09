@@ -1,8 +1,8 @@
 package lv.venta.model;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -39,6 +40,11 @@ public class Lesson {
 	@ToString.Exclude
 	private Course course;
 
+	@OneToMany(mappedBy = "lesson")
+	@ToString.Exclude
+	@JsonIgnore
+	private List<LessonDateTime> lessonTimes;
+
 	@ManyToMany
 	@JoinTable(name = "Lesson_Lecturer", joinColumns = @JoinColumn(name = "LessonId"), inverseJoinColumns = @JoinColumn(name = "UserId"))
 	@ToString.Exclude
@@ -58,19 +64,11 @@ public class Lesson {
 
 	private String onlineInformation;
 
-	private List<Date> dates; // TODO make this into a list(so the db doesnt have to store multiples of the
-	// same lesson just with different times)
-
-	private List<Time> times; // TODO make this into a list
-
-	public Lesson(Course course, List<Classroom> classrooms, boolean isOnline, String onlineInformation,
-			List<Date> dates, List<Time> times) {
+	public Lesson(Course course, List<Classroom> classrooms, boolean isOnline, String onlineInformation) {
 		setCourse(course);
 		setClassrooms(classrooms);
 		setOnline(isOnline);
 		setOnlineInformation(onlineInformation);
-		setDates(dates);
-		setTimes(times);
 	}
 
 }
