@@ -5,7 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,8 @@ public class Lecturer extends User {
 	@Min(value = 0, message = "The value must be positive")
 	private int hours; // how many hours they can teach per semester
 
-	@ManyToMany(mappedBy = "lecturers")
+	@OneToMany(mappedBy = "lecturer")
+	@ToString.Exclude
 	@JsonIgnore
 	private List<Lesson> lessons;
 

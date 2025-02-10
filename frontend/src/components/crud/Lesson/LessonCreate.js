@@ -24,12 +24,13 @@ const defaultTimes = [
 const LessonCreate = () => {
     const [formData, setFormData] = useState({
         course: "",
-        classrooms: [],
-        lecturers: [],
+        classroom: null,
+        lecturer: null,
         students: [],
         datesTimes: [],
         online: false,
         onlineInformation: "",
+        lessonGroup: "",
     });
     const [courses, setCourses] = useState([]);
     const [classrooms, setClassrooms] = useState([]);
@@ -151,11 +152,12 @@ const LessonCreate = () => {
 
         const lessonPayload = {
             course: { courseId: formData.course },
-            classrooms: formData.classrooms.map(c => ({ classroomId: c.value })),
-            lecturers: formData.lecturers.map(l => ({ userId: l.value })),
+            classroom: formData.classroom ? { classroomId: formData.classroom.value } : null,
+            lecturer: formData.lecturer ? { userId: formData.lecturer.value } : null,
             students: formData.students.map(s => ({ userId: s.value })),
             online: formData.online,
             onlineInformation: formData.onlineInformation,
+            lessonGroup: formData.lessonGroup
         };
 
         try {
@@ -181,12 +183,13 @@ const LessonCreate = () => {
             setMessage("Lesson created successfully!");
             setFormData({
                 course: "",
-                classrooms: [],
-                lecturers: [],
+                classroom: null,
+                lecturer: null,
                 students: [],
                 datesTimes: [],
                 online: false,
-                onlineInformation: ""
+                onlineInformation: "",
+                lessonGroup: ""
             });
             setCustomTimesEnabled([]);
         } catch (error) {
@@ -212,12 +215,35 @@ const LessonCreate = () => {
                             </Form.Select>
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Classrooms</Form.Label>
-                            <Select isMulti options={classrooms} value={formData.classrooms} onChange={handleSelectChange("classrooms")} placeholder="Select or search for classrooms" />
+                            <Form.Label>Lesson Group</Form.Label>
+                            <Form.Control
+                                type="number"
+                                name="lessonGroup"
+                                value={formData.lessonGroup}
+                                onChange={handleChange}
+                                placeholder="Enter lesson group number"
+                                min="1"
+                            />
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Lecturers</Form.Label>
-                            <Select isMulti options={lecturers} value={formData.lecturers} onChange={handleSelectChange("lecturers")} placeholder="Select or search for lecturers" />
+                            <Form.Label>Classroom</Form.Label>
+                            <Select
+                                options={classrooms}
+                                value={formData.classroom}
+                                onChange={handleSelectChange("classroom")}
+                                placeholder="Select or search for a classroom"
+                                isClearable
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Lecturer</Form.Label>
+                            <Select
+                                options={lecturers}
+                                value={formData.lecturer}
+                                onChange={handleSelectChange("lecturer")}
+                                placeholder="Select or search for a lecturer"
+                                isClearable
+                            />
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Students</Form.Label>

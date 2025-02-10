@@ -49,9 +49,7 @@ public class LessonServiceImpl implements ILessonService {
 		}
 		if (!lessons.isEmpty()) {
 			for (Lesson dbLesson : lessons) {
-				if (dbLesson.getCourse().getCourseId() == lesson.getCourse().getCourseId()) { // TODO this might need to
-																								// be changed(if
-					// lesson:course is 1:1)
+				if (dbLesson.getLessonGroup() == lesson.getLessonGroup()) {
 					throw new Exception("Lesson already exists");
 				}
 			}
@@ -63,10 +61,11 @@ public class LessonServiceImpl implements ILessonService {
 	public Lesson updateLessonById(int id, Lesson lesson) throws Exception {
 		Lesson oldLesson = selectLessonById(id);
 		oldLesson.setCourse(lesson.getCourse());
+		oldLesson.setLessonGroup(lesson.getLessonGroup());
 		oldLesson.setOnline(lesson.isOnline());
 		oldLesson.setOnlineInformation(lesson.getOnlineInformation());
-		oldLesson.setClassrooms(lesson.getClassrooms());
-		oldLesson.setLecturers(lesson.getLecturers());
+		oldLesson.setLecturer(lesson.getLecturer());
+		oldLesson.setClassroom(lesson.getClassroom());
 		oldLesson.setStudents(lesson.getStudents());
 		lessonRepo.save(oldLesson);
 		return oldLesson;

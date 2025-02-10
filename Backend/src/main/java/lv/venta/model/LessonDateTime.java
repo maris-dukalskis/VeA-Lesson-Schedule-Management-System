@@ -42,7 +42,7 @@ public class LessonDateTime {
 
 	private String timeTo;
 
-	public LessonDateTime(Lesson lesson, boolean isCustom, Date date, String timeFrom, String timeTo) {
+	public LessonDateTime( Lesson lesson,  boolean isCustom, Date date, String timeFrom, String timeTo) {
 		setLesson(lesson);
 		setCustom(isCustom);
 		setDate(date);

@@ -45,28 +45,33 @@ public class Lesson {
 	@JsonIgnore
 	private List<LessonDateTime> lessonTimes;
 
-	@ManyToMany
-	@JoinTable(name = "Lesson_Lecturer", joinColumns = @JoinColumn(name = "LessonId"), inverseJoinColumns = @JoinColumn(name = "UserId"))
+	@ManyToOne
+	@JoinColumn(name = "UserId")
 	@ToString.Exclude
-	private List<Lecturer> lecturers; // can be more than 1(class is split into 2 groups)
+	private Lecturer lecturer;
 
-	@ManyToMany
-	@JoinTable(name = "Lesson_Classroom", joinColumns = @JoinColumn(name = "LessonId"), inverseJoinColumns = @JoinColumn(name = "ClassroomId"))
+	@ManyToOne
+	@JoinColumn(name = "ClassroomId")
 	@ToString.Exclude
-	private List<Classroom> classrooms; // can be more than 1(class is split into 2 groups)
+	private Classroom classroom;
 
 	@ManyToMany
 	@JoinTable(name = "Lesson_Student", joinColumns = @JoinColumn(name = "LessonId"), inverseJoinColumns = @JoinColumn(name = "UserId"))
 	@ToString.Exclude
 	private List<Student> students; // list of students attending
 
+	private int lessonGroup;
+
 	private boolean isOnline;
 
 	private String onlineInformation;
 
-	public Lesson(Course course, List<Classroom> classrooms, boolean isOnline, String onlineInformation) {
+	public Lesson(Course course, Lecturer lecturer, Classroom classroom, int lessonGroup, boolean isOnline,
+			String onlineInformation) {
 		setCourse(course);
-		setClassrooms(classrooms);
+		setLecturer(lecturer);
+		setClassroom(classroom);
+		setLessonGroup(lessonGroup);
 		setOnline(isOnline);
 		setOnlineInformation(onlineInformation);
 	}

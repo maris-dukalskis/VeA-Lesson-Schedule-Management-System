@@ -9,7 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
@@ -32,7 +32,8 @@ public class Classroom {
 	@Setter(value = AccessLevel.NONE)
 	private int classroomId;
 
-	@ManyToMany(mappedBy = "classrooms")
+	@OneToMany(mappedBy = "classroom")
+	@ToString.Exclude
 	@JsonIgnore
 	private List<Lesson> lessons;
 
