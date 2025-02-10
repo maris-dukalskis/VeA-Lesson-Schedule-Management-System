@@ -53,8 +53,9 @@ const LessonList = () => {
                 <thead>
                     <tr>
                         <th>Course</th>
-                        <th>Classrooms</th>
-                        <th>Lecturers</th>
+                        <th>Classroom</th>
+                        <th>Lecturer</th>
+                        <th>Group</th>
                         <th>Online</th>
                         <th>Actions</th>
                     </tr>
@@ -63,8 +64,9 @@ const LessonList = () => {
                     {lessons.map((lesson) => (
                         <tr key={lesson.lessonId}>
                             <td>{lesson.course.name}</td>
-                            <td>{lesson.classrooms?.map(c => c.building + c.number).join(", ")}</td> 
-                            <td>{lesson.lecturers?.map(l => l.fullName).join(", ")}</td>
+                            <td>{lesson.classroom?.building + lesson.classroom?.number}</td>
+                            <td>{lesson.lecturer?.fullName}</td>
+                            <td>{lesson.lessonGroup || "N/A"}</td>
                             <td>{lesson.online ? "Yes" : "No"}</td>
                             <td>
                                 <Button variant="info" className="me-2" onClick={() => handleView(lesson)}>
@@ -94,14 +96,15 @@ const LessonList = () => {
                 </Modal.Header>
                 <Modal.Body>
                     {selectedLesson && (
-                         <>
-                         <p><strong>Course:</strong> {selectedLesson.course?.name}</p>
-                         <p><strong>Classrooms:</strong> {selectedLesson.classrooms?.map(c => c.building + c.number).join(", ")}</p>
-                         <p><strong>Lecturers:</strong> {selectedLesson.lecturers?.map(l => l.fullName).join(", ")}</p>
-                         <p><strong>Students:</strong> {selectedLesson.students?.map(s => s.matriculeNumber).join(", ")}</p>
-                         <p><strong>Online:</strong> {selectedLesson.online ? "Yes" : "No"}</p>
-                         {selectedLesson.online && <p><strong>Online Information:</strong> {selectedLesson.onlineInformation}</p>}
-                     </>
+                        <>
+                            <p><strong>Course:</strong> {selectedLesson.course?.name}</p>
+                            <p><strong>Classroom:</strong> {selectedLesson.classroom?.building + selectedLesson.classroom?.number}</p>
+                            <p><strong>Lecturer:</strong> {selectedLesson.lecturer?.fullName}</p>
+                            <p><strong>Students:</strong> {selectedLesson.students?.map(s => s.matriculeNumber).join(", ")}</p>
+                            <p><strong>Online:</strong> {selectedLesson.online ? "Yes" : "No"}</p>
+                            {selectedLesson.online && <p><strong>Online Information:</strong> {selectedLesson.onlineInformation}</p>}
+                            <p><strong>Lesson Group:</strong> {selectedLesson.lessonGroup || "N/A"}</p>
+                        </>
                     )}
                 </Modal.Body>
                 <Modal.Footer>
