@@ -22,6 +22,8 @@ import LessonCreate from './components/crud/Lesson/LessonCreate';
 import LessonList from './components/crud/Lesson/LessonList';
 import LessonEdit from './components/crud/Lesson/LessonEdit';
 
+import Login from './components/auth/Login';
+
 function App() {
   return (
     <>
@@ -51,6 +53,8 @@ function App() {
               <Route path="/lesson/create" element={<LessonCreate />} />
               <Route path="/lesson/list" element={<LessonList />} />
               <Route path="/lesson/edit/:id" element={<LessonEdit />} />
+
+              <Route path="/login" element={<Login />} />
             </Routes>
 
           </div>
