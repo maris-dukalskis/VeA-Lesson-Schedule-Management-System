@@ -36,7 +36,6 @@ public class AuthController {
 
 	@GetMapping("/user")
 	public ResponseEntity<?> getUser(@RequestHeader("Authorization") String authorizationHeader) {
-		System.out.println(authorizationHeader);
 		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
 			return ResponseEntity.badRequest().body("Invalid or missing Authorization header");
 		}
@@ -75,10 +74,4 @@ public class AuthController {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
-//	@PostMapping("/logout")
-//	public ResponseEntity<?> logout() {
-//		SecurityContextHolder.clearContext();
-//		return ResponseEntity.ok().build();
-//	}
 }

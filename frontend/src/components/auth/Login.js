@@ -1,9 +1,13 @@
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 function Login() {
+
+    const navigate = useNavigate();
 
     const onSuccess = async (response) => {
         try {
@@ -13,6 +17,7 @@ function Login() {
                 },
             });
             localStorage.setItem("token", res.data);
+            navigate(`/`);
         } catch (error) {
             console.error("Error fetching user data:", error);
             if (error.response) {
@@ -34,12 +39,14 @@ function Login() {
 
     return (
         <GoogleOAuthProvider clientId={clientId}>
-            <GoogleLogin
-                onSuccess={onSuccess}
-                onError={onFailure}
-            />
+                <GoogleLogin
+                  onSuccess={onSuccess}
+                  onError={onFailure}
+                  theme="filled_blue"
+                  size="large"
+                />
         </GoogleOAuthProvider>
-    );
+      );
 }
 
 export default Login;

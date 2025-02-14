@@ -22,19 +22,18 @@ import LessonCreate from './components/crud/Lesson/LessonCreate';
 import LessonList from './components/crud/Lesson/LessonList';
 import LessonEdit from './components/crud/Lesson/LessonEdit';
 
-import Login from './components/auth/Login';
-import Admin from './components/admin/Admin';
+import Logout from './components/auth/Logout';
+import Admin from './components/Admin';
+import Header from './components/Header';
 
 function App() {
   return (
     <>
-      {/* <Header /> */}
+      <Header />
       <div className='app-container'>
         <main className='main-content'>
           <div className='container'>
             <Routes>
-              {/* <Route path="/login" element={<Login />} />
-              <Route path="/logout" element={<Logout />} /> */}
               <Route path="/classroom/create" element={<ClassroomCreate />} />
               <Route path="/classroom/list" element={<ClassroomList />} />
               <Route path="/classroom/edit/:id" element={<ClassroomEdit />} />
@@ -55,7 +54,7 @@ function App() {
               <Route path="/lesson/list" element={<LessonList />} />
               <Route path="/lesson/edit/:id" element={<LessonEdit />} />
 
-              <Route path="/login" element={<Login />} />
+              <Route path="/logout" element={<Logout />} />
 
               <Route path="/admin" element={<Admin />} />
             </Routes>
