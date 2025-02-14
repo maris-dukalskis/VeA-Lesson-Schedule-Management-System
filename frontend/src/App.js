@@ -23,6 +23,7 @@ import LessonList from './components/crud/Lesson/LessonList';
 import LessonEdit from './components/crud/Lesson/LessonEdit';
 
 import Login from './components/auth/Login';
+import Admin from './components/admin/Admin';
 
 function App() {
   return (
@@ -55,6 +56,8 @@ function App() {
               <Route path="/lesson/edit/:id" element={<LessonEdit />} />
 
               <Route path="/login" element={<Login />} />
+
+              <Route path="/admin" element={<Admin />} />
             </Routes>
 
           </div>
