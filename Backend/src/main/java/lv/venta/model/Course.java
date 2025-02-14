@@ -36,6 +36,8 @@ public class Course {
 	private String name;
 
 	private String description;
+	
+//	private int creditpoints; TODO implement this
 
 	@OneToMany(mappedBy = "course")
 	@ToString.Exclude

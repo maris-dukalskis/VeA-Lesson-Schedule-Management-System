@@ -8,8 +8,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -21,9 +19,10 @@ import jakarta.servlet.http.HttpServletResponse;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Bean
-	public JwtDecoder jwtDecoder() {
-		return NimbusJwtDecoder.withJwkSetUri("https://www.googleapis.com/oauth2/v3/certs").build();
+	private final CustomJwtDecoder customJwtDecoder;
+
+	public SecurityConfig(CustomJwtDecoder customJwtDecoder) {
+		this.customJwtDecoder = customJwtDecoder;
 	}
 
 	@Bean
@@ -40,8 +39,9 @@ public class SecurityConfig {
 //						.requestMatchers("/studyprogramme/get/{id}").authenticated() will this work with {id}
 						.requestMatchers("/studyprogramme/update/**").authenticated()
 						.requestMatchers("/studyprogramme/delete/**").authenticated())
-				.oauth2Login(Customizer.withDefaults()).oauth2ResourceServer(oauth2 -> oauth2
-						.jwt(Customizer.withDefaults()).authenticationEntryPoint((request, response, authException) -> {
+				.oauth2Login(Customizer.withDefaults())
+				.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(customJwtDecoder))
+						.authenticationEntryPoint((request, response, authException) -> {
 							response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 							response.getWriter().write("Token expired or invalid, please log in again");
 						}))

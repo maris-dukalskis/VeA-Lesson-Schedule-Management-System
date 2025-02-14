@@ -12,7 +12,7 @@ function Login() {
                     Authorization: `Bearer ${response.credential}`,
                 },
             });
-            // console.log("User Data:", res.data);
+            localStorage.setItem("token", res.data);
         } catch (error) {
             console.error("Error fetching user data:", error);
             if (error.response) {

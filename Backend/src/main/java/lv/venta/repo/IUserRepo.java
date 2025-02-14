@@ -6,4 +6,6 @@ import lv.venta.model.User;
 
 public interface IUserRepo extends CrudRepository<User, Integer> {
 
+	User findByEmail(String email);
+
 }

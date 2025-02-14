@@ -1,19 +1,11 @@
 package lv.venta.controller;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,19 +13,30 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lv.venta.config.CustomJwtDecoder;
+import lv.venta.config.JwtConfig;
+import lv.venta.model.User;
+import lv.venta.service.IUserService;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/auth")
 public class AuthController {
 
-	private final JwtDecoder jwtDecoder;
+	private JwtConfig jwtConfig;
+	private CustomJwtDecoder jwtDecoder;
 
-	public AuthController(JwtDecoder jwtDecoder) {
+	public AuthController(JwtConfig jwtConfig, CustomJwtDecoder jwtDecoder) {
+		this.jwtConfig = jwtConfig;
 		this.jwtDecoder = jwtDecoder;
 	}
 
+	@Autowired
+	private IUserService userService;
+
 	@GetMapping("/user")
 	public ResponseEntity<?> getUser(@RequestHeader("Authorization") String authorizationHeader) {
+		System.out.println(authorizationHeader);
 		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
 			return ResponseEntity.badRequest().body("Invalid or missing Authorization header");
 		}
@@ -42,35 +45,35 @@ public class AuthController {
 			Jwt jwt = jwtDecoder.decode(token);
 
 			Authentication authentication;
-			Collection<GrantedAuthority> authorities = extractAuthoritiesFromClaims(jwt.getClaims());
 
 			if (jwt.getClaims().containsKey("sub")) {
-				authentication = new JwtAuthenticationToken(jwt, authorities);
+				authentication = new JwtAuthenticationToken(jwt);
 			} else {
 				return ResponseEntity.status(401).body("Invalid JWT structure");
 			}
 
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
-			Map<String, Object> userDetails = new HashMap<>();
-			userDetails.put("name", jwt.getClaimAsString("name"));
-			userDetails.put("email", jwt.getClaimAsString("email"));
+			String email = jwt.getClaimAsString("email");
+			String name = jwt.getClaimAsString("name");
+			String picture = jwt.getClaimAsString("picture");
 
-			return ResponseEntity.ok(userDetails);
+			User user = null;
+
+			try {
+				user = userService.selectByEmail(email);
+			} catch (Exception e) {
+				return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			String role = user.getRole().toString();
+
+			String newToken = jwtConfig.generateToken(email, role, name, picture);
+			return new ResponseEntity<String>(newToken, HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.err.println("JWT decoding failed: " + e.getMessage());
-			return ResponseEntity.status(401).body("Invalid or expired token");
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	}
-
-	private Collection<GrantedAuthority> extractAuthoritiesFromClaims(Map<String, Object> claims) {
-		Object authoritiesClaim = claims.getOrDefault("authorities", claims.getOrDefault("roles", new ArrayList<>()));
-
-		if (authoritiesClaim instanceof Collection<?>) {
-			return ((Collection<?>) authoritiesClaim).stream().filter(String.class::isInstance)
-					.map(authority -> new SimpleGrantedAuthority("ROLE_" + authority)).collect(Collectors.toList());
-		}
-		return Collections.emptyList();
 	}
 
 //	@PostMapping("/logout")

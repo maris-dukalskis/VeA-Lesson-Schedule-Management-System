@@ -66,4 +66,11 @@ public class UserServiceImpl implements IUserService {
 		return oldUser;
 	}
 
+	@Override
+	public User selectByEmail(String email) throws Exception {
+		if (userRepo.count() == 0)
+			throw new Exception("User by that email does not exist");
+		return userRepo.findByEmail(email);
+	}
+
 }

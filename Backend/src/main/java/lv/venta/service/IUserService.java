@@ -16,4 +16,6 @@ public interface IUserService {
 
 	public abstract User updateUserById(int id, User user) throws Exception;
 
+	public abstract User selectByEmail(String email) throws Exception;
+
 }
