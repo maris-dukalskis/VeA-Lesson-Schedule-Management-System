@@ -6,7 +6,6 @@ const StudyProgrammeCreate = () => {
     const [formData, setFormData] = useState({
         name: "",
         year: "",
-        individual: false,
     });
 
     const [message, setMessage] = useState("");
@@ -26,9 +25,8 @@ const StudyProgrammeCreate = () => {
                 ...formData,
                 year: parseInt(formData.year),
             });
-            console.log(response);
             setMessage("Study Programme created successfully!");
-            setFormData({ name: "", year: "", individual: false });
+            setFormData({ name: "", year: "" });
         } catch (error) {
             setMessage("Error creating Study Programme. Please try again.");
         }
@@ -59,15 +57,6 @@ const StudyProgrammeCreate = () => {
                                 value={formData.year}
                                 onChange={handleChange}
                                 required
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Check
-                                type="checkbox"
-                                label="Is Individual"
-                                name="individual"
-                                checked={formData.individual}
-                                onChange={handleChange}
                             />
                         </Form.Group>
                         <Button variant="primary" type="submit" className="w-100">

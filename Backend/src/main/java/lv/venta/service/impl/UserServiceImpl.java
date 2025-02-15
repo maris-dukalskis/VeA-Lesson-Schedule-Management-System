@@ -62,6 +62,7 @@ public class UserServiceImpl implements IUserService {
 		User oldUser = selectUserById(id);
 		oldUser.setEmail(user.getEmail());
 		oldUser.setFullName(user.getFullName());
+		oldUser.setRole(user.getRole());
 		userRepo.save(oldUser);
 		return oldUser;
 	}

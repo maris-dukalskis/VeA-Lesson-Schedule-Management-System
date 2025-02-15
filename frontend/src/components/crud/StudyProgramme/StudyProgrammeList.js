@@ -101,7 +101,6 @@ const StudyProgrammeList = () => {
                         <>
                             <p><strong>Name:</strong> {selectedProgramme.name}</p>
                             <p><strong>Year:</strong> {selectedProgramme.year}</p>
-                            <p><strong>Individual:</strong> {selectedProgramme.individual ? "Yes" : "No"}</p>
                         </>
                     )}
                 </Modal.Body>

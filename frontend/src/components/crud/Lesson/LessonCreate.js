@@ -4,7 +4,6 @@ import lessonDateTimeServiceInstance from "../../../api/LessonDateTimeService";
 import courseServiceInstance from "../../../api/CourseService";
 import classroomServiceInstance from "../../../api/ClassroomService";
 import lecturerServiceInstance from "../../../api/LecturerService";
-import studentServiceInstance from "../../../api/StudentService";
 import { Container, Card, Form, Button, Alert, Row, Col } from "react-bootstrap";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
@@ -26,7 +25,6 @@ const LessonCreate = () => {
         course: "",
         classroom: null,
         lecturer: null,
-        students: [],
         datesTimes: [],
         online: false,
         onlineInformation: "",
@@ -35,23 +33,20 @@ const LessonCreate = () => {
     const [courses, setCourses] = useState([]);
     const [classrooms, setClassrooms] = useState([]);
     const [lecturers, setLecturers] = useState([]);
-    const [students, setStudents] = useState([]);
     const [message, setMessage] = useState("");
     const [customTimesEnabled, setCustomTimesEnabled] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [courseRes, classroomRes, lecturerRes, studentRes] = await Promise.all([
+                const [courseRes, classroomRes, lecturerRes] = await Promise.all([
                     courseServiceInstance.getAll(),
                     classroomServiceInstance.getAll(),
-                    lecturerServiceInstance.getAll(),
-                    studentServiceInstance.getAll()
+                    lecturerServiceInstance.getAll()
                 ]);
                 setCourses(courseRes.data);
                 setClassrooms(classroomRes.data.map(c => ({ value: c.classroomId, label: `${c.building}${c.number}` })));
                 setLecturers(lecturerRes.data.map(l => ({ value: l.userId, label: l.fullName })));
-                setStudents(studentRes.data.map(s => ({ value: s.userId, label: s.matriculeNumber })));
             } catch (error) {
                 console.error("Error fetching data", error);
             }
@@ -154,7 +149,6 @@ const LessonCreate = () => {
             course: { courseId: formData.course },
             classroom: formData.classroom ? { classroomId: formData.classroom.value } : null,
             lecturer: formData.lecturer ? { userId: formData.lecturer.value } : null,
-            students: formData.students.map(s => ({ userId: s.value })),
             online: formData.online,
             onlineInformation: formData.onlineInformation,
             lessonGroup: formData.lessonGroup
@@ -185,7 +179,6 @@ const LessonCreate = () => {
                 course: "",
                 classroom: null,
                 lecturer: null,
-                students: [],
                 datesTimes: [],
                 online: false,
                 onlineInformation: "",
@@ -244,10 +237,6 @@ const LessonCreate = () => {
                                 placeholder="Select or search for a lecturer"
                                 isClearable
                             />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Students</Form.Label>
-                            <Select isMulti options={students} value={formData.students} onChange={handleSelectChange("students")} placeholder="Select or search for students" />
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Check type="checkbox" label="Is Online?" name="online" checked={formData.online} onChange={handleChange} />

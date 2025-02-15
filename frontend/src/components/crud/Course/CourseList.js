@@ -54,6 +54,7 @@ const CourseList = () => {
                     <tr>
                         <th>Name</th>
                         <th>Description</th>
+                        <th>CreditPoints</th>
                         <th>Study Programme</th>
                         <th>Actions</th>
                     </tr>
@@ -63,7 +64,8 @@ const CourseList = () => {
                         <tr key={course.courseId}>
                             <td>{course.name}</td>
                             <td>{course.description}</td>
-                            <td>{course.studyProgramme?.name || "N/A"}</td>
+                            <td>{course.creditPoints}</td>
+                            <td>{course.studyProgramme?.name + course.studyProgramme?.year || "N/A"}</td>
                             <td>
                                 <Button
                                     variant="info"
@@ -103,7 +105,8 @@ const CourseList = () => {
                         <>
                             <p><strong>Name:</strong> {selectedCourse.name}</p>
                             <p><strong>Description:</strong> {selectedCourse.description}</p>
-                            <p><strong>Study Programme:</strong> {selectedCourse.studyProgramme?.name || "N/A"}</p>
+                            <p><strong>CreditPoints:</strong> {selectedCourse.creditPoints}</p>
+                            <p><strong>Study Programme:</strong> {selectedCourse.studyProgramme?.name + selectedCourse.studyProgramme?.year || "N/A"}</p>
                         </>
                     )}
                 </Modal.Body>

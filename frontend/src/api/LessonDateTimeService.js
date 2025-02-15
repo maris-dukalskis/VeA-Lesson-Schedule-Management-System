@@ -7,7 +7,7 @@ class LessonDateTimeService extends BaseService {
     }
 
     getAllByLessonId(id) {
-        return axios.get(`${this.baseUrl}/get/all/${id}`);
+        return axios.get(`${this.baseUrl}/lesson/${id}`, super.getAuthHeaders());
     }
 
 }

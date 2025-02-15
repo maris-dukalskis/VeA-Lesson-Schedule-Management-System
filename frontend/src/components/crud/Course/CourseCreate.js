@@ -8,6 +8,7 @@ const CourseCreate = () => {
         name: "",
         description: "",
         studyProgramme: "",
+        creditPoints: "",
     });
     const [studyProgrammes, setStudyProgrammes] = useState([]);
     const [message, setMessage] = useState("");
@@ -35,13 +36,13 @@ const CourseCreate = () => {
             name: formData.name,
             description: formData.description,
             studyProgramme: { studyProgrammeId: formData.studyProgramme },
+            creditPoints: formData.creditPoints,
         };
 
         try {
-            console.log("Submitting data:", payload);
             const response = await courseServiceInstance.insert(payload);
             setMessage("Course created successfully!");
-            setFormData({ name: "", description: "", studyProgramme: "" });
+            setFormData({ name: "", description: "", studyProgramme: "", creditPoints: "" });
         } catch (error) {
             console.error("Error creating course:", error.response);
             setMessage("Error creating course. Please try again.");
@@ -77,6 +78,16 @@ const CourseCreate = () => {
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
+                            <Form.Label>CreditPoints</Form.Label>
+                            <Form.Control
+                                type="number"
+                                name="creditPoints"
+                                value={formData.creditPoints}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
                             <Form.Label>Study Programme</Form.Label>
                             <Form.Select
                                 name="studyProgramme"
@@ -87,7 +98,7 @@ const CourseCreate = () => {
                                 <option value="">Select a Study Programme</option>
                                 {studyProgrammes.map((programme) => (
                                     <option key={programme.studyProgrammeId} value={programme.studyProgrammeId}>
-                                        {programme.name}
+                                        {programme.name + programme.year}
                                     </option>
                                 ))}
                             </Form.Select>

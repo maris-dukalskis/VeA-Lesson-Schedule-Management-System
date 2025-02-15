@@ -1,5 +1,8 @@
 package lv.venta.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
@@ -9,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -41,6 +45,10 @@ public class User {
 	public String getDtype() {
 		return this.getClass().getSimpleName();
 	}
+	
+	@ManyToMany(mappedBy = "users")
+	@JsonIgnore
+	private List<Course> courses;
 
 	public User(String fullName, String email, Role role) {
 		setFullName(fullName);

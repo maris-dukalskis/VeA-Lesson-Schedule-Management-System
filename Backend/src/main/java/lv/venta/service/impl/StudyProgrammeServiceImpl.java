@@ -62,7 +62,6 @@ public class StudyProgrammeServiceImpl implements IStudyProgrammeService {
 	public StudyProgramme updateStudyProgrammeById(int id, StudyProgramme studyProgramme) throws Exception {
 		StudyProgramme oldStudyProgramme = selectStudyProgrammeById(id);
 		oldStudyProgramme.setName(studyProgramme.getName());
-		oldStudyProgramme.setIndividual(studyProgramme.isIndividual());
 		oldStudyProgramme.setYear(studyProgramme.getYear());
 		studyProgrammeRepo.save(oldStudyProgramme);
 		return oldStudyProgramme;

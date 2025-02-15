@@ -8,7 +8,6 @@ const StudyProgrammeEdit = () => {
     const [formData, setFormData] = useState({
         name: "",
         year: "",
-        individual: false,
     });
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(true);
@@ -20,7 +19,6 @@ const StudyProgrammeEdit = () => {
                 setFormData({
                     name: response.data.name || "",
                     year: response.data.year || "",
-                    individual: response.data.individual || false,
                 });
                 setLoading(false);
             } catch (error) {
@@ -80,15 +78,6 @@ const StudyProgrammeEdit = () => {
                                     value={formData.year}
                                     onChange={handleChange}
                                     required
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Check
-                                    type="checkbox"
-                                    label="Is Individual"
-                                    name="individual"
-                                    checked={formData.individual}
-                                    onChange={handleChange}
                                 />
                             </Form.Group>
                             <Button variant="primary" type="submit" className="w-100">

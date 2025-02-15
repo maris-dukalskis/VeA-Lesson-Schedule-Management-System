@@ -28,7 +28,7 @@ public class UserController {
 	@Autowired
 	private IUserService userService;
 
-	@GetMapping("/get/all")
+	@GetMapping("/all")
 	public ResponseEntity<?> getUserList() {
 		try {
 			return new ResponseEntity<ArrayList<User>>(userService.selectAllUsers(), HttpStatus.OK);

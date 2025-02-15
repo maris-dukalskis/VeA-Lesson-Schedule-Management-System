@@ -28,7 +28,7 @@ public class ClassroomController {
 	@Autowired
 	private IClassroomService classroomService;
 
-	@GetMapping("/get/all")
+	@GetMapping("/all")
 	public ResponseEntity<?> getClassroomList() {
 		try {
 			return new ResponseEntity<ArrayList<Classroom>>(classroomService.selectAllClassrooms(), HttpStatus.OK);

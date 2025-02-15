@@ -28,7 +28,7 @@ public class LessonController {
 	@Autowired
 	private ILessonService lessonService;
 
-	@GetMapping("/get/all")
+	@GetMapping("/all")
 	public ResponseEntity<?> getLessonList() {
 		try {
 			return new ResponseEntity<ArrayList<Lesson>>(lessonService.selectAllLessons(), HttpStatus.OK);

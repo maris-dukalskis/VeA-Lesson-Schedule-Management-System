@@ -28,7 +28,7 @@ public class LessonDateTimeController {
 	@Autowired
 	private ILessonDateTimeService lessonDateTimeService;
 
-	@GetMapping("/get/all")
+	@GetMapping("/all")
 	public ResponseEntity<?> getLessonDateTimeList() {
 		try {
 			return new ResponseEntity<ArrayList<LessonDateTime>>(lessonDateTimeService.selectAllLessonDateTimes(),
@@ -86,7 +86,7 @@ public class LessonDateTimeController {
 		}
 	}
 
-	@GetMapping("/get/all/{id}")
+	@GetMapping("/lesson/{id}")
 	public ResponseEntity<?> getLessonDateTimeListByLessonId(@PathVariable("id") int id) {
 		try {
 			return new ResponseEntity<ArrayList<LessonDateTime>>(lessonDateTimeService.selectAllByLessonLessonId(id),

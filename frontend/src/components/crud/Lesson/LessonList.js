@@ -100,7 +100,6 @@ const LessonList = () => {
                             <p><strong>Course:</strong> {selectedLesson.course?.name}</p>
                             <p><strong>Classroom:</strong> {selectedLesson.classroom?.building + selectedLesson.classroom?.number}</p>
                             <p><strong>Lecturer:</strong> {selectedLesson.lecturer?.fullName}</p>
-                            <p><strong>Students:</strong> {selectedLesson.students?.map(s => s.matriculeNumber).join(", ")}</p>
                             <p><strong>Online:</strong> {selectedLesson.online ? "Yes" : "No"}</p>
                             {selectedLesson.online && <p><strong>Online Information:</strong> {selectedLesson.onlineInformation}</p>}
                             <p><strong>Lesson Group:</strong> {selectedLesson.lessonGroup || "N/A"}</p>

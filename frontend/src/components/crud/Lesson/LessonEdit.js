@@ -4,7 +4,6 @@ import lessonDateTimeServiceInstance from "../../../api/LessonDateTimeService";
 import courseServiceInstance from "../../../api/CourseService";
 import classroomServiceInstance from "../../../api/ClassroomService";
 import lecturerServiceInstance from "../../../api/LecturerService";
-import studentServiceInstance from "../../../api/StudentService";
 import { Container, Card, Form, Button, Alert, Row, Col } from "react-bootstrap";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
@@ -28,7 +27,6 @@ const LessonEdit = () => {
         course: "",
         classroom: null,
         lecturer: null,
-        students: [],
         datesTimes: [],
         online: false,
         onlineInformation: "",
@@ -37,7 +35,6 @@ const LessonEdit = () => {
     const [courses, setCourses] = useState([]);
     const [classrooms, setClassrooms] = useState([]);
     const [lecturers, setLecturers] = useState([]);
-    const [students, setStudents] = useState([]);
     const [message, setMessage] = useState("");
     const [customTimesEnabled, setCustomTimesEnabled] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -46,11 +43,10 @@ const LessonEdit = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [courseRes, classroomRes, lecturerRes, studentRes, lessonRes, lessonTimesRes] = await Promise.all([
+                const [courseRes, classroomRes, lecturerRes, lessonRes, lessonTimesRes] = await Promise.all([
                     courseServiceInstance.getAll(),
                     classroomServiceInstance.getAll(),
                     lecturerServiceInstance.getAll(),
-                    studentServiceInstance.getAll(),
                     lessonServiceInstance.getById(id),
                     lessonDateTimeServiceInstance.getAllByLessonId(id),
                 ]);
@@ -58,7 +54,6 @@ const LessonEdit = () => {
                 setCourses(courseRes.data);
                 setClassrooms(classroomRes.data.map(c => ({ value: c.classroomId, label: `${c.building}${c.number}` })));
                 setLecturers(lecturerRes.data.map(l => ({ value: l.userId, label: l.fullName })));
-                setStudents(studentRes.data.map(s => ({ value: s.userId, label: s.matriculeNumber })));
 
                 const lessonData = lessonRes.data;
 
@@ -79,7 +74,6 @@ const LessonEdit = () => {
                         value: lessonData.lecturer.userId,
                         label: lessonData.lecturer.fullName
                     } : null,
-                    students: lessonData.students.map(s => ({ value: s.userId, label: s.matriculeNumber })),
                     online: lessonData.online,
                     onlineInformation: lessonData.onlineInformation || "",
                     datesTimes: datesTimesData,
@@ -199,7 +193,6 @@ const LessonEdit = () => {
             course: { courseId: formData.course },
             classroom: formData.classroom ? { classroomId: formData.classroom.value } : null,
             lecturer: formData.lecturer ? { userId: formData.lecturer.value } : null,
-            students: formData.students.map(s => ({ userId: s.value })),
             online: formData.online,
             onlineInformation: formData.onlineInformation,
             lessonGroup: formData.lessonGroup
@@ -277,7 +270,7 @@ const LessonEdit = () => {
                                     value={formData.lessonGroup}
                                     onChange={handleChange}
                                     placeholder="Enter lesson group number"
-                                    min="1"
+                                    min="0"
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3">
@@ -299,10 +292,6 @@ const LessonEdit = () => {
                                     placeholder="Select or search for a lecturer"
                                     isClearable
                                 />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Students</Form.Label>
-                                <Select isMulti options={students} value={formData.students} onChange={handleSelectChange("students")} placeholder="Select or search for students" />
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Check type="checkbox" label="Is Online?" name="online" checked={formData.online} onChange={handleChange} />

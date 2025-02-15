@@ -28,15 +28,30 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable()).cors(cors -> cors.configurationSource(corsConfigurationSource()))
-				.authorizeHttpRequests(authorize -> authorize.requestMatchers("/auth/**").permitAll()
-						.requestMatchers("/classroom/**").authenticated().requestMatchers("/course/**").authenticated()
-						.requestMatchers("/lecturer/**").authenticated().requestMatchers("/lessondatetime/**")
-						.authenticated().requestMatchers("/student/**").authenticated().requestMatchers("/user/**")
-						.authenticated().requestMatchers("/lesson/get/all").permitAll()
-//						.requestMatchers("/lesson/get/{id}").authenticated() will this work with {id}
-						.requestMatchers("/lesson/update/**").authenticated().requestMatchers("/lesson/delete/**")
-						.authenticated().requestMatchers("/studyprogramme/get/all").permitAll()
-//						.requestMatchers("/studyprogramme/get/{id}").authenticated() will this work with {id}
+				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers("/auth/**").permitAll()
+						.requestMatchers("/classroom/**").authenticated()
+						.requestMatchers("/course/**").authenticated()
+						.requestMatchers("/lecturer/**").authenticated()
+						.requestMatchers("/student/**").authenticated()
+						.requestMatchers("/user/**").authenticated()
+						
+						.requestMatchers("/lesson/all").permitAll()
+						.requestMatchers("/lesson/get/**").authenticated()
+						.requestMatchers("/lesson/update/**").authenticated()
+						.requestMatchers("/lesson/insert").authenticated()
+						.requestMatchers("/lesson/delete/**").authenticated()
+						
+						.requestMatchers("/lessondatetime/all").authenticated()
+						.requestMatchers("/lessondatetime/get/**").authenticated()
+						.requestMatchers("/lessondatetime/update/**").authenticated()
+						.requestMatchers("/lessondatetime/insert").authenticated()
+						.requestMatchers("/lessondatetime/delete/**").authenticated()
+						.requestMatchers("/lessondatetime/lesson/**").permitAll()
+						
+						.requestMatchers("/studyprogramme/all").permitAll()
+						.requestMatchers("/studyprogramme/get/**").authenticated()
+						.requestMatchers("/studyprogramme/insert").authenticated()
 						.requestMatchers("/studyprogramme/update/**").authenticated()
 						.requestMatchers("/studyprogramme/delete/**").authenticated())
 				.oauth2Login(Customizer.withDefaults())

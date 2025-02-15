@@ -10,9 +10,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,8 +39,14 @@ public class Course {
 	private String name;
 
 	private String description;
-	
-//	private int creditpoints; TODO implement this
+
+	@Min(value = 0, message = "The value must be positive")
+	private int creditPoints;
+
+	@ManyToMany
+	@JoinTable(name = "Course_User", joinColumns = @JoinColumn(name = "CourseId"), inverseJoinColumns = @JoinColumn(name = "UserId"))
+	@ToString.Exclude
+	private List<User> users;
 
 	@OneToMany(mappedBy = "course")
 	@ToString.Exclude
@@ -49,10 +58,11 @@ public class Course {
 	@ToString.Exclude
 	private StudyProgramme studyProgramme;
 
-	public Course(String name, String description, StudyProgramme studyProgramme) {
+	public Course(String name, String description, StudyProgramme studyProgramme, int creditPoints) {
 		setName(name);
 		setDescription(description);
 		setStudyProgramme(studyProgramme);
+		setCreditPoints(creditPoints);
 	}
 
 }

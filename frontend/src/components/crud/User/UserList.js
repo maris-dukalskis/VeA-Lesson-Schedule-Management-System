@@ -92,12 +92,6 @@ const UserList = () => {
                             <p><strong>Email:</strong> {selectedUser.email}</p>
                             <p><strong>Role:</strong> {selectedUser.role}</p>
                             <p><strong>Type:</strong> {selectedUser.dtype}</p>
-                            {selectedUser.dtype === "Student" && (
-                                <>
-                                    <p><strong>Matricule Number:</strong> {selectedUser.matriculeNumber}</p>
-                                    <p><strong>Study Programme:</strong> {selectedUser.studyProgramme?.name}</p>
-                                </>
-                            )}
                             {selectedUser.dtype === "Lecturer" && (
                                 <>
                                     <p><strong>Hours:</strong> {selectedUser.hours}</p>

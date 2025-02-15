@@ -10,6 +10,7 @@ const CourseEdit = () => {
         name: "",
         description: "",
         studyProgramme: "",
+        creditPoints: "",
     });
     const [studyProgrammes, setStudyProgrammes] = useState([]);
     const [message, setMessage] = useState("");
@@ -23,6 +24,7 @@ const CourseEdit = () => {
                     name: response.data.name || "",
                     description: response.data.description || "",
                     studyProgramme: response.data.studyProgramme?.studyProgrammeId || "",
+                    creditPoints: response.data.creditPoints || "",
                 });
                 setLoading(false);
             } catch (error) {
@@ -30,7 +32,7 @@ const CourseEdit = () => {
                 setLoading(false);
             }
         };
-        
+
         const fetchStudyProgrammes = async () => {
             try {
                 const response = await studyProgrammeServiceInstance.getAll();
@@ -39,7 +41,7 @@ const CourseEdit = () => {
                 console.error("Error fetching study programmes", error);
             }
         };
-        
+
         fetchCourse();
         fetchStudyProgrammes();
     }, [id]);
@@ -55,6 +57,7 @@ const CourseEdit = () => {
                 name: formData.name,
                 description: formData.description,
                 studyProgramme: { studyProgrammeId: formData.studyProgramme },
+                creditPoints: formData.creditPoints,
             };
             await courseServiceInstance.update(id, payload);
             setMessage("Course updated successfully!");
@@ -95,6 +98,16 @@ const CourseEdit = () => {
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3">
+                                <Form.Label>CreditPoints</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    name="creditPoints"
+                                    value={formData.creditPoints}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3">
                                 <Form.Label>Study Programme</Form.Label>
                                 <Form.Select
                                     name="studyProgramme"
@@ -105,7 +118,7 @@ const CourseEdit = () => {
                                     <option value="">Select a Study Programme</option>
                                     {studyProgrammes.map((programme) => (
                                         <option key={programme.studyProgrammeId} value={programme.studyProgrammeId}>
-                                            {programme.name}
+                                            {programme.name + programme.year}
                                         </option>
                                     ))}
                                 </Form.Select>

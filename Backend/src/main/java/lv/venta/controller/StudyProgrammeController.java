@@ -28,7 +28,7 @@ public class StudyProgrammeController {
 	@Autowired
 	private IStudyProgrammeService studyProgrammeService;
 
-	@GetMapping("/get/all")
+	@GetMapping("/all")
 	public ResponseEntity<?> getStudyProgrammeList() {
 		try {
 			return new ResponseEntity<ArrayList<StudyProgramme>>(studyProgrammeService.selectAllStudyProgrammes(),

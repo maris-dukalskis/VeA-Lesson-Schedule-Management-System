@@ -10,8 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -54,11 +52,6 @@ public class Lesson {
 	@JoinColumn(name = "ClassroomId")
 	@ToString.Exclude
 	private Classroom classroom;
-
-	@ManyToMany
-	@JoinTable(name = "Lesson_Student", joinColumns = @JoinColumn(name = "LessonId"), inverseJoinColumns = @JoinColumn(name = "UserId"))
-	@ToString.Exclude
-	private List<Student> students; // list of students attending
 
 	private int lessonGroup;
 

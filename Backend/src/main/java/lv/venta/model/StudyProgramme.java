@@ -24,10 +24,6 @@ import lombok.ToString;
 @ToString
 @Table(name = "StudyProgramme")
 @Entity
-/*
- * can be idividually per student based- a student has his own schedule so his
- * courses are not a part of a set programme
- */
 public class StudyProgramme {
 
 	@Id
@@ -46,17 +42,9 @@ public class StudyProgramme {
 	@JsonIgnore
 	private List<Course> courses;
 
-	@OneToMany(mappedBy = "studyProgramme")
-	@ToString.Exclude
-	@JsonIgnore
-	private List<Student> students;
-
-	private boolean isIndividual;
-
-	public StudyProgramme(String name, int year, boolean isIndividual) {
+	public StudyProgramme(String name, int year) {
 		setName(name);
 		setYear(year);
-		setIndividual(isIndividual);
 	}
 
 }

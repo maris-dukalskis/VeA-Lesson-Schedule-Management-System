@@ -28,7 +28,7 @@ public class LecturerController {
 	@Autowired
 	private ILecturerService lecturerService;
 
-	@GetMapping("/get/all")
+	@GetMapping("/all")
 	public ResponseEntity<?> getLecturerList() {
 		try {
 			return new ResponseEntity<ArrayList<Lecturer>>(lecturerService.selectAllLecturers(), HttpStatus.OK);

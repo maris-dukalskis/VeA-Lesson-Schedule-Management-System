@@ -15,7 +15,7 @@ class BaseService {
     }
 
     getAll() {
-        return axios.get(`${this.baseUrl}/get/all`, this.getAuthHeaders());
+        return axios.get(`${this.baseUrl}/all`, this.getAuthHeaders());
     }
 
     getById(id) {
