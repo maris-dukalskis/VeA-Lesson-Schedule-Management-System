@@ -62,8 +62,8 @@ public class CourseServiceImpl implements ICourseService {
 		Course oldCourse = selectCourseById(id);
 		oldCourse.setDescription(course.getDescription());
 		oldCourse.setName(course.getName());
-		oldCourse.setStudyProgramme(course.getStudyProgramme());
 		oldCourse.setCreditPoints(course.getCreditPoints());
+		oldCourse.setStudyProgrammes(course.getStudyProgrammes());
 		courseRepo.save(oldCourse);
 		return oldCourse;
 	}

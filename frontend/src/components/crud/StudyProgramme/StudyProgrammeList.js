@@ -53,6 +53,7 @@ const StudyProgrammeList = () => {
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Short Name</th>
                         <th>Year</th>
                         <th>Actions</th>
                     </tr>
@@ -61,6 +62,7 @@ const StudyProgrammeList = () => {
                     {studyProgrammes.map((programme) => (
                         <tr key={programme.studyProgrammeId}>
                             <td>{programme.name}</td>
+                            <td>{programme.shortName}</td>
                             <td>{programme.year}</td>
                             <td>
                                 <Button
@@ -100,6 +102,7 @@ const StudyProgrammeList = () => {
                     {selectedProgramme && (
                         <>
                             <p><strong>Name:</strong> {selectedProgramme.name}</p>
+                            <p><strong>Short Name:</strong> {selectedProgramme.shortName}</p>
                             <p><strong>Year:</strong> {selectedProgramme.year}</p>
                         </>
                     )}

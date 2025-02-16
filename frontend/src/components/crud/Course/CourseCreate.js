@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Select from "react-select";
 import courseServiceInstance from "../../../api/CourseService";
 import { Container, Card, Form, Button, Alert } from "react-bootstrap";
 import studyProgrammeServiceInstance from "../../../api/StudyProgrammeService";
@@ -7,7 +8,7 @@ const CourseCreate = () => {
     const [formData, setFormData] = useState({
         name: "",
         description: "",
-        studyProgramme: "",
+        studyProgrammes: [],
         creditPoints: "",
     });
     const [studyProgrammes, setStudyProgrammes] = useState([]);
@@ -17,7 +18,7 @@ const CourseCreate = () => {
         const fetchStudyProgrammes = async () => {
             try {
                 const response = await studyProgrammeServiceInstance.getAll();
-                setStudyProgrammes(response.data);
+                setStudyProgrammes(response.data.map(sp => ({ value: sp.studyProgrammeId, label: `${sp.name} ${sp.year}` })));
             } catch (error) {
                 console.error("Error fetching study programmes", error);
             }
@@ -28,6 +29,9 @@ const CourseCreate = () => {
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+    const handleSelectChange = (name) => (selectedOptions) => {
+        setFormData({ ...formData, [name]: selectedOptions || [] });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -35,14 +39,14 @@ const CourseCreate = () => {
         const payload = {
             name: formData.name,
             description: formData.description,
-            studyProgramme: { studyProgrammeId: formData.studyProgramme },
+            studyProgrammes: formData.studyProgrammes.map(sp => ({ studyProgrammeId: sp.value })),
             creditPoints: formData.creditPoints,
         };
 
         try {
             const response = await courseServiceInstance.insert(payload);
             setMessage("Course created successfully!");
-            setFormData({ name: "", description: "", studyProgramme: "", creditPoints: "" });
+            setFormData({ name: "", description: "", studyProgrammes: [], creditPoints: "" });
         } catch (error) {
             console.error("Error creating course:", error.response);
             setMessage("Error creating course. Please try again.");
@@ -88,20 +92,8 @@ const CourseCreate = () => {
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Study Programme</Form.Label>
-                            <Form.Select
-                                name="studyProgramme"
-                                value={formData.studyProgramme}
-                                onChange={handleChange}
-                                required
-                            >
-                                <option value="">Select a Study Programme</option>
-                                {studyProgrammes.map((programme) => (
-                                    <option key={programme.studyProgrammeId} value={programme.studyProgrammeId}>
-                                        {programme.name + programme.year}
-                                    </option>
-                                ))}
-                            </Form.Select>
+                            <Form.Label>Study Programmes</Form.Label>
+                            <Select isMulti options={studyProgrammes} value={formData.studyProgrammes} onChange={handleSelectChange("studyProgrammes")} placeholder="Select or search for study programmes" />
                         </Form.Group>
                         <Button variant="primary" type="submit" className="w-100">
                             Create Course

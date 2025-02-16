@@ -61,6 +61,7 @@ public class StudyProgrammeServiceImpl implements IStudyProgrammeService {
 	@Override
 	public StudyProgramme updateStudyProgrammeById(int id, StudyProgramme studyProgramme) throws Exception {
 		StudyProgramme oldStudyProgramme = selectStudyProgrammeById(id);
+		oldStudyProgramme.setShortName(studyProgramme.getShortName());
 		oldStudyProgramme.setName(studyProgramme.getName());
 		oldStudyProgramme.setYear(studyProgramme.getYear());
 		studyProgrammeRepo.save(oldStudyProgramme);

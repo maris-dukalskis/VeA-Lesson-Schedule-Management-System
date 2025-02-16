@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Select from "react-select";
 import courseServiceInstance from "../../../api/CourseService";
 import studyProgrammeServiceInstance from "../../../api/StudyProgrammeService";
 import { Container, Card, Form, Button, Alert } from "react-bootstrap";
@@ -9,7 +10,7 @@ const CourseEdit = () => {
     const [formData, setFormData] = useState({
         name: "",
         description: "",
-        studyProgramme: "",
+        studyProgrammes: [],
         creditPoints: "",
     });
     const [studyProgrammes, setStudyProgrammes] = useState([]);
@@ -23,7 +24,7 @@ const CourseEdit = () => {
                 setFormData({
                     name: response.data.name || "",
                     description: response.data.description || "",
-                    studyProgramme: response.data.studyProgramme?.studyProgrammeId || "",
+                    studyProgrammes: response.data.studyProgrammes?.map(sp => ({ value: sp.studyProgrammeId, label: `${sp.name} ${sp.year}` })) || [],
                     creditPoints: response.data.creditPoints || "",
                 });
                 setLoading(false);
@@ -36,7 +37,7 @@ const CourseEdit = () => {
         const fetchStudyProgrammes = async () => {
             try {
                 const response = await studyProgrammeServiceInstance.getAll();
-                setStudyProgrammes(response.data);
+                setStudyProgrammes(response.data.map(sp => ({ value: sp.studyProgrammeId, label: `${sp.name} ${sp.year}` })));
             } catch (error) {
                 console.error("Error fetching study programmes", error);
             }
@@ -49,6 +50,10 @@ const CourseEdit = () => {
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+    
+    const handleSelectChange = (selectedOptions) => {
+        setFormData({ ...formData, studyProgrammes: selectedOptions || [] });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -56,7 +61,7 @@ const CourseEdit = () => {
             const payload = {
                 name: formData.name,
                 description: formData.description,
-                studyProgramme: { studyProgrammeId: formData.studyProgramme },
+                studyProgrammes: formData.studyProgrammes.map(sp => ({ studyProgrammeId: sp.value })),
                 creditPoints: formData.creditPoints,
             };
             await courseServiceInstance.update(id, payload);
@@ -98,7 +103,7 @@ const CourseEdit = () => {
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>CreditPoints</Form.Label>
+                                <Form.Label>Credit Points</Form.Label>
                                 <Form.Control
                                     type="number"
                                     name="creditPoints"
@@ -108,20 +113,8 @@ const CourseEdit = () => {
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>Study Programme</Form.Label>
-                                <Form.Select
-                                    name="studyProgramme"
-                                    value={formData.studyProgramme}
-                                    onChange={handleChange}
-                                    required
-                                >
-                                    <option value="">Select a Study Programme</option>
-                                    {studyProgrammes.map((programme) => (
-                                        <option key={programme.studyProgrammeId} value={programme.studyProgrammeId}>
-                                            {programme.name + programme.year}
-                                        </option>
-                                    ))}
-                                </Form.Select>
+                                <Form.Label>Study Programmes</Form.Label>
+                                <Select isMulti options={studyProgrammes} value={formData.studyProgrammes} onChange={handleSelectChange} placeholder="Select or search for study programmes" />
                             </Form.Group>
                             <Button variant="primary" type="submit" className="w-100">
                                 Update Course

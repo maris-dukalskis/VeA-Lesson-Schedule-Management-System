@@ -7,7 +7,8 @@ const StudyProgrammeEdit = () => {
     const { id } = useParams();
     const [formData, setFormData] = useState({
         name: "",
-        year: "",
+        shortName: "",
+        year: ""
     });
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(true);
@@ -18,6 +19,7 @@ const StudyProgrammeEdit = () => {
                 const response = await studyProgrammeServiceInstance.getById(id);
                 setFormData({
                     name: response.data.name || "",
+                    shortName: response.data.shortName || "",
                     year: response.data.year || "",
                 });
                 setLoading(false);
@@ -42,7 +44,6 @@ const StudyProgrammeEdit = () => {
         try {
             await studyProgrammeServiceInstance.update(id, {
                 ...formData,
-                year: parseInt(formData.year),
             });
             setMessage("Study Programme updated successfully!");
         } catch (error) {
@@ -66,6 +67,16 @@ const StudyProgrammeEdit = () => {
                                     type="text"
                                     name="name"
                                     value={formData.name}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Short Name</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="shortName"
+                                    value={formData.shortName}
                                     onChange={handleChange}
                                     required
                                 />

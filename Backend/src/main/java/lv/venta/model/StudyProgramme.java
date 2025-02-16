@@ -9,7 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
@@ -32,17 +32,20 @@ public class StudyProgramme {
 	@Setter(value = AccessLevel.NONE)
 	private int studyProgrammeId;
 
+	private String shortName;
+
 	private String name;
 
 	@Min(value = 0, message = "The value must be positive")
 	private int year; // 1st 2nd 3rd etc
 
-	@OneToMany(mappedBy = "studyProgramme")
+	@ManyToMany(mappedBy = "studyProgrammes")
 	@ToString.Exclude
 	@JsonIgnore
 	private List<Course> courses;
 
-	public StudyProgramme(String name, int year) {
+	public StudyProgramme(String shortName, String name, int year) {
+		setShortName(shortName);
 		setName(name);
 		setYear(year);
 	}

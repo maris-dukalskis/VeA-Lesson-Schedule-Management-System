@@ -5,6 +5,7 @@ import { Container, Card, Form, Button, Alert } from "react-bootstrap";
 const StudyProgrammeCreate = () => {
     const [formData, setFormData] = useState({
         name: "",
+        shortName: "",
         year: "",
     });
 
@@ -26,7 +27,7 @@ const StudyProgrammeCreate = () => {
                 year: parseInt(formData.year),
             });
             setMessage("Study Programme created successfully!");
-            setFormData({ name: "", year: "" });
+            setFormData({ name: "", shortName: "", year: "" });
         } catch (error) {
             setMessage("Error creating Study Programme. Please try again.");
         }
@@ -45,6 +46,16 @@ const StudyProgrammeCreate = () => {
                                 type="text"
                                 name="name"
                                 value={formData.name}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Short Name</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="shortName"
+                                value={formData.shortName}
                                 onChange={handleChange}
                                 required
                             />

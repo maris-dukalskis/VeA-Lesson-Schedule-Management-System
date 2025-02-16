@@ -12,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
@@ -53,16 +52,16 @@ public class Course {
 	@JsonIgnore
 	private List<Lesson> lessons;
 
-	@ManyToOne
-	@JoinColumn(name = "StudyProgrammeId")
+	@ManyToMany
+	@JoinTable(name = "Course_StudyProgramme", joinColumns = @JoinColumn(name = "CourseId"), inverseJoinColumns = @JoinColumn(name = "StudyProgrammeId"))
 	@ToString.Exclude
-	private StudyProgramme studyProgramme;
+	private List<StudyProgramme> studyProgrammes;
 
-	public Course(String name, String description, StudyProgramme studyProgramme, int creditPoints) {
+	public Course(String name, String description, int creditPoints, List<StudyProgramme> studyProgrammes) {
 		setName(name);
 		setDescription(description);
-		setStudyProgramme(studyProgramme);
 		setCreditPoints(creditPoints);
+		setStudyProgrammes(studyProgrammes);
 	}
 
 }

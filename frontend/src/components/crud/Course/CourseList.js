@@ -55,7 +55,7 @@ const CourseList = () => {
                         <th>Name</th>
                         <th>Description</th>
                         <th>CreditPoints</th>
-                        <th>Study Programme</th>
+                        <th>Study Programmes</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -65,7 +65,7 @@ const CourseList = () => {
                             <td>{course.name}</td>
                             <td>{course.description}</td>
                             <td>{course.creditPoints}</td>
-                            <td>{course.studyProgramme?.name + course.studyProgramme?.year || "N/A"}</td>
+                            <td>{course.studyProgrammes?.map(sp => `${sp.name} ${sp.year}`).join(", ") || "N/A"}</td>
                             <td>
                                 <Button
                                     variant="info"
@@ -106,7 +106,7 @@ const CourseList = () => {
                             <p><strong>Name:</strong> {selectedCourse.name}</p>
                             <p><strong>Description:</strong> {selectedCourse.description}</p>
                             <p><strong>CreditPoints:</strong> {selectedCourse.creditPoints}</p>
-                            <p><strong>Study Programme:</strong> {selectedCourse.studyProgramme?.name + selectedCourse.studyProgramme?.year || "N/A"}</p>
+                            <p><strong>Study Programmes:</strong> {selectedCourse.studyProgrammes?.map(sp => `${sp.name} ${sp.year}`).join(", ") || "N/A"}</p>
                         </>
                     )}
                 </Modal.Body>
