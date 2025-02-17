@@ -36,3 +36,22 @@
     transform: rotate(360deg);
   }
 }
+
+.fc-daygrid-event .fc-event-main {
+  padding: 0 15px; 
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  word-wrap: break-word;
+}
+
+.fc-col-header-cell-cushion, .fc-daygrid-day-number{
+  color: #089465;
+}
+
+.fc-daygrid-event {
+  background-color: #027a4d;
+  color: #fff;
+  border: none;
+}
+

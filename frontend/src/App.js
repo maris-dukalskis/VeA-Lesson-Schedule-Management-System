@@ -26,6 +26,8 @@ import Logout from './components/auth/Logout';
 import Admin from './components/Admin';
 import Header from './components/Header';
 
+import LessonCalendar from './components/LessonCalendar';
+
 function App() {
   return (
     <>
@@ -57,6 +59,7 @@ function App() {
               <Route path="/logout" element={<Logout />} />
 
               <Route path="/admin" element={<Admin />} />
+              <Route path="/" element={<LessonCalendar />} />
             </Routes>
 
           </div>
