@@ -38,6 +38,18 @@ public class LessonController {
 		}
 	}
 
+	@GetMapping("/studyprogramme/{name}/{year}")
+	public ResponseEntity<?> getLessonByStudyProgrammeId(@PathVariable("name") String name,
+			@PathVariable("year") int year) {
+		try {
+			return new ResponseEntity<ArrayList<Lesson>>(lessonService.selectByStudyProgrammeNameAndYear(name, year),
+					HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@GetMapping("/get/{id}")
 	public ResponseEntity<?> getLessonById(@PathVariable("id") int id) {
 		try {

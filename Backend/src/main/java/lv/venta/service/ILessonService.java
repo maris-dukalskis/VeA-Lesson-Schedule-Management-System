@@ -16,4 +16,6 @@ public interface ILessonService {
 
 	public abstract Lesson updateLessonById(int id, Lesson lesson) throws Exception;
 
+	public abstract ArrayList<Lesson> selectByStudyProgrammeNameAndYear(String name, int year) throws Exception;
+
 }

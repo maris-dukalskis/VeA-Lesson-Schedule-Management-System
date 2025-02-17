@@ -49,7 +49,8 @@ public class LessonServiceImpl implements ILessonService {
 		}
 		if (!lessons.isEmpty()) {
 			for (Lesson dbLesson : lessons) {
-				if (dbLesson.getLessonGroup() == lesson.getLessonGroup()) {
+				if (dbLesson.getCourse().getName().equals(lesson.getCourse().getName())
+						& dbLesson.getLessonGroup() == lesson.getLessonGroup()) {
 					throw new Exception("Lesson already exists");
 				}
 			}
@@ -68,6 +69,13 @@ public class LessonServiceImpl implements ILessonService {
 		oldLesson.setClassroom(lesson.getClassroom());
 		lessonRepo.save(oldLesson);
 		return oldLesson;
+	}
+
+	@Override
+	public ArrayList<Lesson> selectByStudyProgrammeNameAndYear(String name, int year) throws Exception {
+		if (lessonRepo.count() == 0)
+			return new ArrayList<Lesson>();
+		return (ArrayList<Lesson>) lessonRepo.findByCourseStudyProgrammesNameAndCourseStudyProgrammesYear(name, year);
 	}
 
 }
