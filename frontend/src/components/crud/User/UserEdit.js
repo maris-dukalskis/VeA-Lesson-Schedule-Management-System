@@ -2,17 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import userServiceInstance from "../../../api/UserService";
 import lecturerServiceInstance from "../../../api/LecturerService";
-import studyProgrammeServiceInstance from "../../../api/StudyProgrammeService";
 import { Container, Card, Form, Button, Alert } from "react-bootstrap";
 
 const UserEdit = () => {
     const { id } = useParams();
     const [userType, setUserType] = useState("user");
-    const [studyProgrammes, setStudyProgrammes] = useState([]);
     const [formData, setFormData] = useState({
         fullName: "",
         email: "",
-        studyProgrammeId: "",
         role: "USER",
         hours: ""
     });
@@ -27,7 +24,6 @@ const UserEdit = () => {
                     ...prevData,
                     fullName: response.data.fullName || "",
                     email: response.data.email || "",
-                    studyProgrammeId: response.data.studyProgramme?.studyProgrammeId || "",
                     role: response.data.role || "USER",
                     hours: response.data.hours || ""
                 }));
@@ -39,30 +35,20 @@ const UserEdit = () => {
             }
         };
 
-        const fetchStudyProgrammes = async () => {
-            try {
-                const response = await studyProgrammeServiceInstance.getAll();
-                setStudyProgrammes(response.data);
-            } catch (error) {
-                console.error("Error fetching study programmes", error);
-            }
-        };
-
         fetchUserData();
-        fetchStudyProgrammes();
     }, [id]);
 
-    const handleChange = (e) => {
-        setFormData(prevData => ({ ...prevData, [e.target.name]: e.target.value }));
+    const handleChange = (event) => {
+        setFormData(prevData => ({ ...prevData, [event.target.name]: event.target.value }));
     };
 
-    const handleUserTypeChange = (e) => {
-        const newUserType = e.target.value;
+    const handleUserTypeChange = (event) => {
+        const newUserType = event.target.value;
         setUserType(newUserType);
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         try {
             if (userType === "lecturer") {
                 await lecturerServiceInstance.update(id, {

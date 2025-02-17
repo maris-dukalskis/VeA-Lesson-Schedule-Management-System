@@ -6,9 +6,12 @@ import classroomServiceInstance from "../../../api/ClassroomService";
 import lecturerServiceInstance from "../../../api/LecturerService";
 import { Container, Card, Form, Button, Alert, Row, Col } from "react-bootstrap";
 import Select from "react-select";
+import { registerLocale, setDefaultLocale } from "react-datepicker";
 import DatePicker from "react-datepicker";
+import enGB from 'date-fns/locale/en-GB';
 import "react-datepicker/dist/react-datepicker.css";
 import { X } from "lucide-react";
+import { addDays, format, isBefore, isEqual } from 'date-fns';
 
 const defaultTimes = [
     { value: { from: "09:00", to: "10:30" }, label: "09:00-10:30" },
@@ -21,8 +24,12 @@ const defaultTimes = [
 ];
 
 const LessonCreate = () => {
+
+    registerLocale('en-GB', enGB);
+    setDefaultLocale('en-GB');
+
     const [formData, setFormData] = useState({
-        course: "",
+        course: null,
         classroom: null,
         lecturer: null,
         datesTimes: [],
@@ -35,18 +42,20 @@ const LessonCreate = () => {
     const [lecturers, setLecturers] = useState([]);
     const [message, setMessage] = useState("");
     const [customTimesEnabled, setCustomTimesEnabled] = useState([]);
+    const [duplicateSettings, setDuplicateSettings] = useState([]);
+    const [isDuplicateEnabled, setIsDuplicateEnabled] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [courseRes, classroomRes, lecturerRes] = await Promise.all([
+                const [courseResponse, classroomResponse, lecturerResponse] = await Promise.all([
                     courseServiceInstance.getAll(),
                     classroomServiceInstance.getAll(),
                     lecturerServiceInstance.getAll()
                 ]);
-                setCourses(courseRes.data);
-                setClassrooms(classroomRes.data.map(c => ({ value: c.classroomId, label: `${c.building}${c.number}` })));
-                setLecturers(lecturerRes.data.map(l => ({ value: l.userId, label: l.fullName })));
+                setCourses(courseResponse.data.map(course => ({ value: course.courseId, label: course.name })));
+                setClassrooms(classroomResponse.data.map(classroom => ({ value: classroom.classroomId, label: `${classroom.building}${classroom.number}` })));
+                setLecturers(lecturerResponse.data.map(lecturer => ({ value: lecturer.userId, label: lecturer.fullName })));
             } catch (error) {
                 console.error("Error fetching data", error);
             }
@@ -54,8 +63,8 @@ const LessonCreate = () => {
         fetchData();
     }, []);
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
+    const handleChange = (event) => {
+        const { name, value, type, checked } = event.target;
         setFormData({
             ...formData,
             [name]: type === "checkbox" ? checked : value,
@@ -115,14 +124,14 @@ const LessonCreate = () => {
     };
 
     const toggleCustomTime = (index) => {
-        const newCustomTimesEnabled = [...customTimesEnabled];
-        newCustomTimesEnabled[index] = !newCustomTimesEnabled[index];
-        setCustomTimesEnabled(newCustomTimesEnabled);
+        const updatedCustomTimesEnabled = [...customTimesEnabled];
+        updatedCustomTimesEnabled[index] = !updatedCustomTimesEnabled[index];
+        setCustomTimesEnabled(updatedCustomTimesEnabled);
         const updatedDatesTimes = [...formData.datesTimes];
         updatedDatesTimes[index] = {
             ...updatedDatesTimes[index],
             times: [],
-            custom: newCustomTimesEnabled[index],
+            custom: updatedCustomTimesEnabled[index],
         };
         setFormData({ ...formData, datesTimes: updatedDatesTimes });
     };
@@ -133,20 +142,100 @@ const LessonCreate = () => {
             datesTimes: [...formData.datesTimes, { date: "", times: [], custom: false }]
         });
         setCustomTimesEnabled([...customTimesEnabled, false]);
+        setDuplicateSettings([...duplicateSettings, { duplicateWeekly: true, duplicateBiWeekly: false, duplicateUntil: null }]);
+        setIsDuplicateEnabled([...isDuplicateEnabled, false]);
     };
 
     const removeDateTime = (index) => {
         const updatedDatesTimes = formData.datesTimes.filter((_, i) => i !== index);
         const updatedCustomTimesEnabled = customTimesEnabled.filter((_, i) => i !== index);
+        const updatedDuplicateSettings = duplicateSettings.filter((_, i) => i !== index);
+        const updatedIsDuplicateEnabled = isDuplicateEnabled.filter((_, i) => i !== index);
         setFormData({ ...formData, datesTimes: updatedDatesTimes });
         setCustomTimesEnabled(updatedCustomTimesEnabled);
+        setDuplicateSettings(updatedDuplicateSettings);
+        setIsDuplicateEnabled(updatedIsDuplicateEnabled);
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleDuplicateChange = (index, field, value) => {
+        setDuplicateSettings(prevSettings => {
+            const updatedSettings = [...prevSettings];
+            if (!updatedSettings[index]) return prevSettings;
+
+            updatedSettings[index][field] = value;
+
+            if (field === 'duplicateWeekly' && value) {
+                updatedSettings[index].duplicateBiWeekly = false;
+            } else if (field === 'duplicateBiWeekly' && value) {
+                updatedSettings[index].duplicateWeekly = false;
+            }
+
+            return updatedSettings;
+        });
+    };
+
+    const handleDuplicateUntilChange = (date, index) => {
+        setDuplicateSettings(prevSettings => {
+            const updatedSettings = [...prevSettings];
+            if (!updatedSettings[index]) return prevSettings;
+
+            if (date) {
+                date.setHours(12, 0, 0, 0);
+            }
+            updatedSettings[index].duplicateUntil = date ? date.toISOString().split('T')[0] : null;
+            return updatedSettings;
+        });
+    };
+
+    const handleDuplicateToggle = (index, value) => {
+        setIsDuplicateEnabled(prevIsDuplicateEnabled => {
+            const updatedIsDuplicateEnabled = [...prevIsDuplicateEnabled];
+            updatedIsDuplicateEnabled[index] = value;
+            return updatedIsDuplicateEnabled;
+        });
+
+        setDuplicateSettings(prevDuplicateSettings => {
+            const updatedDuplicateSettings = [...prevDuplicateSettings];
+            if (value) {
+                if (!updatedDuplicateSettings[index]) {
+                    updatedDuplicateSettings[index] = { duplicateWeekly: true, duplicateBiWeekly: false, duplicateUntil: null };
+                }
+            } else {
+                return updatedDuplicateSettings.filter((_, i) => i !== index);
+            }
+            return updatedDuplicateSettings;
+        });
+    };
+
+    const handleConfirmDuplicate = (index) => {
+        const currentDateTime = formData.datesTimes[index];
+        const settings = duplicateSettings[index];
+        const newDatesTimes = [];
+        if (settings.duplicateWeekly || settings.duplicateBiWeekly) {
+            let nextDate = new Date(currentDateTime.date);
+            let endDate = new Date(settings.duplicateUntil);
+            const interval = settings.duplicateWeekly ? 7 : 14;
+            nextDate.setHours(12, 0, 0, 0);
+            endDate.setHours(12, 0, 0, 0);
+            while (isBefore(addDays(nextDate, interval), endDate) || isEqual(addDays(nextDate, interval), endDate)) {
+                nextDate = addDays(nextDate, interval);
+                newDatesTimes.push({
+                    date: format(nextDate, 'yyyy-MM-dd'),
+                    times: currentDateTime.times,
+                    custom: currentDateTime.custom
+                });
+            }
+        }
+        const updatedDatesTimes = [...formData.datesTimes];
+        updatedDatesTimes.push(...newDatesTimes);
+        setFormData({ ...formData, datesTimes: updatedDatesTimes });
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
         const lessonPayload = {
-            course: { courseId: formData.course },
+            course: formData.course ? { courseId: formData.course.value } : null,
             classroom: formData.classroom ? { classroomId: formData.classroom.value } : null,
             lecturer: formData.lecturer ? { userId: formData.lecturer.value } : null,
             online: formData.online,
@@ -159,24 +248,24 @@ const LessonCreate = () => {
             const lessonId = lessonResponse.data.lessonId;
 
             if (lessonId) {
-                const allDateTimes = formData.datesTimes.flatMap(dt =>
-                    dt.times.map(time => ({
+                const allDateTimes = formData.datesTimes.flatMap(dateTimeEntry =>
+                    dateTimeEntry.times.map(time => ({
                         lesson: { lessonId: lessonId },
-                        date: dt.date,
+                        date: dateTimeEntry.date,
                         timeFrom: time.timeFrom,
                         timeTo: time.timeTo,
-                        custom: dt.custom
+                        custom: dateTimeEntry.custom
                     }))
                 );
 
-                await Promise.all(allDateTimes.map(dt =>
-                    lessonDateTimeServiceInstance.insert(dt)
+                await Promise.all(allDateTimes.map(dateTime =>
+                    lessonDateTimeServiceInstance.insert(dateTime)
                 ));
             }
 
             setMessage("Lesson created successfully!");
             setFormData({
-                course: "",
+                course: null,
                 classroom: null,
                 lecturer: null,
                 datesTimes: [],
@@ -200,12 +289,13 @@ const LessonCreate = () => {
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
                             <Form.Label>Course</Form.Label>
-                            <Form.Select name="course" value={formData.course} onChange={handleChange} required>
-                                <option value="">Select a Course</option>
-                                {courses.map(course => (
-                                    <option key={course.courseId} value={course.courseId}>{course.name}</option>
-                                ))}
-                            </Form.Select>
+                            <Select
+                                options={courses}
+                                value={formData.course}
+                                onChange={handleSelectChange("course")}
+                                placeholder="Select or search for a course"
+                                isClearable
+                            />
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Lesson Group</Form.Label>
@@ -244,14 +334,17 @@ const LessonCreate = () => {
                         {formData.online && <Form.Group className="mb-3"><Form.Label>Online Information</Form.Label><Form.Control type="text" name="onlineInformation" value={formData.onlineInformation} onChange={handleChange} required={formData.online} /></Form.Group>}
                         <Form.Group className="mb-3">
                             <Form.Label className="mb-3">Dates & Times</Form.Label>
-                            {formData.datesTimes.map((dt, index) => (
+                            {formData.datesTimes.map((dateTime, index) => (
                                 <Row key={index} className="mb-2 align-items-center">
                                     <Col xs={3}>
                                         <DatePicker
-                                            selected={dt.date ? new Date(dt.date) : null}
+                                            selected={dateTime.date ? new Date(dateTime.date) : null}
                                             onChange={(date) => handleDateChange(date, index)}
                                             className="form-control"
                                             placeholderText="Select Date"
+                                            dateFormat="dd/MM/yyyy"
+                                            locale="en-GB"
+                                            weekStartsOn={1}
                                         />
                                     </Col>
                                     <Col xs={1}>
@@ -260,44 +353,52 @@ const LessonCreate = () => {
                                             label="Custom"
                                             checked={customTimesEnabled[index]}
                                             onChange={() => toggleCustomTime(index)}
-                                            disabled={!dt.date}
+                                            disabled={!dateTime.date}
                                         />
                                     </Col>
-                                    <Col xs={7}>
+                                    <Col xs={5}>
                                         {!customTimesEnabled[index] ? (
                                             <Select
                                                 isMulti
                                                 options={defaultTimes}
-                                                value={defaultTimes.filter(t =>
-                                                    dt.times?.some(time =>
-                                                        time.timeFrom === t.value.from &&
-                                                        time.timeTo === t.value.to
+                                                value={defaultTimes.filter(defaultTime =>
+                                                    dateTime.times?.some(time =>
+                                                        time.timeFrom === defaultTime.value.from &&
+                                                        time.timeTo === defaultTime.value.to
                                                     )
                                                 )}
                                                 onChange={(selected) => handleTimeChange(selected, index)}
                                                 placeholder="Select Times"
-                                                isDisabled={!dt.date}
+                                                isDisabled={!dateTime.date}
                                             />
                                         ) : (
                                             <Row>
                                                 <Col>
                                                     <Form.Control
                                                         type="time"
-                                                        value={dt.times[0]?.timeFrom || ""}
-                                                        onChange={(e) => handleCustomTimeChange(index, 'timeFrom', e.target.value)}
-                                                        disabled={!dt.date}
+                                                        value={dateTime.times[0]?.timeFrom || ""}
+                                                        onChange={(event) => handleCustomTimeChange(index, 'timeFrom', event.target.value)}
+                                                        disabled={!dateTime.date}
                                                     />
                                                 </Col>
                                                 <Col>
                                                     <Form.Control
                                                         type="time"
-                                                        value={dt.times[0]?.timeTo || ""}
-                                                        onChange={(e) => handleCustomTimeChange(index, 'timeTo', e.target.value)}
-                                                        disabled={!dt.date}
+                                                        value={dateTime.times[0]?.timeTo || ""}
+                                                        onChange={(event) => handleCustomTimeChange(index, 'timeTo', event.target.value)}
+                                                        disabled={!dateTime.date}
                                                     />
                                                 </Col>
                                             </Row>
                                         )}
+                                    </Col>
+                                    <Col xs={1}>
+                                        <Form.Check
+                                            type="checkbox"
+                                            label="Duplicate"
+                                            checked={isDuplicateEnabled[index]}
+                                            onChange={(e) => handleDuplicateToggle(index, e.target.checked)}
+                                        />
                                     </Col>
                                     <Col xs={1} className="text-center">
                                         <Button
@@ -309,7 +410,46 @@ const LessonCreate = () => {
                                             <X size={16} />
                                         </Button>
                                     </Col>
+                                    {isDuplicateEnabled[index] ? (
+                                        <div style={{ marginTop: '10px' }}>
+                                            <Row className="mb-2">
+                                                <Col xs={2}>
+                                                    <Form.Check
+                                                        type="radio"
+                                                        label="Weekly"
+                                                        name={`duplicate-${index}`}
+                                                        checked={duplicateSettings[index]?.duplicateWeekly}
+                                                        onChange={() => handleDuplicateChange(index, 'duplicateWeekly', true)}
+                                                    />
+                                                </Col>
+                                                <Col xs={2}>
+                                                    <Form.Check
+                                                        type="radio"
+                                                        label="Bi-Weekly"
+                                                        name={`duplicate-${index}`}
+                                                        checked={duplicateSettings[index]?.duplicateBiWeekly}
+                                                        onChange={() => handleDuplicateChange(index, 'duplicateBiWeekly', true)}
+                                                    />
+                                                </Col>
+                                                <Col xs={3}>
+                                                    <DatePicker
+                                                        selected={duplicateSettings[index]?.duplicateUntil ? new Date(duplicateSettings[index]?.duplicateUntil) : null}
+                                                        onChange={(date) => handleDuplicateUntilChange(date, index)}
+                                                        className="form-control"
+                                                        placeholderText="Duplicate Until"
+                                                        dateFormat="dd/MM/yyyy"
+                                                        locale="en-GB"
+                                                        weekStartsOn={1}
+                                                    />
+                                                </Col>
+                                                <Col xs={2}>
+                                                    <Button size="sm" onClick={() => handleConfirmDuplicate(index)}>Confirm</Button>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    ) : null}
                                 </Row>
+
                             ))}
                             <div className="mt-4">
                                 <Button onClick={addDateTime}>Add Date</Button>

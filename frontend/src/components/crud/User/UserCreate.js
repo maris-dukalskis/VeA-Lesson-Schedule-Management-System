@@ -4,6 +4,7 @@ import lecturerServiceInstance from "../../../api/LecturerService";
 import { Container, Card, Form, Button, Alert } from "react-bootstrap";
 
 const UserCreate = () => {
+
     const [userType, setUserType] = useState("user");
     const [formData, setFormData] = useState({
         fullName: "",
@@ -13,12 +14,17 @@ const UserCreate = () => {
     });
     const [message, setMessage] = useState("");
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleChange = (event) => {
+        setFormData({ ...formData, [event.target.name]: event.target.value });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleUserTypeChange = (event) => {
+        const newUserType = event.target.value;
+        setUserType(newUserType);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         try {
             if (userType === "lecturer") {
                 await lecturerServiceInstance.insert({
@@ -50,7 +56,7 @@ const UserCreate = () => {
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
                             <Form.Label>User Type</Form.Label>
-                            <Form.Select name="userType" value={userType} onChange={(e) => setUserType(e.target.value)}>
+                            <Form.Select name="userType" value={userType} onChange={handleUserTypeChange}>
                                 <option value="user">User</option>
                                 <option value="lecturer">Lecturer</option>
                             </Form.Select>

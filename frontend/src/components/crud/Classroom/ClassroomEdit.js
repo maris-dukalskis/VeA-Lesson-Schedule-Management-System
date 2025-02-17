@@ -31,12 +31,12 @@ const ClassroomEdit = () => {
         fetchClassroom();
     }, [id]);
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleChange = (event) => {
+        setFormData({ ...formData, [event.target.name]: event.target.value });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         try {
             await classroomServiceInstance.update(id, formData);
             setMessage("Classroom updated successfully!");

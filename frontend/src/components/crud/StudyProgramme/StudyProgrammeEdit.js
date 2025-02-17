@@ -31,16 +31,16 @@ const StudyProgrammeEdit = () => {
         fetchStudyProgramme();
     }, [id]);
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
+    const handleChange = (event) => {
+        const { name, value, type, checked } = event.target;
         setFormData({
             ...formData,
             [name]: type === "checkbox" ? checked : value,
         });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         try {
             await studyProgrammeServiceInstance.update(id, {
                 ...formData,

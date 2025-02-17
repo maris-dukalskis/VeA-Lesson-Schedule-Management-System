@@ -18,7 +18,7 @@ const CourseCreate = () => {
         const fetchStudyProgrammes = async () => {
             try {
                 const response = await studyProgrammeServiceInstance.getAll();
-                setStudyProgrammes(response.data.map(sp => ({ value: sp.studyProgrammeId, label: `${sp.name} ${sp.year}` })));
+                setStudyProgrammes(response.data.map(studyProgramme => ({ value: studyProgramme.studyProgrammeId, label: `${studyProgramme.name} ${studyProgramme.year}` })));
             } catch (error) {
                 console.error("Error fetching study programmes", error);
             }
@@ -26,20 +26,20 @@ const CourseCreate = () => {
         fetchStudyProgrammes();
     }, []);
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleChange = (event) => {
+        setFormData({ ...formData, [event.target.name]: event.target.value });
     };
     const handleSelectChange = (name) => (selectedOptions) => {
         setFormData({ ...formData, [name]: selectedOptions || [] });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
         const payload = {
             name: formData.name,
             description: formData.description,
-            studyProgrammes: formData.studyProgrammes.map(sp => ({ studyProgrammeId: sp.value })),
+            studyProgrammes: formData.studyProgrammes.map(studyProgramme => ({ studyProgrammeId: studyProgramme.value })),
             creditPoints: formData.creditPoints,
         };
 

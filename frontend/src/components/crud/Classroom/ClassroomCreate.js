@@ -11,12 +11,12 @@ const ClassroomCreate = () => {
 
     const [message, setMessage] = useState("");
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleChange = (event) => {
+        setFormData({ ...formData, [event.target.name]: event.target.value });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         try {
             const response = await classroomServiceInstance.insert(formData);
             setMessage("Classroom created successfully!");
