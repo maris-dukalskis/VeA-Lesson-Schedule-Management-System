@@ -18,4 +18,5 @@ public interface IUserService {
 
 	public abstract User selectByEmail(String email) throws Exception;
 
+	public abstract ArrayList<User> selectByCourseId(int id) throws Exception;
 }

@@ -15,4 +15,6 @@ public interface IStudyProgrammeService {
 	public abstract StudyProgramme insertNewStudyProgramme(StudyProgramme studyProgramme) throws Exception;
 
 	public abstract StudyProgramme updateStudyProgrammeById(int id, StudyProgramme studyProgramme) throws Exception;
+
+	public abstract ArrayList<StudyProgramme> selectByCourseId(int id) throws Exception;
 }

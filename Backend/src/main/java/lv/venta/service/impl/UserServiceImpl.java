@@ -6,15 +6,24 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lv.venta.model.Lesson;
 import lv.venta.model.User;
+import lv.venta.repo.ILessonRepo;
 import lv.venta.repo.IUserRepo;
+import lv.venta.service.ILessonService;
 import lv.venta.service.IUserService;
 
 @Service
 public class UserServiceImpl implements IUserService {
 
 	@Autowired
-	IUserRepo userRepo;
+	private IUserRepo userRepo;
+
+	@Autowired
+	private ILessonService lessonService;
+
+	@Autowired
+	private ILessonRepo lessonRepo;
 
 	@Override
 	public ArrayList<User> selectAllUsers() throws Exception {
@@ -35,6 +44,13 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public void deleteUserById(int id) throws Exception {
+		ArrayList<Lesson> lessons = lessonService.selectByUserId(id);
+		if (!lessons.isEmpty()) {
+			for (Lesson lesson : lessons) {
+				lesson.setLecturer(null);
+			}
+			lessonRepo.saveAll(lessons);
+		}
 		userRepo.delete(selectUserById(id));
 	}
 
@@ -72,6 +88,13 @@ public class UserServiceImpl implements IUserService {
 		if (userRepo.count() == 0)
 			throw new Exception("User by that email does not exist");
 		return userRepo.findByEmail(email);
+	}
+
+	@Override
+	public ArrayList<User> selectByCourseId(int id) throws Exception {
+		if (userRepo.count() == 0)
+			return new ArrayList<User>();
+		return (ArrayList<User>) userRepo.findByCoursesCourseId(id);
 	}
 
 }

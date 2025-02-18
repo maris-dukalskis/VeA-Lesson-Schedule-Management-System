@@ -1,6 +1,6 @@
 package lv.venta.repo;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.data.repository.CrudRepository;
 
@@ -8,6 +8,6 @@ import lv.venta.model.LessonDateTime;
 
 public interface ILessonDateTimeRepo extends CrudRepository<LessonDateTime, Integer> {
 
-	List<LessonDateTime> findByLessonLessonId(int id);
+	ArrayList<LessonDateTime> findByLessonLessonId(int id);
 
 }

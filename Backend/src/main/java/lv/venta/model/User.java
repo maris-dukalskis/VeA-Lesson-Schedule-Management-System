@@ -45,7 +45,7 @@ public class User {
 	public String getDtype() {
 		return this.getClass().getSimpleName();
 	}
-	
+
 	@ManyToMany(mappedBy = "users")
 	@JsonIgnore
 	private List<Course> courses;
@@ -54,6 +54,11 @@ public class User {
 		setFullName(fullName);
 		setEmail(email);
 		setRole(role);
+	}
+
+	public List<Course> removeCourse(Course course) {
+		courses.remove(course);
+		return courses;
 	}
 
 }

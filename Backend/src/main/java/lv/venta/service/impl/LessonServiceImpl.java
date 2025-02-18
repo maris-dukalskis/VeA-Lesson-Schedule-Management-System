@@ -7,14 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lv.venta.model.Lesson;
+import lv.venta.model.LessonDateTime;
 import lv.venta.repo.ILessonRepo;
+import lv.venta.service.ILessonDateTimeService;
 import lv.venta.service.ILessonService;
 
 @Service
 public class LessonServiceImpl implements ILessonService {
 
 	@Autowired
-	ILessonRepo lessonRepo;
+	private ILessonRepo lessonRepo;
+
+	@Autowired
+	private ILessonDateTimeService lessonDateTimeService;
 
 	@Override
 	public ArrayList<Lesson> selectAllLessons() throws Exception {
@@ -35,6 +40,12 @@ public class LessonServiceImpl implements ILessonService {
 
 	@Override
 	public void deleteLessonById(int id) throws Exception {
+		ArrayList<LessonDateTime> lessonTimes = lessonDateTimeService.selectAllByLessonLessonId(id);
+		if (!lessonTimes.isEmpty()) {
+			for (LessonDateTime lessonDateTime : lessonTimes) {
+				lessonDateTimeService.deleteLessonDateTimeById(lessonDateTime.getLessonDateTimeId());
+			}
+		}
 		lessonRepo.delete(selectLessonById(id));
 	}
 
@@ -49,8 +60,8 @@ public class LessonServiceImpl implements ILessonService {
 		}
 		if (!lessons.isEmpty()) {
 			for (Lesson dbLesson : lessons) {
-				if (dbLesson.getCourse().getName().equals(lesson.getCourse().getName())
-						& dbLesson.getLessonGroup() == lesson.getLessonGroup()) {
+				if (dbLesson.getCourse().getCourseId() == lesson.getCourse().getCourseId()
+						&& dbLesson.getLessonGroup() == lesson.getLessonGroup()) {
 					throw new Exception("Lesson already exists");
 				}
 			}
@@ -76,6 +87,27 @@ public class LessonServiceImpl implements ILessonService {
 		if (lessonRepo.count() == 0)
 			return new ArrayList<Lesson>();
 		return (ArrayList<Lesson>) lessonRepo.findByCourseStudyProgrammesNameAndCourseStudyProgrammesYear(name, year);
+	}
+
+	@Override
+	public ArrayList<Lesson> selectByClassroomId(int id) throws Exception {
+		if (lessonRepo.count() == 0)
+			return new ArrayList<Lesson>();
+		return (ArrayList<Lesson>) lessonRepo.findByClassroomClassroomId(id);
+	}
+
+	@Override
+	public ArrayList<Lesson> selectByUserId(int id) throws Exception {
+		if (lessonRepo.count() == 0)
+			return new ArrayList<Lesson>();
+		return (ArrayList<Lesson>) lessonRepo.findByLecturerUserId(id);
+	}
+
+	@Override
+	public ArrayList<Lesson> selectByCourseId(int id) throws Exception {
+		if (lessonRepo.count() == 0)
+			return new ArrayList<Lesson>();
+		return (ArrayList<Lesson>) lessonRepo.findByCourseCourseId(id);
 	}
 
 }

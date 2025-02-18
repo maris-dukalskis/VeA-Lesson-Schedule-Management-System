@@ -6,15 +6,24 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lv.venta.model.Course;
 import lv.venta.model.StudyProgramme;
+import lv.venta.repo.ICourseRepo;
 import lv.venta.repo.IStudyProgrammeRepo;
+import lv.venta.service.ICourseService;
 import lv.venta.service.IStudyProgrammeService;
 
 @Service
 public class StudyProgrammeServiceImpl implements IStudyProgrammeService {
 
 	@Autowired
-	IStudyProgrammeRepo studyProgrammeRepo;
+	private IStudyProgrammeRepo studyProgrammeRepo;
+
+	@Autowired
+	private ICourseService courseService;
+
+	@Autowired
+	private ICourseRepo courseRepo;
 
 	@Override
 	public ArrayList<StudyProgramme> selectAllStudyProgrammes() throws Exception {
@@ -35,6 +44,14 @@ public class StudyProgrammeServiceImpl implements IStudyProgrammeService {
 
 	@Override
 	public void deleteStudyProgrammeById(int id) throws Exception {
+		ArrayList<Course> courses = courseService.selectByStudyProgrammeId(id);
+		if (!courses.isEmpty()) {
+			StudyProgramme studyProgramme = selectStudyProgrammeById(id);
+			for (Course course : courses) {
+				course.removeStudyProgramme(studyProgramme);
+			}
+			courseRepo.saveAll(courses);
+		}
 		studyProgrammeRepo.delete(selectStudyProgrammeById(id));
 	}
 
@@ -66,6 +83,13 @@ public class StudyProgrammeServiceImpl implements IStudyProgrammeService {
 		oldStudyProgramme.setYear(studyProgramme.getYear());
 		studyProgrammeRepo.save(oldStudyProgramme);
 		return oldStudyProgramme;
+	}
+
+	@Override
+	public ArrayList<StudyProgramme> selectByCourseId(int id) throws Exception {
+		if (studyProgrammeRepo.count() == 0)
+			return new ArrayList<StudyProgramme>();
+		return (ArrayList<StudyProgramme>) studyProgrammeRepo.findByCoursesCourseId(id);
 	}
 
 }

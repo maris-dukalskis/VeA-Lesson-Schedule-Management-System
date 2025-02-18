@@ -18,4 +18,10 @@ public interface ILessonService {
 
 	public abstract ArrayList<Lesson> selectByStudyProgrammeNameAndYear(String name, int year) throws Exception;
 
+	public abstract ArrayList<Lesson> selectByClassroomId(int id) throws Exception;
+
+	public abstract ArrayList<Lesson> selectByUserId(int id) throws Exception;
+
+	public abstract ArrayList<Lesson> selectByCourseId(int id) throws Exception;
+
 }

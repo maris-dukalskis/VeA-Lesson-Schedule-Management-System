@@ -7,14 +7,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lv.venta.model.Classroom;
+import lv.venta.model.Lesson;
 import lv.venta.repo.IClassroomRepo;
+import lv.venta.repo.ILessonRepo;
 import lv.venta.service.IClassroomService;
+import lv.venta.service.ILessonService;
 
 @Service
 public class ClassroomServiceImpl implements IClassroomService {
 
 	@Autowired
 	private IClassroomRepo classroomRepo;
+
+	@Autowired
+	private ILessonService lessonService;
+
+	@Autowired
+	private ILessonRepo lessonRepo;
 
 	@Override
 	public ArrayList<Classroom> selectAllClassrooms() throws Exception {
@@ -35,6 +44,13 @@ public class ClassroomServiceImpl implements IClassroomService {
 
 	@Override
 	public void deleteClassroomById(int id) throws Exception {
+		ArrayList<Lesson> lessons = lessonService.selectByClassroomId(id);
+		if (!lessons.isEmpty()) {
+			for (Lesson lesson : lessons) {
+				lesson.setClassroom(null);
+			}
+			lessonRepo.saveAll(lessons);
+		}
 		classroomRepo.delete(selectClassroomById(id));
 	}
 

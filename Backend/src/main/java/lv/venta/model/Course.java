@@ -64,4 +64,9 @@ public class Course {
 		setStudyProgrammes(studyProgrammes);
 	}
 
+	public List<StudyProgramme> removeStudyProgramme(StudyProgramme studyProgramme) {
+		studyProgrammes.remove(studyProgramme);
+		return studyProgrammes;
+	}
+
 }

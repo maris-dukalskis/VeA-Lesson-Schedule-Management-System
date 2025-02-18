@@ -63,7 +63,7 @@ const LessonList = () => {
                 <tbody>
                     {lessons.map((lesson) => (
                         <tr key={lesson.lessonId}>
-                            <td>{lesson.course.name}</td>
+                            <td>{lesson.course?.name}</td>
                             <td>{lesson.classroom?.building + lesson.classroom?.number}</td>
                             <td>{lesson.lecturer?.fullName}</td>
                             <td>{lesson.lessonGroup || "N/A"}</td>
