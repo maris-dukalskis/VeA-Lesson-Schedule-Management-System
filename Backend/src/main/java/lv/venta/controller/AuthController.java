@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lv.venta.config.CustomJwtDecoder;
 import lv.venta.config.JwtConfig;
+import lv.venta.model.Role;
 import lv.venta.model.User;
 import lv.venta.service.IUserService;
 
@@ -62,8 +63,18 @@ public class AuthController {
 			try {
 				user = userService.selectByEmail(email);
 			} catch (Exception e) {
-				return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
+
+			if (user == null) {
+				if (!email.split("@")[1].equals("venta.lv")) {
+					return new ResponseEntity<String>("You can only use a venta.lv email to login",
+							HttpStatus.INTERNAL_SERVER_ERROR);
+				} else {
+					user = new User(name, email, Role.USER);
+					userService.insertNewUser(user);
+				}
+			}
+
 			String role = user.getRole().toString();
 
 			String newToken = jwtConfig.generateToken(email, role, name, picture);

@@ -23,7 +23,7 @@ const Header = () => {
 
     const isAuthenticated = !!token;
     const isAdmin = userRole === "ADMINISTRATOR";
-    const isEditor = userRole === "EDITOR";
+    const isLecturer = userRole === "LECTURER";
 
     const buttonStyle = {
         backgroundColor: "#145A32",
@@ -64,7 +64,7 @@ const Header = () => {
                                     Admin Panel
                                 </Button>
                             )}
-                            {isEditor && (
+                            {isLecturer && (
                                 <Button
                                     style={buttonStyle}
                                     className="me-2"
