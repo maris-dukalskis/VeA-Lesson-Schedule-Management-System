@@ -35,6 +35,7 @@ public class SecurityConfig {
 						.requestMatchers("/lecturer/**").authenticated()
 						.requestMatchers("/student/**").authenticated()
 						.requestMatchers("/user/**").authenticated()
+						.requestMatchers("/coursestudyprogrammealias/**").authenticated()
 						
 						.requestMatchers("/lesson/all").permitAll()
 						.requestMatchers("/lesson/studyprogramme/**").permitAll()
@@ -42,6 +43,12 @@ public class SecurityConfig {
 						.requestMatchers("/lesson/update/**").authenticated()
 						.requestMatchers("/lesson/insert").authenticated()
 						.requestMatchers("/lesson/delete/**").authenticated()
+						
+						.requestMatchers("/semester/all").permitAll()
+						.requestMatchers("/semester/get/**").authenticated()
+						.requestMatchers("/semester/update/**").authenticated()
+						.requestMatchers("/semester/insert").authenticated()
+						.requestMatchers("/semester/delete/**").authenticated()
 						
 						.requestMatchers("/lessondatetime/all").authenticated()
 						.requestMatchers("/lessondatetime/get/**").authenticated()
