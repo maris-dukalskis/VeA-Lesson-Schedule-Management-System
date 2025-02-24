@@ -1,6 +1,6 @@
 package lv.venta.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -35,19 +35,23 @@ public class Classroom {
 	@OneToMany(mappedBy = "classroom")
 	@ToString.Exclude
 	@JsonIgnore
-	private List<Lesson> lessons;
+	private ArrayList<Lesson> lessons;
 
 	private String building;
+
+	@Min(value = 1, message = "The value must be positive")
+	private int seats;
 
 	@Min(value = 0, message = "The value must be positive")
 	private int number;
 
 	private String equipmentDescription;
 
-	public Classroom(String building, int number, String equipmentDescription) {
+	public Classroom(String building, int number, String equipmentDescription, int seats) {
 		setBuilding(building);
 		setNumber(number);
 		setEquipmentDescription(equipmentDescription);
+		setSeats(seats);
 	}
 
 }

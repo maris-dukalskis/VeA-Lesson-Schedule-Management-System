@@ -1,9 +1,10 @@
 package lv.venta.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,38 +36,34 @@ public class Course {
 	@Setter(value = AccessLevel.NONE)
 	private int courseId;
 
+	@ManyToMany
+	@JoinTable(name = "Course_User", joinColumns = @JoinColumn(name = "CourseId"), inverseJoinColumns = @JoinColumn(name = "UserId"))
+	@ToString.Exclude
+	private ArrayList<User> users;
+
+	@OneToMany(mappedBy = "course")
+	@ToString.Exclude
+	@JsonIgnore
+	private ArrayList<Lesson> lessons;
+
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+	@ToString.Exclude
+	@JsonIgnore
+	private ArrayList<CourseStudyProgrammeAlias> courseStudyProgrammeAliases;
+
 	private String name;
+
+	private String shortName;
 
 	private String description;
 
 	@Min(value = 0, message = "The value must be positive")
 	private int creditPoints;
 
-	@ManyToMany
-	@JoinTable(name = "Course_User", joinColumns = @JoinColumn(name = "CourseId"), inverseJoinColumns = @JoinColumn(name = "UserId"))
-	@ToString.Exclude
-	private List<User> users;
-
-	@OneToMany(mappedBy = "course")
-	@ToString.Exclude
-	@JsonIgnore
-	private List<Lesson> lessons;
-
-	@ManyToMany
-	@JoinTable(name = "Course_StudyProgramme", joinColumns = @JoinColumn(name = "CourseId"), inverseJoinColumns = @JoinColumn(name = "StudyProgrammeId"))
-	@ToString.Exclude
-	private List<StudyProgramme> studyProgrammes;
-
-	public Course(String name, String description, int creditPoints, List<StudyProgramme> studyProgrammes) {
+	public Course(String name, String shortName, String description, int creditPoints) {
 		setName(name);
+		setShortName(shortName);
 		setDescription(description);
 		setCreditPoints(creditPoints);
-		setStudyProgrammes(studyProgrammes);
 	}
-
-	public List<StudyProgramme> removeStudyProgramme(StudyProgramme studyProgramme) {
-		studyProgrammes.remove(studyProgramme);
-		return studyProgrammes;
-	}
-
 }

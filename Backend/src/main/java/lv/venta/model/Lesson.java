@@ -1,6 +1,6 @@
 package lv.venta.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -41,7 +41,7 @@ public class Lesson {
 	@OneToMany(mappedBy = "lesson")
 	@ToString.Exclude
 	@JsonIgnore
-	private List<LessonDateTime> lessonTimes;
+	private ArrayList<LessonDateTime> lessonTimes;
 
 	@ManyToOne
 	@JoinColumn(name = "UserId")
@@ -53,17 +53,23 @@ public class Lesson {
 	@ToString.Exclude
 	private Classroom classroom;
 
+	@ManyToOne
+	@JoinColumn(name = "SemesterId")
+	@ToString.Exclude
+	private Semester semester;
+
 	private int lessonGroup;
 
 	private boolean isOnline;
 
 	private String onlineInformation;
 
-	public Lesson(Course course, Lecturer lecturer, Classroom classroom, int lessonGroup, boolean isOnline,
-			String onlineInformation) {
+	public Lesson(Course course, Lecturer lecturer, Classroom classroom, Semester semester, int lessonGroup,
+			boolean isOnline, String onlineInformation) {
 		setCourse(course);
 		setLecturer(lecturer);
 		setClassroom(classroom);
+		setSemester(semester);
 		setLessonGroup(lessonGroup);
 		setOnline(isOnline);
 		setOnlineInformation(onlineInformation);

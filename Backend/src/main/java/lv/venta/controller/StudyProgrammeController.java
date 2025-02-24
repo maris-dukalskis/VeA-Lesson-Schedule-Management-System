@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,19 +50,19 @@ public class StudyProgrammeController {
 	}
 
 	@PostMapping("/insert")
-	public ResponseEntity<?> postInsertStudyProgramme(@RequestBody @Valid StudyProgramme studyProgramme,
-			BindingResult result) {
+	public ResponseEntity<?> insertStudyProgramme(@RequestBody @Valid StudyProgramme studyProgramme) {
 		try {
 			return new ResponseEntity<StudyProgramme>(studyProgrammeService.insertNewStudyProgramme(studyProgramme),
 					HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> putStudyProgrammeUpdateById(@PathVariable("id") int id,
-			@RequestBody @Valid StudyProgramme studyProgramme, BindingResult result) {
+	public ResponseEntity<?> updateStudyProgrammeById(@PathVariable("id") int id,
+			@RequestBody @Valid StudyProgramme studyProgramme) {
 		try {
 			return new ResponseEntity<StudyProgramme>(
 					studyProgrammeService.updateStudyProgrammeById(id, studyProgramme), HttpStatus.OK);
@@ -74,7 +73,7 @@ public class StudyProgrammeController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteStudyProgrammeDeleteById(@PathVariable("id") int id) {
+	public ResponseEntity<?> deleteStudyProgrammeById(@PathVariable("id") int id) {
 		try {
 			studyProgrammeService.deleteStudyProgrammeById(id);
 			return new ResponseEntity<ArrayList<StudyProgramme>>(studyProgrammeService.selectAllStudyProgrammes(),

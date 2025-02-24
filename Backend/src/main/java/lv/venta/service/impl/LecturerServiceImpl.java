@@ -65,6 +65,8 @@ public class LecturerServiceImpl implements ILecturerService {
 		oldLecturer.setFullName(lecturer.getFullName());
 		oldLecturer.setRole(lecturer.getRole());
 		oldLecturer.setHours(lecturer.getHours());
+		oldLecturer.setNotes(lecturer.getNotes());
+		oldLecturer.setSeniority(lecturer.getSeniority());
 		lecturerRepo.save(oldLecturer);
 		return oldLecturer;
 	}

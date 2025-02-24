@@ -1,6 +1,6 @@
 package lv.venta.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,11 +25,17 @@ public class Lecturer extends User {
 	@OneToMany(mappedBy = "lecturer")
 	@ToString.Exclude
 	@JsonIgnore
-	private List<Lesson> lessons;
+	private ArrayList<Lesson> lessons;
 
-	public Lecturer(String fullName, String email, Role role, int hours) {
+	private String notes;
+
+	private String seniority;
+
+	public Lecturer(String fullName, String email, Role role, int hours, String notes, String seniority) {
 		super(fullName, email, role);
 		setHours(hours);
+		setNotes(notes);
+		setSeniority(seniority);
 	}
 
 }

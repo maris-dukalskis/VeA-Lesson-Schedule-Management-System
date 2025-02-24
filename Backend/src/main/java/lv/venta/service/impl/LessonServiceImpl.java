@@ -78,6 +78,7 @@ public class LessonServiceImpl implements ILessonService {
 		oldLesson.setOnlineInformation(lesson.getOnlineInformation());
 		oldLesson.setLecturer(lesson.getLecturer());
 		oldLesson.setClassroom(lesson.getClassroom());
+		oldLesson.setSemester(lesson.getSemester());
 		lessonRepo.save(oldLesson);
 		return oldLesson;
 	}
@@ -86,7 +87,9 @@ public class LessonServiceImpl implements ILessonService {
 	public ArrayList<Lesson> selectByStudyProgrammeNameAndYear(String name, int year) throws Exception {
 		if (lessonRepo.count() == 0)
 			return new ArrayList<Lesson>();
-		return (ArrayList<Lesson>) lessonRepo.findByCourseStudyProgrammesNameAndCourseStudyProgrammesYear(name, year);
+		return (ArrayList<Lesson>) lessonRepo
+				.findByCourseCourseStudyProgrammeAliasesStudyProgrammeNameAndCourseCourseStudyProgrammeAliasesStudyProgrammeYear(
+						name, year);
 	}
 
 	@Override
@@ -108,6 +111,13 @@ public class LessonServiceImpl implements ILessonService {
 		if (lessonRepo.count() == 0)
 			return new ArrayList<Lesson>();
 		return (ArrayList<Lesson>) lessonRepo.findByCourseCourseId(id);
+	}
+
+	@Override
+	public ArrayList<Lesson> selectBySemesterId(int id) throws Exception {
+		if (lessonRepo.count() == 0)
+			return new ArrayList<Lesson>();
+		return (ArrayList<Lesson>) lessonRepo.findBySemesterSemesterId(id);
 	}
 
 }

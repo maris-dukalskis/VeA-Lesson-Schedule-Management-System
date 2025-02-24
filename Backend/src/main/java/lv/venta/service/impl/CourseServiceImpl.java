@@ -99,7 +99,7 @@ public class CourseServiceImpl implements ICourseService {
 		oldCourse.setDescription(course.getDescription());
 		oldCourse.setName(course.getName());
 		oldCourse.setCreditPoints(course.getCreditPoints());
-		oldCourse.setStudyProgrammes(course.getStudyProgrammes());
+		oldCourse.setCourseStudyProgrammeAliases(course.getCourseStudyProgrammeAliases());
 		courseRepo.save(oldCourse);
 		return oldCourse;
 	}
@@ -108,7 +108,7 @@ public class CourseServiceImpl implements ICourseService {
 	public ArrayList<Course> selectByStudyProgrammeId(int id) throws Exception {
 		if (courseRepo.count() == 0)
 			return new ArrayList<Course>();
-		return (ArrayList<Course>) courseRepo.findByStudyProgrammesStudyProgrammeId(id);
+		return (ArrayList<Course>) courseRepo.findByCourseStudyProgrammeAliasesStudyProgrammeStudyProgrammeId(id);
 	}
 
 	@Override

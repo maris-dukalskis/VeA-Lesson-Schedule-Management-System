@@ -8,12 +8,15 @@ import lv.venta.model.Lesson;
 
 public interface ILessonRepo extends CrudRepository<Lesson, Integer> {
 
-	ArrayList<Lesson> findByCourseStudyProgrammesNameAndCourseStudyProgrammesYear(String name, int year);
+	ArrayList<Lesson> findByCourseCourseStudyProgrammeAliasesStudyProgrammeNameAndCourseCourseStudyProgrammeAliasesStudyProgrammeYear(
+			String name, int year);
 
 	ArrayList<Lesson> findByClassroomClassroomId(int id);
 
 	ArrayList<Lesson> findByLecturerUserId(int id);
 
 	ArrayList<Lesson> findByCourseCourseId(int id);
+
+	ArrayList<Lesson> findBySemesterSemesterId(int id);
 
 }

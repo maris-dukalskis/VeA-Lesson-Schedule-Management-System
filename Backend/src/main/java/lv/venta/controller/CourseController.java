@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +48,7 @@ public class CourseController {
 	}
 
 	@PostMapping("/insert")
-	public ResponseEntity<?> postInsertCourse(@RequestBody @Valid Course course, BindingResult result) {
+	public ResponseEntity<?> insertCourse(@RequestBody @Valid Course course) {
 		try {
 			return new ResponseEntity<Course>(courseService.insertNewCourse(course), HttpStatus.OK);
 		} catch (Exception e) {
@@ -59,8 +58,7 @@ public class CourseController {
 	}
 
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> putCourseUpdateById(@PathVariable("id") int id, @RequestBody @Valid Course course,
-			BindingResult result) {
+	public ResponseEntity<?> updateCourseById(@PathVariable("id") int id, @RequestBody @Valid Course course) {
 		try {
 			return new ResponseEntity<Course>(courseService.updateCourseById(id, course), HttpStatus.OK);
 		} catch (Exception e) {
@@ -70,7 +68,7 @@ public class CourseController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteCourseDeleteById(@PathVariable("id") int id) {
+	public ResponseEntity<?> deleteCourseById(@PathVariable("id") int id) {
 		try {
 			courseService.deleteCourseById(id);
 			return new ResponseEntity<ArrayList<Course>>(courseService.selectAllCourses(), HttpStatus.OK);

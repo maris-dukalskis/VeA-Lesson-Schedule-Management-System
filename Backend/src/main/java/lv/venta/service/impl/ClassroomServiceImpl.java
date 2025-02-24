@@ -80,6 +80,7 @@ public class ClassroomServiceImpl implements IClassroomService {
 		oldClassroom.setBuilding(classroom.getBuilding());
 		oldClassroom.setEquipmentDescription(classroom.getEquipmentDescription());
 		oldClassroom.setNumber(classroom.getNumber());
+		oldClassroom.setSeats(classroom.getSeats());
 		classroomRepo.save(oldClassroom);
 		return oldClassroom;
 	}

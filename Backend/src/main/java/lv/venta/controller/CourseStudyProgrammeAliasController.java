@@ -16,21 +16,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import lv.venta.model.User;
-import lv.venta.service.IUserService;
+import lv.venta.model.CourseStudyProgrammeAlias;
+import lv.venta.service.ICourseStudyProgrammeAliasService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/coursestudyprogrammealias")
+public class CourseStudyProgrammeAliasController {
 
 	@Autowired
-	private IUserService userService;
+	private ICourseStudyProgrammeAliasService courseStudyProgrammeAliasService;
 
 	@GetMapping("/all")
-	public ResponseEntity<?> getUserList() {
+	public ResponseEntity<?> getCourseStudyProgrammeAliasList() {
 		try {
-			return new ResponseEntity<ArrayList<User>>(userService.selectAllUsers(), HttpStatus.OK);
+			return new ResponseEntity<ArrayList<CourseStudyProgrammeAlias>>(
+					courseStudyProgrammeAliasService.selectAllCourseStudyProgrammeAliases(), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -38,9 +39,10 @@ public class UserController {
 	}
 
 	@GetMapping("/get/{id}")
-	public ResponseEntity<?> getUserById(@PathVariable("id") int id) {
+	public ResponseEntity<?> getCourseStudyProgrammeAliasById(@PathVariable("id") int id) {
 		try {
-			return new ResponseEntity<User>(userService.selectUserById(id), HttpStatus.OK);
+			return new ResponseEntity<CourseStudyProgrammeAlias>(
+					courseStudyProgrammeAliasService.selectCourseStudyProgrammeAliasById(id), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -48,9 +50,12 @@ public class UserController {
 	}
 
 	@PostMapping("/insert")
-	public ResponseEntity<?> insertUser(@RequestBody @Valid User user) {
+	public ResponseEntity<?> insertCourseStudyProgrammeAlias(
+			@RequestBody @Valid CourseStudyProgrammeAlias courseStudyProgrammeAlias) {
 		try {
-			return new ResponseEntity<User>(userService.insertNewUser(user), HttpStatus.OK);
+			return new ResponseEntity<CourseStudyProgrammeAlias>(
+					courseStudyProgrammeAliasService.insertNewCourseStudyProgrammeAlias(courseStudyProgrammeAlias),
+					HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -58,9 +63,12 @@ public class UserController {
 	}
 
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateUserById(@PathVariable("id") int id, @RequestBody @Valid User user) {
+	public ResponseEntity<?> updateCourseStudyProgrammeAliasById(@PathVariable("id") int id,
+			@RequestBody @Valid CourseStudyProgrammeAlias courseStudyProgrammeAlias) {
 		try {
-			return new ResponseEntity<User>(userService.updateUserById(id, user), HttpStatus.OK);
+			return new ResponseEntity<CourseStudyProgrammeAlias>(
+					courseStudyProgrammeAliasService.updateCourseStudyProgrammeAliasById(id, courseStudyProgrammeAlias),
+					HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -68,13 +76,15 @@ public class UserController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteUserById(@PathVariable("id") int id) {
+	public ResponseEntity<?> deleteCourseStudyProgrammeAliasById(@PathVariable("id") int id) {
 		try {
-			userService.deleteUserById(id);
-			return new ResponseEntity<ArrayList<User>>(userService.selectAllUsers(), HttpStatus.OK);
+			courseStudyProgrammeAliasService.deleteCourseStudyProgrammeAliasById(id);
+			return new ResponseEntity<ArrayList<CourseStudyProgrammeAlias>>(
+					courseStudyProgrammeAliasService.selectAllCourseStudyProgrammeAliases(), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
 }

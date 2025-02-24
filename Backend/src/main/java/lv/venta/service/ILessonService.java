@@ -24,4 +24,6 @@ public interface ILessonService {
 
 	public abstract ArrayList<Lesson> selectByCourseId(int id) throws Exception;
 
+	public abstract ArrayList<Lesson> selectBySemesterId(int id) throws Exception;
+
 }

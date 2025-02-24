@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,17 +48,17 @@ public class LecturerController {
 	}
 
 	@PostMapping("/insert")
-	public ResponseEntity<?> postInsertLecturer(@RequestBody @Valid Lecturer lecturer, BindingResult result) {
+	public ResponseEntity<?> insertLecturer(@RequestBody @Valid Lecturer lecturer) {
 		try {
 			return new ResponseEntity<Lecturer>(lecturerService.insertNewLecturer(lecturer), HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> putLecturerUpdateById(@PathVariable("id") int id, @RequestBody @Valid Lecturer lecturer,
-			BindingResult result) {
+	public ResponseEntity<?> updateLecturerById(@PathVariable("id") int id, @RequestBody @Valid Lecturer lecturer) {
 		try {
 			return new ResponseEntity<Lecturer>(lecturerService.updateLecturerById(id, lecturer), HttpStatus.OK);
 		} catch (Exception e) {
@@ -69,7 +68,7 @@ public class LecturerController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteLecturerDeleteById(@PathVariable("id") int id) {
+	public ResponseEntity<?> deleteLecturerById(@PathVariable("id") int id) {
 		try {
 			lecturerService.deleteLecturerById(id);
 			return new ResponseEntity<ArrayList<Lecturer>>(lecturerService.selectAllLecturers(), HttpStatus.OK);

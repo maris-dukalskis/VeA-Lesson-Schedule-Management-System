@@ -1,6 +1,6 @@
 package lv.venta.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -35,6 +35,10 @@ public class User {
 	@Setter(value = AccessLevel.NONE)
 	private int userId;
 
+	@ManyToMany(mappedBy = "users")
+	@JsonIgnore
+	private ArrayList<Course> courses;
+
 	private String fullName;
 
 	private String email;
@@ -46,17 +50,13 @@ public class User {
 		return this.getClass().getSimpleName();
 	}
 
-	@ManyToMany(mappedBy = "users")
-	@JsonIgnore
-	private List<Course> courses;
-
 	public User(String fullName, String email, Role role) {
 		setFullName(fullName);
 		setEmail(email);
 		setRole(role);
 	}
 
-	public List<Course> removeCourse(Course course) {
+	public ArrayList<Course> removeCourse(Course course) {
 		courses.remove(course);
 		return courses;
 	}

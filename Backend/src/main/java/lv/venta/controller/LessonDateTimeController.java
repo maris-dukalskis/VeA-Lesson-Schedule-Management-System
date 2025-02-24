@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,8 +50,7 @@ public class LessonDateTimeController {
 	}
 
 	@PostMapping("/insert")
-	public ResponseEntity<?> postInsertLessonDateTime(@RequestBody @Valid LessonDateTime lessonDateTime,
-			BindingResult result) {
+	public ResponseEntity<?> insertLessonDateTime(@RequestBody @Valid LessonDateTime lessonDateTime) {
 		try {
 			return new ResponseEntity<LessonDateTime>(lessonDateTimeService.insertNewLessonDateTime(lessonDateTime),
 					HttpStatus.OK);
@@ -63,8 +61,8 @@ public class LessonDateTimeController {
 	}
 
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> putLessonDateTimeUpdateById(@PathVariable("id") int id,
-			@RequestBody @Valid LessonDateTime lessonDateTime, BindingResult result) {
+	public ResponseEntity<?> updateLessonDateTimeById(@PathVariable("id") int id,
+			@RequestBody @Valid LessonDateTime lessonDateTime) {
 		try {
 			return new ResponseEntity<LessonDateTime>(
 					lessonDateTimeService.updateLessonDateTimeById(id, lessonDateTime), HttpStatus.OK);
@@ -75,7 +73,7 @@ public class LessonDateTimeController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteLessonDateTimeDeleteById(@PathVariable("id") int id) {
+	public ResponseEntity<?> deleteLessonDateTimeById(@PathVariable("id") int id) {
 		try {
 			lessonDateTimeService.deleteLessonDateTimeById(id);
 			return new ResponseEntity<ArrayList<LessonDateTime>>(lessonDateTimeService.selectAllLessonDateTimes(),

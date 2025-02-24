@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +48,7 @@ public class ClassroomController {
 	}
 
 	@PostMapping("/insert")
-	public ResponseEntity<?> postInsertClassroom(@RequestBody @Valid Classroom classroom, BindingResult result) {
+	public ResponseEntity<?> insertClassroom(@RequestBody @Valid Classroom classroom) {
 		try {
 			return new ResponseEntity<Classroom>(classroomService.insertNewClassroom(classroom), HttpStatus.OK);
 		} catch (Exception e) {
@@ -59,8 +58,7 @@ public class ClassroomController {
 	}
 
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> putClassroomUpdateById(@PathVariable("id") int id, @RequestBody @Valid Classroom classroom,
-			BindingResult result) {
+	public ResponseEntity<?> updateClassroomById(@PathVariable("id") int id, @RequestBody @Valid Classroom classroom) {
 		try {
 			return new ResponseEntity<Classroom>(classroomService.updateClassroomById(id, classroom), HttpStatus.OK);
 		} catch (Exception e) {
@@ -70,7 +68,7 @@ public class ClassroomController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteClassroomDeleteById(@PathVariable("id") int id) {
+	public ResponseEntity<?> deleteClassroomById(@PathVariable("id") int id) {
 		try {
 			classroomService.deleteClassroomById(id);
 			return new ResponseEntity<ArrayList<Classroom>>(classroomService.selectAllClassrooms(), HttpStatus.OK);
