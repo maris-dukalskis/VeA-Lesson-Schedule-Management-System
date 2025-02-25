@@ -59,12 +59,10 @@ public class AuthController {
 			String picture = jwt.getClaimAsString("picture");
 
 			User user = null;
-
 			try {
 				user = userService.selectByEmail(email);
 			} catch (Exception e) {
 			}
-
 			if (user == null) {
 				if (!email.split("@")[1].equals("venta.lv")) {
 					return new ResponseEntity<String>("You can only use a venta.lv email to login",

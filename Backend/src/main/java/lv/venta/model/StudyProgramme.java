@@ -1,6 +1,6 @@
 package lv.venta.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -36,7 +36,7 @@ public class StudyProgramme {
 	@OneToMany(mappedBy = "studyProgramme", cascade = CascadeType.ALL, orphanRemoval = true)
 	@ToString.Exclude
 	@JsonIgnore
-	private ArrayList<CourseStudyProgrammeAlias> courseStudyProgrammeAliases;
+	private List<CourseStudyProgrammeAlias> courseStudyProgrammeAliases;
 
 	private String shortName;
 

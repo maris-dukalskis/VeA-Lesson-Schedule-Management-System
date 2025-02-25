@@ -1,6 +1,6 @@
 package lv.venta.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -39,17 +39,17 @@ public class Course {
 	@ManyToMany
 	@JoinTable(name = "Course_User", joinColumns = @JoinColumn(name = "CourseId"), inverseJoinColumns = @JoinColumn(name = "UserId"))
 	@ToString.Exclude
-	private ArrayList<User> users;
+	private List<User> users;
 
 	@OneToMany(mappedBy = "course")
 	@ToString.Exclude
 	@JsonIgnore
-	private ArrayList<Lesson> lessons;
+	private List<Lesson> lessons;
 
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
 	@ToString.Exclude
 	@JsonIgnore
-	private ArrayList<CourseStudyProgrammeAlias> courseStudyProgrammeAliases;
+	private List<CourseStudyProgrammeAlias> courseStudyProgrammeAliases;
 
 	private String name;
 
