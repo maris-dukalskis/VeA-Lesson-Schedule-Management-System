@@ -4,6 +4,7 @@ import lessonDateTimeServiceInstance from "../../../api/LessonDateTimeService";
 import courseServiceInstance from "../../../api/CourseService";
 import classroomServiceInstance from "../../../api/ClassroomService";
 import lecturerServiceInstance from "../../../api/LecturerService";
+import semesterServiceInstance from "../../../api/SemesterService";
 import { Container, Card, Form, Button, Alert, Row, Col } from "react-bootstrap";
 import Select from "react-select";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
@@ -34,6 +35,7 @@ const LessonEdit = () => {
         course: null,
         classroom: null,
         lecturer: null,
+        semester: null,
         datesTimes: [],
         online: false,
         onlineInformation: "",
@@ -48,21 +50,24 @@ const LessonEdit = () => {
     const [deletedDateTimes, setDeletedDateTimes] = useState([]);
     const [duplicateSettings, setDuplicateSettings] = useState([]);
     const [isDuplicateEnabled, setIsDuplicateEnabled] = useState([]);
+    const [semesters, setSemesters] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [courseResponse, classroomResponse, lecturerResponse, lessonResponse, lessonTimeResponse] = await Promise.all([
+                const [courseResponse, classroomResponse, lecturerResponse, lessonResponse, lessonTimeResponse, semesterResponse] = await Promise.all([
                     courseServiceInstance.getAll(),
                     classroomServiceInstance.getAll(),
                     lecturerServiceInstance.getAll(),
                     lessonServiceInstance.getById(id),
                     lessonDateTimeServiceInstance.getAllByLessonId(id),
+                    semesterServiceInstance.getAll()
                 ]);
 
                 setCourses(courseResponse.data.map(course => ({ value: course.courseId, label: course.name })));
                 setClassrooms(classroomResponse.data.map(classroom => ({ value: classroom.classroomId, label: `${classroom.building}${classroom.number}` })));
                 setLecturers(lecturerResponse.data.map(lecturer => ({ value: lecturer.userId, label: lecturer.fullName })));
+                setSemesters(semesterResponse.data.map(semester => ({ value: semester.semesterId, label: semester.name })));
 
                 const lessonData = lessonResponse.data;
                 const lessonTimes = lessonTimeResponse.data;
@@ -84,6 +89,8 @@ const LessonEdit = () => {
                     return accumulator;
                 }, {});
 
+                //go through the times again and and just add the custom ones to the grouped dates but they wont be grouped now.
+
                 const datesTimesData = Object.values(groupedDates).map(group => ({
                     date: group.date,
                     times: group.times,
@@ -96,6 +103,10 @@ const LessonEdit = () => {
                     course: lessonData.course ? {
                         value: lessonData.course.courseId,
                         label: lessonData.course.name
+                    } : null,
+                    semester: lessonData.semester ? {
+                        value: lessonData.semester.semesterId,
+                        label: lessonData.semester.name
                     } : null,
                     classroom: lessonData.classroom ? {
                         value: lessonData.classroom.classroomId,
@@ -278,7 +289,7 @@ const LessonEdit = () => {
             return updatedDuplicateSettings;
         });
     };
-    
+
     const handleConfirmDuplicate = (index) => {
         const currentDateTime = formData.datesTimes[index];
         const settings = duplicateSettings[index];
@@ -316,8 +327,10 @@ const LessonEdit = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        console.log(formData.semester);
         const lessonPayload = {
             course: formData.course ? { courseId: formData.course.value } : null,
+            semester: formData.semester ? { semesterId: formData.semester.value } : null,
             classroom: formData.classroom ? { classroomId: formData.classroom.value } : null,
             lecturer: formData.lecturer ? { userId: formData.lecturer.value } : null,
             online: formData.online,
@@ -335,8 +348,6 @@ const LessonEdit = () => {
                     custom: dateTime.custom,
                 }))
             );
-
-            console.log(allTimeSlots);
 
             const updates = allTimeSlots.filter(timeSlot => timeSlot.lessonDateTimeId);
             const inserts = allTimeSlots.filter(timeSlot => !timeSlot.lessonDateTimeId);
@@ -394,6 +405,15 @@ const LessonEdit = () => {
                                     onChange={handleSelectChange("course")}
                                     placeholder="Select or search for a course"
                                     isClearable
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Semester</Form.Label>
+                                <Select
+                                    options={semesters}
+                                    value={formData.semester}
+                                    onChange={handleSelectChange("semester")}
+                                    placeholder="Select a semester"
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3">

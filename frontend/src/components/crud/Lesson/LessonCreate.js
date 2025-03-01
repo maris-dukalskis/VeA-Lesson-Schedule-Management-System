@@ -4,6 +4,7 @@ import lessonDateTimeServiceInstance from "../../../api/LessonDateTimeService";
 import courseServiceInstance from "../../../api/CourseService";
 import classroomServiceInstance from "../../../api/ClassroomService";
 import lecturerServiceInstance from "../../../api/LecturerService";
+import semesterServiceInstance from "../../../api/SemesterService";
 import { Container, Card, Form, Button, Alert, Row, Col } from "react-bootstrap";
 import Select from "react-select";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
@@ -32,6 +33,7 @@ const LessonCreate = () => {
         course: null,
         classroom: null,
         lecturer: null,
+        semester: null,
         datesTimes: [],
         online: false,
         onlineInformation: "",
@@ -44,18 +46,21 @@ const LessonCreate = () => {
     const [customTimesEnabled, setCustomTimesEnabled] = useState([]);
     const [duplicateSettings, setDuplicateSettings] = useState([]);
     const [isDuplicateEnabled, setIsDuplicateEnabled] = useState([]);
+    const [semesters, setSemesters] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [courseResponse, classroomResponse, lecturerResponse] = await Promise.all([
+                const [courseResponse, classroomResponse, lecturerResponse, semesterResponse] = await Promise.all([
                     courseServiceInstance.getAll(),
                     classroomServiceInstance.getAll(),
-                    lecturerServiceInstance.getAll()
+                    lecturerServiceInstance.getAll(),
+                    semesterServiceInstance.getAll()
                 ]);
                 setCourses(courseResponse.data.map(course => ({ value: course.courseId, label: course.name })));
                 setClassrooms(classroomResponse.data.map(classroom => ({ value: classroom.classroomId, label: `${classroom.building}${classroom.number}` })));
                 setLecturers(lecturerResponse.data.map(lecturer => ({ value: lecturer.userId, label: lecturer.fullName })));
+                setSemesters(semesterResponse.data.map(semester => ({ value: semester.semesterId, label: semester.name })));
             } catch (error) {
                 console.error("Error fetching data", error);
             }
@@ -236,6 +241,7 @@ const LessonCreate = () => {
 
         const lessonPayload = {
             course: formData.course ? { courseId: formData.course.value } : null,
+            semester: formData.semester ? { semesterId: formData.semester.value } : null,
             classroom: formData.classroom ? { classroomId: formData.classroom.value } : null,
             lecturer: formData.lecturer ? { userId: formData.lecturer.value } : null,
             online: formData.online,
@@ -266,6 +272,7 @@ const LessonCreate = () => {
             setMessage("Lesson created successfully!");
             setFormData({
                 course: null,
+                semester: null,
                 classroom: null,
                 lecturer: null,
                 datesTimes: [],
@@ -295,6 +302,16 @@ const LessonCreate = () => {
                                 onChange={handleSelectChange("course")}
                                 placeholder="Select or search for a course"
                                 isClearable
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Semester</Form.Label>
+                            <Select
+                                options={semesters}
+                                value={formData.semester}
+                                onChange={handleSelectChange("semester")}
+                                placeholder="Select a semester"
+                                required
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
