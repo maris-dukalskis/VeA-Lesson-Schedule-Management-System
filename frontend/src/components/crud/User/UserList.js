@@ -95,6 +95,8 @@ const UserList = () => {
                             {selectedUser.dtype === "Lecturer" && (
                                 <>
                                     <p><strong>Hours:</strong> {selectedUser.hours}</p>
+                                    <p><strong>Seniority:</strong> {selectedUser.seniority}</p>
+                                    <p><strong>Notes:</strong> {selectedUser.notes}</p>
                                 </>
                             )}
                         </>

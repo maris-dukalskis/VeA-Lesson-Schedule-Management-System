@@ -11,7 +11,9 @@ const UserEdit = () => {
         fullName: "",
         email: "",
         role: "USER",
-        hours: ""
+        hours: "",
+        notes: "",
+        seniority: "",
     });
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(true);
@@ -25,7 +27,9 @@ const UserEdit = () => {
                     fullName: response.data.fullName || "",
                     email: response.data.email || "",
                     role: response.data.role || "USER",
-                    hours: response.data.hours || ""
+                    hours: response.data.hours || "",
+                    notes: response.data.notes || "",
+                    seniority: response.data.seniority || ""
                 }));
                 setUserType(response.data.hours ? "lecturer" : "user");
             } catch (error) {
@@ -55,7 +59,9 @@ const UserEdit = () => {
                     fullName: formData.fullName,
                     email: formData.email,
                     role: formData.role,
-                    hours: parseInt(formData.hours, 10)
+                    hours: parseInt(formData.hours, 10),
+                    notes: formData.notes,
+                    seniority: formData.seniority,
                 });
             } else {
                 await userServiceInstance.update(id, {
@@ -89,11 +95,23 @@ const UserEdit = () => {
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>Full Name</Form.Label>
-                                <Form.Control type="text" name="fullName" value={formData.fullName} onChange={handleChange} required />
+                                <Form.Control
+                                    type="text"
+                                    name="fullName"
+                                    value={formData.fullName}
+                                    onChange={handleChange}
+                                    required
+                                />
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>Email</Form.Label>
-                                <Form.Control type="email" name="email" value={formData.email} onChange={handleChange} required />
+                                <Form.Control
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                />
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>Role</Form.Label>
@@ -110,7 +128,33 @@ const UserEdit = () => {
                                 <>
                                     <Form.Group className="mb-3">
                                         <Form.Label>Hours</Form.Label>
-                                        <Form.Control type="number" name="hours" value={formData.hours} onChange={handleChange} required />
+                                        <Form.Control
+                                            type="number"
+                                            name="hours"
+                                            value={formData.hours}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Seniority</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="seniority"
+                                            value={formData.seniority}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Notes</Form.Label>
+                                        <Form.Control
+                                            as="textarea"
+                                            name="notes"
+                                            value={formData.notes}
+                                            onChange={handleChange}
+                                            rows={3}
+                                        />
                                     </Form.Group>
                                 </>
                             )}

@@ -10,7 +10,9 @@ const UserCreate = () => {
         fullName: "",
         email: "",
         role: "USER",
-        hours: ""
+        hours: "",
+        notes: "",
+        seniority: "",
     });
     const [message, setMessage] = useState("");
 
@@ -31,7 +33,9 @@ const UserCreate = () => {
                     fullName: formData.fullName,
                     email: formData.email,
                     role: formData.role,
-                    hours: parseInt(formData.hours, 10)
+                    hours: parseInt(formData.hours, 10),
+                    notes: formData.notes,
+                    seniority: formData.seniority
                 });
             } else {
                 await userServiceInstance.insert({
@@ -41,7 +45,9 @@ const UserCreate = () => {
                 });
             }
             setMessage("User created successfully!");
-            setFormData({ fullName: "", email: "", role: "USER", hours: "" });
+            setFormData({
+                fullName: "", email: "", role: "USER", hours: "", notes: "", seniority: "",
+            });
         } catch (error) {
             setMessage("Error creating user. Please try again.");
         }
@@ -63,11 +69,23 @@ const UserCreate = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Full Name</Form.Label>
-                            <Form.Control type="text" name="fullName" value={formData.fullName} onChange={handleChange} required />
+                            <Form.Control
+                                type="text"
+                                name="fullName"
+                                value={formData.fullName}
+                                onChange={handleChange}
+                                required
+                            />
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Email</Form.Label>
-                            <Form.Control type="email" name="email" value={formData.email} onChange={handleChange} required />
+                            <Form.Control
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                            />
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Role</Form.Label>
@@ -84,7 +102,33 @@ const UserCreate = () => {
                             <>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Hours</Form.Label>
-                                    <Form.Control type="number" name="hours" value={formData.hours} onChange={handleChange} required />
+                                    <Form.Control
+                                        type="number"
+                                        name="hours"
+                                        value={formData.hours}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Seniority</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        name="seniority"
+                                        value={formData.seniority}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Notes</Form.Label>
+                                    <Form.Control
+                                        as="textarea"
+                                        name="notes"
+                                        value={formData.notes}
+                                        onChange={handleChange}
+                                        rows={3}
+                                    />
                                 </Form.Group>
                             </>
                         )}

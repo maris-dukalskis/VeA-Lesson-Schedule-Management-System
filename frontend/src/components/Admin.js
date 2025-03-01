@@ -8,6 +8,7 @@ const components = [
   { name: "Lesson", color: "warning" },
   { name: "StudyProgramme", color: "info" },
   { name: "User", color: "danger" },
+  { name: "Semester", color: "primary" },
 ];
 
 const AdminPanel = () => {

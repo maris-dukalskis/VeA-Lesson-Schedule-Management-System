@@ -22,6 +22,10 @@ import LessonCreate from './components/crud/Lesson/LessonCreate';
 import LessonList from './components/crud/Lesson/LessonList';
 import LessonEdit from './components/crud/Lesson/LessonEdit';
 
+import SemesterCreate from './components/crud/Semester/SemesterCreate';
+import SemesterList from './components/crud/Semester/SemesterList';
+import SemesterEdit from './components/crud/Semester/SemesterEdit';
+
 import Logout from './components/auth/Logout';
 import Admin from './components/Admin';
 import Header from './components/Header';
@@ -55,6 +59,10 @@ function App() {
               <Route path="/lesson/create" element={<LessonCreate />} />
               <Route path="/lesson/list" element={<LessonList />} />
               <Route path="/lesson/edit/:id" element={<LessonEdit />} />
+
+              <Route path="/semester/create" element={<SemesterCreate />} />
+              <Route path="/semester/list" element={<SemesterList />} />
+              <Route path="/semester/edit/:id" element={<SemesterEdit />} />
 
               <Route path="/logout" element={<Logout />} />
 
