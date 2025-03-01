@@ -8,6 +8,7 @@ const ClassroomEdit = () => {
     const [formData, setFormData] = useState({
         building: "",
         number: "",
+        seats: "",
         equipmentDescription: "",
     });
     const [message, setMessage] = useState("");
@@ -20,6 +21,7 @@ const ClassroomEdit = () => {
                 setFormData({
                     building: response.data.building || "",
                     number: response.data.number || "",
+                    seats: response.data.seats || "",
                     equipmentDescription: response.data.equipmentDescription || "",
                 });
                 setLoading(false);
@@ -71,6 +73,16 @@ const ClassroomEdit = () => {
                                     type="number"
                                     name="number"
                                     value={formData.number}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Seats</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    name="seats"
+                                    value={formData.seats}
                                     onChange={handleChange}
                                     required
                                 />

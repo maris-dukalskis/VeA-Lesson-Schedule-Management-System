@@ -6,6 +6,7 @@ const ClassroomCreate = () => {
     const [formData, setFormData] = useState({
         building: "",
         number: "",
+        seats: "",
         equipmentDescription: "",
     });
 
@@ -20,7 +21,7 @@ const ClassroomCreate = () => {
         try {
             const response = await classroomServiceInstance.insert(formData);
             setMessage("Classroom created successfully!");
-            setFormData({ building: "", number: "", equipmentDescription: "" });
+            setFormData({ building: "", number: "", seats: "",equipmentDescription: "" });
         } catch (error) {
             setMessage("Error creating classroom. Please try again.");
         }
@@ -49,6 +50,16 @@ const ClassroomCreate = () => {
                                 type="number"
                                 name="number"
                                 value={formData.number}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Seats</Form.Label>
+                            <Form.Control
+                                type="number"
+                                name="seats"
+                                value={formData.seats}
                                 onChange={handleChange}
                                 required
                             />

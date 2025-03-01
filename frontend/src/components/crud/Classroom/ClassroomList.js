@@ -54,6 +54,7 @@ const ClassroomList = () => {
                     <tr>
                         <th>Building</th>
                         <th>Number</th>
+                        <th>Seats</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -62,6 +63,7 @@ const ClassroomList = () => {
                         <tr key={classroom.classroomId}>
                             <td>{classroom.building}</td>
                             <td>{classroom.number}</td>
+                            <td>{classroom.seats}</td>
                             <td>
                                 <Button
                                     variant="info"
@@ -101,6 +103,7 @@ const ClassroomList = () => {
                         <>
                             <p><strong>Building:</strong> {selectedClassroom.building}</p>
                             <p><strong>Number:</strong> {selectedClassroom.number}</p>
+                            <p><strong>Seats:</strong> {selectedClassroom.seats}</p>
                             <p><strong>Equipment Description:</strong> {selectedClassroom.equipmentDescription}</p>
                         </>
                     )}
