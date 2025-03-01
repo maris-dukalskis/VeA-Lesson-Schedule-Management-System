@@ -55,7 +55,7 @@ public class CourseStudyProgrammeAliasServiceImpl implements ICourseStudyProgram
 						&& dbCourseStudyProgrammeAlias.getStudyProgramme()
 								.getStudyProgrammeId() == courseStudyProgrammeAlias.getStudyProgramme()
 										.getStudyProgrammeId()) {
-					throw new Exception("Classroom already exists");
+					throw new Exception("CourseStudyProgrammeAlias already exists");
 				}
 			}
 		}
@@ -79,6 +79,13 @@ public class CourseStudyProgrammeAliasServiceImpl implements ICourseStudyProgram
 			return new ArrayList<CourseStudyProgrammeAlias>();
 		return (ArrayList<CourseStudyProgrammeAlias>) courseStudyProgrammeAliasRepo
 				.findByStudyProgrammeStudyProgrammeId(id);
+	}
+
+	@Override
+	public ArrayList<CourseStudyProgrammeAlias> selectByCourseId(int id) throws Exception {
+		if (courseStudyProgrammeAliasRepo.count() == 0)
+			return new ArrayList<CourseStudyProgrammeAlias>();
+		return (ArrayList<CourseStudyProgrammeAlias>) courseStudyProgrammeAliasRepo.findByCourseCourseId(id);
 	}
 
 }

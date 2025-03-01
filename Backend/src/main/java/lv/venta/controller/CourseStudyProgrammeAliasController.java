@@ -87,4 +87,15 @@ public class CourseStudyProgrammeAliasController {
 		}
 	}
 
+	@GetMapping("/course/{id}")
+	public ResponseEntity<?> getCourseStudyProgrammeAliasesByCourseId(@PathVariable("id") int id) {
+		try {
+			return new ResponseEntity<ArrayList<CourseStudyProgrammeAlias>>(
+					courseStudyProgrammeAliasService.selectByCourseId(id), HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 }

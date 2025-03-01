@@ -20,4 +20,6 @@ public interface ICourseStudyProgrammeAliasService {
 
 	public abstract ArrayList<CourseStudyProgrammeAlias> selectByStudyProgrammeId(int id) throws Exception;
 
+	public abstract ArrayList<CourseStudyProgrammeAlias> selectByCourseId(int id) throws Exception;
+
 }

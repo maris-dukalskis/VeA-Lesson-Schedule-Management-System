@@ -10,4 +10,6 @@ public interface ICourseStudyProgrammeAliasRepo extends CrudRepository<CourseStu
 
 	ArrayList<CourseStudyProgrammeAlias> findByStudyProgrammeStudyProgrammeId(int id);
 
+	ArrayList<CourseStudyProgrammeAlias> findByCourseCourseId(int id);
+
 }
