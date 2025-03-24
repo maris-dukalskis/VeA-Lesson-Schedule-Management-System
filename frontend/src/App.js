@@ -31,6 +31,7 @@ import Admin from './components/Admin';
 import Header from './components/Header';
 
 import LessonCalendar from './components/LessonCalendar';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 
 function App() {
   return (
@@ -40,33 +41,34 @@ function App() {
         <main className='main-content'>
           <div className='container'>
             <Routes>
-              <Route path="/classroom/create" element={<ClassroomCreate />} />
-              <Route path="/classroom/list" element={<ClassroomList />} />
-              <Route path="/classroom/edit/:id" element={<ClassroomEdit />} />
+              <Route element={<ProtectedRoute allowedRoles={["ADMINISTRATOR"]} />}>
+                <Route path="/classroom/create" element={<ClassroomCreate />} />
+                <Route path="/classroom/list" element={<ClassroomList />} />
+                <Route path="/classroom/edit/:id" element={<ClassroomEdit />} />
 
-              <Route path="/course/create" element={<CourseCreate />} />
-              <Route path="/course/list" element={<CourseList />} />
-              <Route path="/course/edit/:id" element={<CourseEdit />} />
+                <Route path="/course/create" element={<CourseCreate />} />
+                <Route path="/course/list" element={<CourseList />} />
+                <Route path="/course/edit/:id" element={<CourseEdit />} />
 
-              <Route path="/studyprogramme/create" element={<StudyProgrammeCreate />} />
-              <Route path="/studyprogramme/list" element={<StudyProgrammeList />} />
-              <Route path="/studyprogramme/edit/:id" element={<StudyProgrammeEdit />} />
+                <Route path="/studyprogramme/create" element={<StudyProgrammeCreate />} />
+                <Route path="/studyprogramme/list" element={<StudyProgrammeList />} />
+                <Route path="/studyprogramme/edit/:id" element={<StudyProgrammeEdit />} />
 
-              <Route path="/user/create" element={<UserCreate />} />
-              <Route path="/user/list" element={<UserList />} />
-              <Route path="/user/edit/:id" element={<UserEdit />} />
+                <Route path="/user/create" element={<UserCreate />} />
+                <Route path="/user/list" element={<UserList />} />
+                <Route path="/user/edit/:id" element={<UserEdit />} />
 
-              <Route path="/lesson/create" element={<LessonCreate />} />
-              <Route path="/lesson/list" element={<LessonList />} />
-              <Route path="/lesson/edit/:id" element={<LessonEdit />} />
+                <Route path="/lesson/create" element={<LessonCreate />} />
+                <Route path="/lesson/list" element={<LessonList />} />
+                <Route path="/lesson/edit/:id" element={<LessonEdit />} />
 
-              <Route path="/semester/create" element={<SemesterCreate />} />
-              <Route path="/semester/list" element={<SemesterList />} />
-              <Route path="/semester/edit/:id" element={<SemesterEdit />} />
+                <Route path="/semester/create" element={<SemesterCreate />} />
+                <Route path="/semester/list" element={<SemesterList />} />
+                <Route path="/semester/edit/:id" element={<SemesterEdit />} />
+                <Route path="/admin" element={<Admin />} />
+              </Route>
 
               <Route path="/logout" element={<Logout />} />
-
-              <Route path="/admin" element={<Admin />} />
               <Route path="/" element={<LessonCalendar />} />
             </Routes>
 

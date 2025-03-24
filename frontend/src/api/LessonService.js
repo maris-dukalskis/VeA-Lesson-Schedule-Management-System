@@ -8,6 +8,10 @@ class LessonService extends BaseService {
     getByStudyProgrammeNameAndYear(name, year) {
         return axios.get(`${this.baseUrl}/studyprogramme/${name}/${year}`, super.getAuthHeaders());
     }
+
+    getByLecturerName(name) {
+        return axios.get(`${this.baseUrl}/lecturer/${name}`, super.getAuthHeaders());
+    }
 }
 
 const lessonServiceInstance = new LessonService();
