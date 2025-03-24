@@ -39,6 +39,8 @@ public class SecurityConfig {
 						
 						.requestMatchers("/lesson/all").permitAll()
 						.requestMatchers("/lesson/studyprogramme/**").permitAll()
+						.requestMatchers("/lesson/lecturer/**").permitAll()
+						.requestMatchers("/lesson/classroom/**").permitAll()
 						.requestMatchers("/lesson/get/**").authenticated()
 						.requestMatchers("/lesson/update/**").authenticated()
 						.requestMatchers("/lesson/insert").authenticated()

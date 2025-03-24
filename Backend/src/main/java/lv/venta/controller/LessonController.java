@@ -79,11 +79,33 @@ public class LessonController {
 	}
 
 	@GetMapping("/studyprogramme/{name}/{year}")
-	public ResponseEntity<?> getLessonByStudyProgrammeId(@PathVariable("name") String name,
+	public ResponseEntity<?> getLessonByStudyProgrammeNameAndYear(@PathVariable("name") String name,
 			@PathVariable("year") int year) {
 		try {
 			return new ResponseEntity<ArrayList<Lesson>>(lessonService.selectByStudyProgrammeNameAndYear(name, year),
 					HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/lecturer/{name}")
+	public ResponseEntity<?> getLessonByLecturerName(@PathVariable("name") String name) {
+		try {
+			return new ResponseEntity<ArrayList<Lesson>>(lessonService.selectByLecturerFullName(name), HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/classroom/{building}/{number}")
+	public ResponseEntity<?> getLessonByLecturerName(@PathVariable("building") String building,
+			@PathVariable("number") int number) {
+		try {
+			return new ResponseEntity<ArrayList<Lesson>>(
+					lessonService.selectByClassroomBuildingAndNumber(building, number), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

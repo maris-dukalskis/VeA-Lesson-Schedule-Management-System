@@ -327,7 +327,6 @@ const LessonEdit = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        console.log(formData.semester);
         const lessonPayload = {
             course: formData.course ? { courseId: formData.course.value } : null,
             semester: formData.semester ? { semesterId: formData.semester.value } : null,

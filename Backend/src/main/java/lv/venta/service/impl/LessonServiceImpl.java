@@ -93,6 +93,20 @@ public class LessonServiceImpl implements ILessonService {
 	}
 
 	@Override
+	public ArrayList<Lesson> selectByLecturerFullName(String name) throws Exception {
+		if (lessonRepo.count() == 0)
+			return new ArrayList<Lesson>();
+		return (ArrayList<Lesson>) lessonRepo.findByLecturerFullName(name);
+	}
+	
+	@Override
+	public ArrayList<Lesson> selectByClassroomBuildingAndNumber(String building, int number) throws Exception {
+		if (lessonRepo.count() == 0)
+			return new ArrayList<Lesson>();
+		return (ArrayList<Lesson>) lessonRepo.findByClassroomBuildingAndClassroomNumber(building, number);
+	}
+
+	@Override
 	public ArrayList<Lesson> selectByClassroomId(int id) throws Exception {
 		if (lessonRepo.count() == 0)
 			return new ArrayList<Lesson>();

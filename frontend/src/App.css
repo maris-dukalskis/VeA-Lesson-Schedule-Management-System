@@ -37,6 +37,12 @@
   }
 }
 
+
+.fc-daygrid-event, .fc-timegrid-event {
+  background-color: #027a4d !important;
+  border: none !important;
+}
+
 .fc-daygrid-event .fc-event-main {
   padding: 0 15px; 
   white-space: normal;
@@ -46,12 +52,9 @@
 }
 
 .fc-col-header-cell-cushion, .fc-daygrid-day-number{
-  color: #089465;
+  color: #027a4d;
 }
 
-.fc-daygrid-event {
-  background-color: #027a4d;
-  color: #fff;
-  border: none;
+.fc-timegrid-slot {
+  height: 50px !important;
 }
-

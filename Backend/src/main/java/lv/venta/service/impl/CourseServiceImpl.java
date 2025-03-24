@@ -97,7 +97,7 @@ public class CourseServiceImpl implements ICourseService {
 	public Course updateCourseById(int id, Course course) throws Exception {
 		Course oldCourse = selectCourseById(id);
 		oldCourse.setDescription(course.getDescription());
-		oldCourse.setShortName(course.getName());
+		oldCourse.setShortName(course.getShortName());
 		oldCourse.setName(course.getName());
 		oldCourse.setCreditPoints(course.getCreditPoints());
 		courseRepo.save(oldCourse);
