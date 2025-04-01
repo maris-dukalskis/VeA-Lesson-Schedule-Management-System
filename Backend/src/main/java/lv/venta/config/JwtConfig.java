@@ -54,7 +54,7 @@ public class JwtConfig {
 		};
 	}
 
-	public String generateToken(String email, String role, String name, String picture) {
+	public String generateToken(String email, String role, String name) {
 		if (secretKey == null || secretKey.isEmpty()) {
 			throw new IllegalStateException("JWT secret key is not set properly");
 		}
@@ -62,7 +62,18 @@ public class JwtConfig {
 		Instant now = Instant.now();
 
 		JwtClaimsSet claims = JwtClaimsSet.builder().subject(email).claim("role", role).claim("name", name)
-				.claim("picture", picture).issuedAt(now).expiresAt(now.plusSeconds(3600)).build();
+				.issuedAt(now).expiresAt(now.plusSeconds(3600)).build();
+
+		return jwtEncoder().encode(JwtEncoderParameters.from(claims)).getTokenValue();
+	}
+	
+	public String generateRefreshToken(String email) {
+		Instant now = Instant.now();
+		JwtClaimsSet claims = JwtClaimsSet.builder()
+			.subject(email)
+			.issuedAt(now)
+			.expiresAt(now.plusSeconds(604800)) // 7 days
+			.build();
 
 		return jwtEncoder().encode(JwtEncoderParameters.from(claims)).getTokenValue();
 	}

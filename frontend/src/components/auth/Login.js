@@ -2,6 +2,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { StartTokenAutoRefresh } from './TokenRefresh';
 
 const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
@@ -16,7 +17,12 @@ function Login() {
                     Authorization: `Bearer ${response.credential}`,
                 },
             });
-            localStorage.setItem("token", res.data);
+            const { token, refreshToken } = res.data;
+
+            localStorage.setItem("token", token);
+            localStorage.setItem("refreshToken", refreshToken);
+            StartTokenAutoRefresh(navigate);
+
             navigate(`/`);
         } catch (error) {
             console.error("Error fetching user data:", error);
@@ -39,14 +45,14 @@ function Login() {
 
     return (
         <GoogleOAuthProvider clientId={clientId}>
-                <GoogleLogin
-                  onSuccess={onSuccess}
-                  onError={onFailure}
-                  theme="filled_blue"
-                  size="large"
-                />
+            <GoogleLogin
+                onSuccess={onSuccess}
+                onError={onFailure}
+                theme="filled_blue"
+                size="large"
+            />
         </GoogleOAuthProvider>
-      );
+    );
 }
 
 export default Login;

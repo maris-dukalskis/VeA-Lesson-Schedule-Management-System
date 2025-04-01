@@ -2,7 +2,7 @@ import BaseService from './BaseService';
 
 class LecturerService extends BaseService {
     constructor() {
-        super(process.env.REACT_APP_BACKEND_URL + '/lecturer');
+        super(`${process.env.REACT_APP_BACKEND_URL}/lecturer`);
     }
 
 }

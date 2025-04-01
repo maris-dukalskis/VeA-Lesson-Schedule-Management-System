@@ -3,7 +3,7 @@ import axios from 'axios';
 
 class CourseStudyProgrammeAliasService extends BaseService {
     constructor() {
-        super(process.env.REACT_APP_BACKEND_URL + '/coursestudyprogrammealias');
+        super(`${process.env.REACT_APP_BACKEND_URL}/coursestudyprogrammealias`);
     }
 
     getAllByCourseId(id) {

@@ -1,7 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
+import { useEffect } from 'react';
 
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+
 import ClassroomCreate from './components/crud/Classroom/ClassroomCreate';
 import ClassroomList from './components/crud/Classroom/ClassroomList';
 import ClassroomEdit from './components/crud/Classroom/ClassroomEdit';
@@ -33,7 +35,16 @@ import Header from './components/Header';
 import LessonCalendar from './components/LessonCalendar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
+import { StartTokenAutoRefresh } from './components/auth/TokenRefresh';
+
 function App() {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    StartTokenAutoRefresh(navigate);
+  }, [navigate]);
+
   return (
     <>
       <Header />

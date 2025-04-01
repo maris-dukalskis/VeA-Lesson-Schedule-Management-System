@@ -3,7 +3,7 @@ import axios from 'axios';
 
 class LessonDateTimeService extends BaseService {
     constructor() {
-        super(process.env.REACT_APP_BACKEND_URL + '/lessondatetime');
+        super(`${process.env.REACT_APP_BACKEND_URL}/lessondatetime`);
     }
 
     getAllByLessonId(id) {
