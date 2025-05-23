@@ -1,6 +1,5 @@
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { StartTokenAutoRefresh } from './TokenRefresh';
 
@@ -14,7 +13,7 @@ function Login() {
         try {
             const res = await axios.get(process.env.REACT_APP_BACKEND_URL + "/auth/user", {
                 headers: {
-                    Authorization: `Bearer ${response.credential}`,
+                    Google: `Bearer ${response.credential}`,
                 },
             });
             const { token, refreshToken } = res.data;

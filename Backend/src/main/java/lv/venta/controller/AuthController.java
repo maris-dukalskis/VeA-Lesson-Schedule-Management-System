@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lv.venta.config.CustomJwtDecoder;
+import lv.venta.config.GoogleTokenVerifier;
 import lv.venta.config.JwtConfig;
 import lv.venta.model.Role;
 import lv.venta.model.User;
@@ -31,24 +32,25 @@ public class AuthController {
 
 	private JwtConfig jwtConfig;
 	private CustomJwtDecoder jwtDecoder;
+	private GoogleTokenVerifier googleVerifier;
 
-	public AuthController(JwtConfig jwtConfig, CustomJwtDecoder jwtDecoder) {
+	public AuthController(JwtConfig jwtConfig, CustomJwtDecoder jwtDecoder, GoogleTokenVerifier googleVerifier) {
 		this.jwtConfig = jwtConfig;
 		this.jwtDecoder = jwtDecoder;
+		this.googleVerifier = googleVerifier;
 	}
 
 	@Autowired
 	private IUserService userService;
 
 	@GetMapping("/user")
-	public ResponseEntity<?> getUser(@RequestHeader("Authorization") String authorizationHeader) {
+	public ResponseEntity<?> getUser(@RequestHeader("Google") String authorizationHeader) {
 		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
 			return ResponseEntity.badRequest().body("Invalid or missing Authorization header");
 		}
 		String token = authorizationHeader.substring(7);
 		try {
-			Jwt jwt = jwtDecoder.decode(token);
-
+			Jwt jwt = googleVerifier.verify(token);
 			Authentication authentication;
 
 			if (jwt.getClaims().containsKey("sub")) {
