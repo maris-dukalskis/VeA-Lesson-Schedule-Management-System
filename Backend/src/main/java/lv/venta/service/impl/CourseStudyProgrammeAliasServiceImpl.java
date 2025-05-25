@@ -79,14 +79,14 @@ public class CourseStudyProgrammeAliasServiceImpl implements ICourseStudyProgram
 	public List<CourseStudyProgrammeAlias> selectByStudyProgrammeId(int id) {
 		if (courseStudyProgrammeAliasRepo.count() == 0)
 			return new ArrayList<>();
-		return (List<CourseStudyProgrammeAlias>) courseStudyProgrammeAliasRepo.findByStudyProgrammeStudyProgrammeId(id);
+		return courseStudyProgrammeAliasRepo.findByStudyProgrammeStudyProgrammeId(id);
 	}
 
 	@Override
 	public List<CourseStudyProgrammeAlias> selectByCourseId(int id) {
 		if (courseStudyProgrammeAliasRepo.count() == 0)
 			return new ArrayList<>();
-		return (List<CourseStudyProgrammeAlias>) courseStudyProgrammeAliasRepo.findByCourseCourseId(id);
+		return courseStudyProgrammeAliasRepo.findByCourseCourseId(id);
 	}
 
 }

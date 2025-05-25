@@ -89,7 +89,7 @@ public class StudyProgrammeServiceImpl implements IStudyProgrammeService {
 	public List<StudyProgramme> selectByCourseId(int id) {
 		if (studyProgrammeRepo.count() == 0)
 			return new ArrayList<>();
-		return (List<StudyProgramme>) studyProgrammeRepo.findByCourseStudyProgrammeAliasesCourseCourseId(id);
+		return studyProgrammeRepo.findByCourseStudyProgrammeAliasesCourseCourseId(id);
 	}
 
 }

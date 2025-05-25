@@ -95,7 +95,7 @@ public class UserServiceImpl implements IUserService {
 	public List<User> selectByCourseId(int id) {
 		if (userRepo.count() == 0)
 			return new ArrayList<>();
-		return (List<User>) userRepo.findByCoursesCourseId(id);
+		return userRepo.findByCoursesCourseId(id);
 	}
 
 }

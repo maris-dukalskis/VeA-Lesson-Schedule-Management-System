@@ -98,7 +98,7 @@ public class LessonDateTimeServiceImpl implements ILessonDateTimeService {
 	public List<LessonDateTime> selectAllByLessonLessonId(int id) {
 		if (lessonDateTimeRepo.count() == 0)
 			return new ArrayList<>();
-		return (List<LessonDateTime>) lessonDateTimeRepo.findByLessonLessonId(id);
+		return lessonDateTimeRepo.findByLessonLessonId(id);
 	}
 
 }

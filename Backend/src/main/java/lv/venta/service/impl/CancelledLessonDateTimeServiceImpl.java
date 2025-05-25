@@ -78,8 +78,7 @@ public class CancelledLessonDateTimeServiceImpl implements ICancelledLessonDateT
 	public List<CancelledLessonDateTime> selectByLessonDateTimeId(int id) {
 		if (cancelledLessonDateTimeRepo.count() == 0)
 			return new ArrayList<>();
-		return (ArrayList<CancelledLessonDateTime>) cancelledLessonDateTimeRepo
-				.findByLessonDateTimeLessonDateTimeId(id);
+		return cancelledLessonDateTimeRepo.findByLessonDateTimeLessonDateTimeId(id);
 	}
 
 }

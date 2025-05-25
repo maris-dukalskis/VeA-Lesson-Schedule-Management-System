@@ -97,42 +97,42 @@ public class LessonServiceImpl implements ILessonService {
 	public List<Lesson> selectByLecturerFullName(String name) {
 		if (lessonRepo.count() == 0)
 			return new ArrayList<>();
-		return (List<Lesson>) lessonRepo.findByLecturerFullName(name);
+		return lessonRepo.findByLecturerFullName(name);
 	}
 
 	@Override
 	public List<Lesson> selectByClassroomBuildingAndNumber(String building, int number) {
 		if (lessonRepo.count() == 0)
 			return new ArrayList<>();
-		return (List<Lesson>) lessonRepo.findByClassroomBuildingAndClassroomNumber(building, number);
+		return lessonRepo.findByClassroomBuildingAndClassroomNumber(building, number);
 	}
 
 	@Override
 	public List<Lesson> selectByClassroomId(int id) {
 		if (lessonRepo.count() == 0)
 			return new ArrayList<>();
-		return (List<Lesson>) lessonRepo.findByClassroomClassroomId(id);
+		return lessonRepo.findByClassroomClassroomId(id);
 	}
 
 	@Override
 	public List<Lesson> selectByUserId(int id) {
 		if (lessonRepo.count() == 0)
 			return new ArrayList<>();
-		return (List<Lesson>) lessonRepo.findByLecturerUserId(id);
+		return lessonRepo.findByLecturerUserId(id);
 	}
 
 	@Override
 	public List<Lesson> selectByCourseId(int id) {
 		if (lessonRepo.count() == 0)
 			return new ArrayList<>();
-		return (List<Lesson>) lessonRepo.findByCourseCourseId(id);
+		return lessonRepo.findByCourseCourseId(id);
 	}
 
 	@Override
 	public List<Lesson> selectBySemesterId(int id) {
 		if (lessonRepo.count() == 0)
 			return new ArrayList<>();
-		return (List<Lesson>) lessonRepo.findBySemesterSemesterId(id);
+		return lessonRepo.findBySemesterSemesterId(id);
 	}
 
 }

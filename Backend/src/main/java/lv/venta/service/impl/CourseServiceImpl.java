@@ -110,14 +110,14 @@ public class CourseServiceImpl implements ICourseService {
 	public List<Course> selectByStudyProgrammeId(int id) {
 		if (courseRepo.count() == 0)
 			return new ArrayList<>();
-		return (List<Course>) courseRepo.findByCourseStudyProgrammeAliasesStudyProgrammeStudyProgrammeId(id);
+		return courseRepo.findByCourseStudyProgrammeAliasesStudyProgrammeStudyProgrammeId(id);
 	}
 
 	@Override
 	public List<Course> selectByUserId(int id) {
 		if (courseRepo.count() == 0)
 			return new ArrayList<>();
-		return (List<Course>) courseRepo.findByUsersUserId(id);
+		return courseRepo.findByUsersUserId(id);
 	}
 
 }
