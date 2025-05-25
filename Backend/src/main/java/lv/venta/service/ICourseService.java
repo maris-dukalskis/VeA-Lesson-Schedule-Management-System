@@ -1,23 +1,24 @@
 package lv.venta.service;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import lv.venta.model.Course;
 
 public interface ICourseService {
 
-	public abstract ArrayList<Course> selectAllCourses() throws Exception;
+	public abstract List<Course> selectAllCourses();
 
-	public abstract Course selectCourseById(int id) throws Exception;
+	public abstract Course selectCourseById(int id) throws IllegalArgumentException, NoSuchElementException;
 
-	public abstract void deleteCourseById(int id) throws Exception;
+	public abstract void deleteCourseById(int id);
 
-	public abstract Course insertNewCourse(Course course) throws Exception;
+	public abstract Course insertNewCourse(Course course) throws NullPointerException, IllegalStateException;
 
-	public abstract Course updateCourseById(int id, Course course) throws Exception;
+	public abstract Course updateCourseById(int id, Course course);
 
-	public abstract ArrayList<Course> selectByStudyProgrammeId(int id) throws Exception;
+	public abstract List<Course> selectByStudyProgrammeId(int id);
 
-	public abstract ArrayList<Course> selectByUserId(int id) throws Exception;
+	public abstract List<Course> selectByUserId(int id);
 
 }

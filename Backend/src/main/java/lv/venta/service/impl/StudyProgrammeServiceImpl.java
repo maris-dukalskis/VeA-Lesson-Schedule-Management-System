@@ -2,6 +2,7 @@ package lv.venta.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
@@ -25,25 +26,25 @@ public class StudyProgrammeServiceImpl implements IStudyProgrammeService {
 	}
 
 	@Override
-	public ArrayList<StudyProgramme> selectAllStudyProgrammes() throws Exception {
+	public List<StudyProgramme> selectAllStudyProgrammes() {
 		if (studyProgrammeRepo.count() == 0)
-			return new ArrayList<StudyProgramme>();
-		return (ArrayList<StudyProgramme>) studyProgrammeRepo.findAll();
+			return new ArrayList<>();
+		return (List<StudyProgramme>) studyProgrammeRepo.findAll();
 	}
 
 	@Override
-	public StudyProgramme selectStudyProgrammeById(int id) throws Exception {
+	public StudyProgramme selectStudyProgrammeById(int id) throws IllegalArgumentException, NoSuchElementException {
 		if (id < 0)
-			throw new Exception("ID cannot be below 0");
+			throw new IllegalArgumentException("ID cannot be below 0");
 		if (!studyProgrammeRepo.existsById(id)) {
-			throw new Exception("StudyProgramme by that ID does not exist");
+			throw new NoSuchElementException("StudyProgramme by that ID does not exist");
 		}
 		return studyProgrammeRepo.findById(id).get();
 	}
 
 	@Override
-	public void deleteStudyProgrammeById(int id) throws Exception {
-		ArrayList<CourseStudyProgrammeAlias> courseStudyProgrammeAliases = courseStudyProgrammeAliasService
+	public void deleteStudyProgrammeById(int id) {
+		List<CourseStudyProgrammeAlias> courseStudyProgrammeAliases = courseStudyProgrammeAliasService
 				.selectByStudyProgrammeId(id);
 		if (!courseStudyProgrammeAliases.isEmpty()) {
 			for (CourseStudyProgrammeAlias courseStudyProgrammeAlias : courseStudyProgrammeAliases) {
@@ -56,19 +57,18 @@ public class StudyProgrammeServiceImpl implements IStudyProgrammeService {
 	}
 
 	@Override
-	public StudyProgramme insertNewStudyProgramme(StudyProgramme studyProgramme) throws Exception {
+	public StudyProgramme insertNewStudyProgramme(StudyProgramme studyProgramme)
+			throws NullPointerException, IllegalStateException {
 		if (studyProgramme == null)
-			throw new Exception("StudyProgramme object cannot be null");
-		List<StudyProgramme> studyProgrammes = new ArrayList<>();
-		try {
-			studyProgrammes = selectAllStudyProgrammes();
-		} catch (Exception e) {
-		}
+			throw new NullPointerException("StudyProgramme object cannot be null");
+
+		List<StudyProgramme> studyProgrammes = selectAllStudyProgrammes();
+
 		if (!studyProgrammes.isEmpty()) {
 			for (StudyProgramme dbStudyProgramme : studyProgrammes) {
 				if (dbStudyProgramme.getName().equals(studyProgramme.getName())
 						&& dbStudyProgramme.getYear() == studyProgramme.getYear()) {
-					throw new Exception("StudyProgramme already exists");
+					throw new IllegalStateException("StudyProgramme already exists");
 				}
 			}
 		}
@@ -76,7 +76,7 @@ public class StudyProgrammeServiceImpl implements IStudyProgrammeService {
 	}
 
 	@Override
-	public StudyProgramme updateStudyProgrammeById(int id, StudyProgramme studyProgramme) throws Exception {
+	public StudyProgramme updateStudyProgrammeById(int id, StudyProgramme studyProgramme) {
 		StudyProgramme oldStudyProgramme = selectStudyProgrammeById(id);
 		oldStudyProgramme.setShortName(studyProgramme.getShortName());
 		oldStudyProgramme.setName(studyProgramme.getName());
@@ -86,10 +86,10 @@ public class StudyProgrammeServiceImpl implements IStudyProgrammeService {
 	}
 
 	@Override
-	public ArrayList<StudyProgramme> selectByCourseId(int id) throws Exception {
+	public List<StudyProgramme> selectByCourseId(int id) {
 		if (studyProgrammeRepo.count() == 0)
-			return new ArrayList<StudyProgramme>();
-		return (ArrayList<StudyProgramme>) studyProgrammeRepo.findByCourseStudyProgrammeAliasesCourseCourseId(id);
+			return new ArrayList<>();
+		return (List<StudyProgramme>) studyProgrammeRepo.findByCourseStudyProgrammeAliasesCourseCourseId(id);
 	}
 
 }

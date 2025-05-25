@@ -2,6 +2,7 @@ package lv.venta.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
@@ -24,25 +25,25 @@ public class LessonServiceImpl implements ILessonService {
 	}
 
 	@Override
-	public ArrayList<Lesson> selectAllLessons() throws Exception {
+	public List<Lesson> selectAllLessons() {
 		if (lessonRepo.count() == 0)
-			return new ArrayList<Lesson>();
-		return (ArrayList<Lesson>) lessonRepo.findAll();
+			return new ArrayList<>();
+		return (List<Lesson>) lessonRepo.findAll();
 	}
 
 	@Override
-	public Lesson selectLessonById(int id) throws Exception {
+	public Lesson selectLessonById(int id) throws IllegalArgumentException, NoSuchElementException {
 		if (id < 0)
-			throw new Exception("ID cannot be below 0");
+			throw new IllegalArgumentException("ID cannot be below 0");
 		if (!lessonRepo.existsById(id)) {
-			throw new Exception("Lesson by that ID does not exist");
+			throw new NoSuchElementException("Lesson by that ID does not exist");
 		}
 		return lessonRepo.findById(id).get();
 	}
 
 	@Override
-	public void deleteLessonById(int id) throws Exception {
-		ArrayList<LessonDateTime> lessonTimes = lessonDateTimeService.selectAllByLessonLessonId(id);
+	public void deleteLessonById(int id) {
+		List<LessonDateTime> lessonTimes = lessonDateTimeService.selectAllByLessonLessonId(id);
 		if (!lessonTimes.isEmpty()) {
 			for (LessonDateTime lessonDateTime : lessonTimes) {
 				lessonDateTimeService.deleteLessonDateTimeById(lessonDateTime.getLessonDateTimeId());
@@ -52,19 +53,17 @@ public class LessonServiceImpl implements ILessonService {
 	}
 
 	@Override
-	public Lesson insertNewLesson(Lesson lesson) throws Exception {
+	public Lesson insertNewLesson(Lesson lesson) throws NullPointerException, IllegalStateException {
 		if (lesson == null)
-			throw new Exception("Lesson object cannot be null");
-		List<Lesson> lessons = new ArrayList<>();
-		try {
-			lessons = selectAllLessons();
-		} catch (Exception e) {
-		}
+			throw new NullPointerException("Lesson object cannot be null");
+
+		List<Lesson> lessons = selectAllLessons();
+
 		if (!lessons.isEmpty()) {
 			for (Lesson dbLesson : lessons) {
 				if (dbLesson.getCourse().getCourseId() == lesson.getCourse().getCourseId()
 						&& dbLesson.getLessonGroup() == lesson.getLessonGroup()) {
-					throw new Exception("Lesson already exists");
+					throw new IllegalStateException("Lesson already exists");
 				}
 			}
 		}
@@ -72,7 +71,7 @@ public class LessonServiceImpl implements ILessonService {
 	}
 
 	@Override
-	public Lesson updateLessonById(int id, Lesson lesson) throws Exception {
+	public Lesson updateLessonById(int id, Lesson lesson) {
 		Lesson oldLesson = selectLessonById(id);
 		oldLesson.setCourse(lesson.getCourse());
 		oldLesson.setLessonGroup(lesson.getLessonGroup());
@@ -86,54 +85,54 @@ public class LessonServiceImpl implements ILessonService {
 	}
 
 	@Override
-	public ArrayList<Lesson> selectByStudyProgrammeNameAndYear(String name, int year) throws Exception {
+	public List<Lesson> selectByStudyProgrammeNameAndYear(String name, int year) {
 		if (lessonRepo.count() == 0)
-			return new ArrayList<Lesson>();
-		return (ArrayList<Lesson>) lessonRepo
+			return new ArrayList<>();
+		return (List<Lesson>) lessonRepo
 				.findByCourseCourseStudyProgrammeAliasesStudyProgrammeNameAndCourseCourseStudyProgrammeAliasesStudyProgrammeYear(
 						name, year);
 	}
 
 	@Override
-	public ArrayList<Lesson> selectByLecturerFullName(String name) throws Exception {
+	public List<Lesson> selectByLecturerFullName(String name) {
 		if (lessonRepo.count() == 0)
-			return new ArrayList<Lesson>();
-		return (ArrayList<Lesson>) lessonRepo.findByLecturerFullName(name);
+			return new ArrayList<>();
+		return (List<Lesson>) lessonRepo.findByLecturerFullName(name);
 	}
 
 	@Override
-	public ArrayList<Lesson> selectByClassroomBuildingAndNumber(String building, int number) throws Exception {
+	public List<Lesson> selectByClassroomBuildingAndNumber(String building, int number) {
 		if (lessonRepo.count() == 0)
-			return new ArrayList<Lesson>();
-		return (ArrayList<Lesson>) lessonRepo.findByClassroomBuildingAndClassroomNumber(building, number);
+			return new ArrayList<>();
+		return (List<Lesson>) lessonRepo.findByClassroomBuildingAndClassroomNumber(building, number);
 	}
 
 	@Override
-	public ArrayList<Lesson> selectByClassroomId(int id) throws Exception {
+	public List<Lesson> selectByClassroomId(int id) {
 		if (lessonRepo.count() == 0)
-			return new ArrayList<Lesson>();
-		return (ArrayList<Lesson>) lessonRepo.findByClassroomClassroomId(id);
+			return new ArrayList<>();
+		return (List<Lesson>) lessonRepo.findByClassroomClassroomId(id);
 	}
 
 	@Override
-	public ArrayList<Lesson> selectByUserId(int id) throws Exception {
+	public List<Lesson> selectByUserId(int id) {
 		if (lessonRepo.count() == 0)
-			return new ArrayList<Lesson>();
-		return (ArrayList<Lesson>) lessonRepo.findByLecturerUserId(id);
+			return new ArrayList<>();
+		return (List<Lesson>) lessonRepo.findByLecturerUserId(id);
 	}
 
 	@Override
-	public ArrayList<Lesson> selectByCourseId(int id) throws Exception {
+	public List<Lesson> selectByCourseId(int id) {
 		if (lessonRepo.count() == 0)
-			return new ArrayList<Lesson>();
-		return (ArrayList<Lesson>) lessonRepo.findByCourseCourseId(id);
+			return new ArrayList<>();
+		return (List<Lesson>) lessonRepo.findByCourseCourseId(id);
 	}
 
 	@Override
-	public ArrayList<Lesson> selectBySemesterId(int id) throws Exception {
+	public List<Lesson> selectBySemesterId(int id) {
 		if (lessonRepo.count() == 0)
-			return new ArrayList<Lesson>();
-		return (ArrayList<Lesson>) lessonRepo.findBySemesterSemesterId(id);
+			return new ArrayList<>();
+		return (List<Lesson>) lessonRepo.findBySemesterSemesterId(id);
 	}
 
 }

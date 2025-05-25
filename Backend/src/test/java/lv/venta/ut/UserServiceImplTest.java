@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class UserServiceImplTest {
+class UserServiceImplTest {
 
 	@Autowired
 	private UserServiceImpl userService;
@@ -28,7 +28,7 @@ public class UserServiceImplTest {
 	private final List<User> testUsers = new ArrayList<>();
 
 	@BeforeEach
-	public void setupTestUsers() throws Exception {
+	void setupTestUsers() throws Exception {
 		User user1 = new User("John Doe", "john.doe@example.com", Role.USER);
 		User user2 = new User("Jane Smith", "jane.smith@example.com", Role.ADMINISTRATOR);
 
@@ -37,7 +37,7 @@ public class UserServiceImplTest {
 	}
 
 	@AfterEach
-	public void cleanupTestUsers() throws Exception {
+	void cleanupTestUsers() throws Exception {
 		for (User user : testUsers) {
 			if (userRepo.existsById(user.getUserId())) {
 				userService.deleteUserById(user.getUserId());

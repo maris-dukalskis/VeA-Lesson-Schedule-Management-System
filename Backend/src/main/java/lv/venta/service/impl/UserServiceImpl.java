@@ -2,6 +2,7 @@ package lv.venta.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
@@ -28,25 +29,25 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public ArrayList<User> selectAllUsers() throws Exception {
+	public List<User> selectAllUsers() {
 		if (userRepo.count() == 0)
-			return new ArrayList<User>();
-		return (ArrayList<User>) userRepo.findAll();
+			return new ArrayList<>();
+		return (List<User>) userRepo.findAll();
 	}
 
 	@Override
-	public User selectUserById(int id) throws Exception {
+	public User selectUserById(int id) throws IllegalArgumentException, NoSuchElementException {
 		if (id < 0)
-			throw new Exception("ID cannot be below 0");
+			throw new IllegalArgumentException("ID cannot be below 0");
 		if (!userRepo.existsById(id)) {
-			throw new Exception("User by that ID does not exist");
+			throw new NoSuchElementException("User by that ID does not exist");
 		}
 		return userRepo.findById(id).get();
 	}
 
 	@Override
-	public void deleteUserById(int id) throws Exception {
-		ArrayList<Lesson> lessons = lessonService.selectByUserId(id);
+	public void deleteUserById(int id) {
+		List<Lesson> lessons = lessonService.selectByUserId(id);
 		if (!lessons.isEmpty()) {
 			for (Lesson lesson : lessons) {
 				lesson.setLecturer(null);
@@ -57,18 +58,16 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public User insertNewUser(User user) throws Exception {
+	public User insertNewUser(User user) throws NullPointerException, IllegalStateException {
 		if (user == null)
-			throw new Exception("User object cannot be null");
-		List<User> users = new ArrayList<>();
-		try {
-			users = selectAllUsers();
-		} catch (Exception e) {
-		}
+			throw new NullPointerException("User object cannot be null");
+
+		List<User> users = selectAllUsers();
+
 		if (!users.isEmpty()) {
 			for (User dbUser : users) {
 				if (dbUser.getFullName().equals(user.getFullName()) && dbUser.getEmail().equals(user.getEmail())) {
-					throw new Exception("user already exists");
+					throw new IllegalStateException("User already exists");
 				}
 			}
 		}
@@ -76,7 +75,7 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public User updateUserById(int id, User user) throws Exception {
+	public User updateUserById(int id, User user) {
 		User oldUser = selectUserById(id);
 		oldUser.setEmail(user.getEmail());
 		oldUser.setFullName(user.getFullName());
@@ -86,17 +85,17 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public User selectByEmail(String email) throws Exception {
+	public User selectByEmail(String email) throws IllegalArgumentException {
 		if (userRepo.count() == 0)
-			throw new Exception("User by that email does not exist");
+			throw new IllegalArgumentException("User by that email does not exist");
 		return userRepo.findByEmail(email);
 	}
 
 	@Override
-	public ArrayList<User> selectByCourseId(int id) throws Exception {
+	public List<User> selectByCourseId(int id) {
 		if (userRepo.count() == 0)
-			return new ArrayList<User>();
-		return (ArrayList<User>) userRepo.findByCoursesCourseId(id);
+			return new ArrayList<>();
+		return (List<User>) userRepo.findByCoursesCourseId(id);
 	}
 
 }

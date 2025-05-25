@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class StudyProgrammeServiceImplTest {
+class StudyProgrammeServiceImplTest {
 
 	@Autowired
 	private IStudyProgrammeService studyProgrammeService;
@@ -28,7 +28,7 @@ public class StudyProgrammeServiceImplTest {
 	private final List<StudyProgramme> testStudyProgrammes = new ArrayList<>();
 
 	@BeforeEach
-	public void setupTestStudyProgrammes() throws Exception {
+	void setupTestStudyProgrammes() throws Exception {
 		StudyProgramme studyProgramme1 = studyProgrammeRepo.save(new StudyProgramme("SP1", "Study Programme 1", 1));
 		StudyProgramme studyProgramme2 = studyProgrammeRepo.save(new StudyProgramme("SP2", "Study Programme 2", 2));
 
@@ -37,7 +37,7 @@ public class StudyProgrammeServiceImplTest {
 	}
 
 	@AfterEach
-	public void cleanupTestStudyProgrammes() throws Exception {
+	void cleanupTestStudyProgrammes() throws Exception {
 		for (StudyProgramme studyProgramme : testStudyProgrammes) {
 			if (studyProgrammeRepo.existsById(studyProgramme.getStudyProgrammeId())) {
 				studyProgrammeService.deleteStudyProgrammeById(studyProgramme.getStudyProgrammeId());

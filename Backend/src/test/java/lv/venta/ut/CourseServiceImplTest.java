@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class CourseServiceImplTest {
+class CourseServiceImplTest {
 
 	@Autowired
 	private CourseServiceImpl courseService;
@@ -24,7 +24,7 @@ public class CourseServiceImplTest {
 	private final ArrayList<Course> testCourses = new ArrayList<>();
 
 	@BeforeEach
-	public void setupTestCourses() {
+	void setupTestCourses() {
 		Course course1 = courseRepo.save(new Course("TestCourseA", "TCA", "DescriptionA", 3));
 		Course course2 = courseRepo.save(new Course("TestCourseB", "TCB", "DescriptionB", 4));
 		testCourses.add(course1);
@@ -32,7 +32,7 @@ public class CourseServiceImplTest {
 	}
 
 	@AfterEach
-	public void cleanupTestCourses() {
+	void cleanupTestCourses() {
 		for (Course course : testCourses) {
 			if (courseRepo.existsById(course.getCourseId())) {
 				courseRepo.deleteById(course.getCourseId());

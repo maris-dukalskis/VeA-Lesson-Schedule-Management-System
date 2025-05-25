@@ -1,21 +1,24 @@
 package lv.venta.service;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import lv.venta.model.LessonDateTime;
 
 public interface ILessonDateTimeService {
 
-	public abstract ArrayList<LessonDateTime> selectAllLessonDateTimes() throws Exception;
+	public abstract List<LessonDateTime> selectAllLessonDateTimes();
 
-	public abstract LessonDateTime selectLessonDateTimeById(int id) throws Exception;
+	public abstract LessonDateTime selectLessonDateTimeById(int id)
+			throws IllegalArgumentException, NoSuchElementException;
 
-	public abstract void deleteLessonDateTimeById(int id) throws Exception;
+	public abstract void deleteLessonDateTimeById(int id);
 
-	public abstract LessonDateTime insertNewLessonDateTime(LessonDateTime lessonDateTime) throws Exception;
+	public abstract LessonDateTime insertNewLessonDateTime(LessonDateTime lessonDateTime)
+			throws NullPointerException, IllegalStateException;
 
-	public abstract LessonDateTime updateLessonDateTimeById(int id, LessonDateTime lessonDateTime) throws Exception;
+	public abstract LessonDateTime updateLessonDateTimeById(int id, LessonDateTime lessonDateTime);
 
-	public abstract ArrayList<LessonDateTime> selectAllByLessonLessonId(int id) throws Exception;
+	public abstract List<LessonDateTime> selectAllByLessonLessonId(int id);
 
 }

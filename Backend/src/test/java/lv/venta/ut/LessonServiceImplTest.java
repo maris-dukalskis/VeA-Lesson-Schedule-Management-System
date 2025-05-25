@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class LessonServiceImplTest {
+class LessonServiceImplTest {
 
 	@Autowired
 	private LessonServiceImpl lessonService;
@@ -45,7 +45,7 @@ public class LessonServiceImplTest {
 	private Semester semester;
 
 	@BeforeEach
-	public void setupTestLessons() {
+	void setupTestLessons() {
 		course = courseRepo.save(new Course("Test Course", "TC", "Test Description", 5));
 		classroom = classroomRepo.save(new Classroom("Test Building", 101, "Test Equipment", 30));
 		lecturer = lecturerRepo
@@ -60,7 +60,7 @@ public class LessonServiceImplTest {
 	}
 
 	@AfterEach
-	public void cleanupTestLessons() throws Exception {
+	void cleanupTestLessons() throws Exception {
 		for (Lesson lesson : testLessons) {
 			if (lessonRepo.existsById(lesson.getLessonId())) {
 				lessonService.deleteLessonById(lesson.getLessonId());

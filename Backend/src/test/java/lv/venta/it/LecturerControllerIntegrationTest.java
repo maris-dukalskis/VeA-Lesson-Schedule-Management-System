@@ -19,7 +19,7 @@ import lv.venta.model.Lecturer;
 import lv.venta.model.Role;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class LecturerControllerIntegrationTest {
+class LecturerControllerIntegrationTest {
 
 	@LocalServerPort
 	private int port;
@@ -32,7 +32,7 @@ public class LecturerControllerIntegrationTest {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		RestAssured.port = port;
 
 		String email = "admin@test.com";
@@ -43,48 +43,41 @@ public class LecturerControllerIntegrationTest {
 	}
 
 	@Test
-	public void testCRUD() throws Exception {
+	void testCRUD() throws Exception {
 		Lecturer lecturer = new Lecturer("Test Lecturer", "lecturer.test@test.com", Role.LECTURER, 20, "Test Notes",
 				"Test Seniority");
 
 		int lecturerId = -1;
 		try {
-			// CREATE /lecturer/insert
 			Response response = RestAssured.given().header("Authorization", "Bearer " + jwtToken)
 					.contentType(ContentType.JSON).body(objectMapper.writeValueAsString(lecturer)).when()
 					.post("/lecturer/insert").then().statusCode(200).extract().response();
 
 			lecturerId = response.jsonPath().getInt("userId");
 
-			// GET BY ID /lecturer/get/{id}
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when().get("/lecturer/get/" + lecturerId)
 					.then().statusCode(200).body("userId", equalTo(lecturerId))
 					.body("fullName", equalTo("Test Lecturer"));
 
-			// GET LIST /lecturer/all
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when().get("/lecturer/all").then()
 					.statusCode(200).body("size()", greaterThan(0));
 
 			Lecturer updatedLecturer = new Lecturer("Updated Test Lecturer", "lecturer.test.updated@test.com",
 					Role.LECTURER, 25, "Updated Test Notes", "Updated Test Seniority");
 
-			// UPDATE /lecturer/update/{id}
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).contentType(ContentType.JSON)
 					.body(objectMapper.writeValueAsString(updatedLecturer)).when().put("/lecturer/update/" + lecturerId)
 					.then().statusCode(200);
 
-			// VERIFY UPDATE /lecturer/get/{id}
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when().get("/lecturer/get/" + lecturerId)
 					.then().statusCode(200).body("fullName", equalTo("Updated Test Lecturer"))
 					.body("hours", equalTo(25)).body("notes", equalTo("Updated Test Notes"))
 					.body("seniority", equalTo("Updated Test Seniority"));
 
 		} finally {
-			// DELETE /lecturer/delete/{id}
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when()
 					.delete("/lecturer/delete/" + lecturerId).then().statusCode(200);
 
-			// VERIFY DELETE /lecturer/get/{id}
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when().get("/lecturer/get/" + lecturerId)
 					.then().statusCode(500);
 		}

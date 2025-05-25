@@ -2,6 +2,7 @@ package lv.venta.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
@@ -19,42 +20,42 @@ public class CancelledLessonDateTimeServiceImpl implements ICancelledLessonDateT
 	}
 
 	@Override
-	public ArrayList<CancelledLessonDateTime> selectAllCancelledLessonDateTimes() throws Exception {
+	public List<CancelledLessonDateTime> selectAllCancelledLessonDateTimes() {
 		if (cancelledLessonDateTimeRepo.count() == 0)
-			return new ArrayList<CancelledLessonDateTime>();
+			return new ArrayList<>();
 		return (ArrayList<CancelledLessonDateTime>) cancelledLessonDateTimeRepo.findAll();
 	}
 
 	@Override
-	public CancelledLessonDateTime selectCancelledLessonDateTimeById(int id) throws Exception {
+	public CancelledLessonDateTime selectCancelledLessonDateTimeById(int id)
+			throws IllegalArgumentException, NoSuchElementException {
 		if (id < 0)
-			throw new Exception("ID cannot be below 0");
+			throw new IllegalArgumentException("ID cannot be below 0");
 		if (!cancelledLessonDateTimeRepo.existsById(id)) {
-			throw new Exception("CancelledLessonDateTime by that ID does not exist");
+			throw new NoSuchElementException("CancelledLessonDateTime by that ID does not exist");
 		}
 		return cancelledLessonDateTimeRepo.findById(id).get();
 	}
 
 	@Override
-	public void deleteCancelledLessonDateTimeById(int id) throws Exception {
+	public void deleteCancelledLessonDateTimeById(int id) {
 		cancelledLessonDateTimeRepo.delete(selectCancelledLessonDateTimeById(id));
 	}
 
 	@Override
 	public CancelledLessonDateTime insertNewCancelledLessonDateTime(CancelledLessonDateTime cancelledLessonDateTime)
-			throws Exception {
+			throws NullPointerException, IllegalStateException {
 		if (cancelledLessonDateTime == null)
-			throw new Exception("CancelledLessonDateTime object cannot be null");
+			throw new NullPointerException("CancelledLessonDateTime object cannot be null");
 		List<CancelledLessonDateTime> cancelledLessonDateTimes = new ArrayList<>();
-		try {
-			cancelledLessonDateTimes = selectAllCancelledLessonDateTimes();
-		} catch (Exception e) {
-		}
+
+		cancelledLessonDateTimes = selectAllCancelledLessonDateTimes();
+
 		if (!cancelledLessonDateTimes.isEmpty()) {
 			for (CancelledLessonDateTime dbCancelledLessonDateTime : cancelledLessonDateTimes) {
 				if (dbCancelledLessonDateTime.getCancelledLessonDateTimeId() == cancelledLessonDateTime
 						.getCancelledLessonDateTimeId()) {
-					throw new Exception("CancelledLessonDateTime already exists");
+					throw new IllegalStateException("CancelledLessonDateTime already exists");
 				}
 			}
 		}
@@ -63,7 +64,7 @@ public class CancelledLessonDateTimeServiceImpl implements ICancelledLessonDateT
 
 	@Override
 	public CancelledLessonDateTime updateCancelledLessonDateTimeById(int id,
-			CancelledLessonDateTime cancelledLessonDateTime) throws Exception {
+			CancelledLessonDateTime cancelledLessonDateTime) {
 		CancelledLessonDateTime oldCancelledLessonDateTime = selectCancelledLessonDateTimeById(id);
 		oldCancelledLessonDateTime.setDate(cancelledLessonDateTime.getDate());
 		oldCancelledLessonDateTime.setLessonDateTime(cancelledLessonDateTime.getLessonDateTime());
@@ -74,9 +75,9 @@ public class CancelledLessonDateTimeServiceImpl implements ICancelledLessonDateT
 	}
 
 	@Override
-	public ArrayList<CancelledLessonDateTime> selectByLessonDateTimeId(int id) throws Exception {
+	public List<CancelledLessonDateTime> selectByLessonDateTimeId(int id) {
 		if (cancelledLessonDateTimeRepo.count() == 0)
-			return new ArrayList<CancelledLessonDateTime>();
+			return new ArrayList<>();
 		return (ArrayList<CancelledLessonDateTime>) cancelledLessonDateTimeRepo
 				.findByLessonDateTimeLessonDateTimeId(id);
 	}

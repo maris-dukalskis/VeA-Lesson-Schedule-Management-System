@@ -2,6 +2,7 @@ package lv.venta.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
@@ -19,37 +20,36 @@ public class CourseStudyProgrammeAliasServiceImpl implements ICourseStudyProgram
 	}
 
 	@Override
-	public ArrayList<CourseStudyProgrammeAlias> selectAllCourseStudyProgrammeAliases() throws Exception {
+	public List<CourseStudyProgrammeAlias> selectAllCourseStudyProgrammeAliases() {
 		if (courseStudyProgrammeAliasRepo.count() == 0)
-			return new ArrayList<CourseStudyProgrammeAlias>();
-		return (ArrayList<CourseStudyProgrammeAlias>) courseStudyProgrammeAliasRepo.findAll();
+			return new ArrayList<>();
+		return (List<CourseStudyProgrammeAlias>) courseStudyProgrammeAliasRepo.findAll();
 	}
 
 	@Override
-	public CourseStudyProgrammeAlias selectCourseStudyProgrammeAliasById(int id) throws Exception {
+	public CourseStudyProgrammeAlias selectCourseStudyProgrammeAliasById(int id)
+			throws IllegalArgumentException, NoSuchElementException {
 		if (id < 0)
-			throw new Exception("ID cannot be below 0");
+			throw new IllegalArgumentException("ID cannot be below 0");
 		if (!courseStudyProgrammeAliasRepo.existsById(id)) {
-			throw new Exception("CourseStudyProgrammeAlias by that ID does not exist");
+			throw new NoSuchElementException("CourseStudyProgrammeAlias by that ID does not exist");
 		}
 		return courseStudyProgrammeAliasRepo.findById(id).get();
 	}
 
 	@Override
-	public void deleteCourseStudyProgrammeAliasById(int id) throws Exception {
+	public void deleteCourseStudyProgrammeAliasById(int id) {
 		courseStudyProgrammeAliasRepo.delete(selectCourseStudyProgrammeAliasById(id));
 	}
 
 	@Override
 	public CourseStudyProgrammeAlias insertNewCourseStudyProgrammeAlias(
-			CourseStudyProgrammeAlias courseStudyProgrammeAlias) throws Exception {
+			CourseStudyProgrammeAlias courseStudyProgrammeAlias) throws NullPointerException, IllegalStateException {
 		if (courseStudyProgrammeAlias == null)
-			throw new Exception("CourseStudyProgrammeAlias object cannot be null");
-		List<CourseStudyProgrammeAlias> courseStudyProgrammeAliases = new ArrayList<>();
-		try {
-			courseStudyProgrammeAliases = selectAllCourseStudyProgrammeAliases();
-		} catch (Exception e) {
-		}
+			throw new NullPointerException("CourseStudyProgrammeAlias object cannot be null");
+
+		List<CourseStudyProgrammeAlias> courseStudyProgrammeAliases = selectAllCourseStudyProgrammeAliases();
+
 		if (!courseStudyProgrammeAliases.isEmpty()) {
 			for (CourseStudyProgrammeAlias dbCourseStudyProgrammeAlias : courseStudyProgrammeAliases) {
 				if (dbCourseStudyProgrammeAlias.getCourse().getCourseId() == courseStudyProgrammeAlias.getCourse()
@@ -57,7 +57,7 @@ public class CourseStudyProgrammeAliasServiceImpl implements ICourseStudyProgram
 						&& dbCourseStudyProgrammeAlias.getStudyProgramme()
 								.getStudyProgrammeId() == courseStudyProgrammeAlias.getStudyProgramme()
 										.getStudyProgrammeId()) {
-					throw new Exception("CourseStudyProgrammeAlias already exists");
+					throw new IllegalStateException("CourseStudyProgrammeAlias already exists");
 				}
 			}
 		}
@@ -66,7 +66,7 @@ public class CourseStudyProgrammeAliasServiceImpl implements ICourseStudyProgram
 
 	@Override
 	public CourseStudyProgrammeAlias updateCourseStudyProgrammeAliasById(int id,
-			CourseStudyProgrammeAlias courseStudyProgrammeAlias) throws Exception {
+			CourseStudyProgrammeAlias courseStudyProgrammeAlias) {
 		CourseStudyProgrammeAlias oldCourseStudyProgrammeAlias = selectCourseStudyProgrammeAliasById(id);
 		oldCourseStudyProgrammeAlias.setAlias(courseStudyProgrammeAlias.getAlias());
 		oldCourseStudyProgrammeAlias.setCourse(courseStudyProgrammeAlias.getCourse());
@@ -76,18 +76,17 @@ public class CourseStudyProgrammeAliasServiceImpl implements ICourseStudyProgram
 	}
 
 	@Override
-	public ArrayList<CourseStudyProgrammeAlias> selectByStudyProgrammeId(int id) throws Exception {
+	public List<CourseStudyProgrammeAlias> selectByStudyProgrammeId(int id) {
 		if (courseStudyProgrammeAliasRepo.count() == 0)
-			return new ArrayList<CourseStudyProgrammeAlias>();
-		return (ArrayList<CourseStudyProgrammeAlias>) courseStudyProgrammeAliasRepo
-				.findByStudyProgrammeStudyProgrammeId(id);
+			return new ArrayList<>();
+		return (List<CourseStudyProgrammeAlias>) courseStudyProgrammeAliasRepo.findByStudyProgrammeStudyProgrammeId(id);
 	}
 
 	@Override
-	public ArrayList<CourseStudyProgrammeAlias> selectByCourseId(int id) throws Exception {
+	public List<CourseStudyProgrammeAlias> selectByCourseId(int id) {
 		if (courseStudyProgrammeAliasRepo.count() == 0)
-			return new ArrayList<CourseStudyProgrammeAlias>();
-		return (ArrayList<CourseStudyProgrammeAlias>) courseStudyProgrammeAliasRepo.findByCourseCourseId(id);
+			return new ArrayList<>();
+		return (List<CourseStudyProgrammeAlias>) courseStudyProgrammeAliasRepo.findByCourseCourseId(id);
 	}
 
 }

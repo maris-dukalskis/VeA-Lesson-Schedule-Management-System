@@ -18,7 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class LessonDateTimeServiceImplTest {
+class LessonDateTimeServiceImplTest {
 
 	@Autowired
 	private LessonDateTimeServiceImpl lessonDateTimeService;
@@ -50,7 +50,7 @@ public class LessonDateTimeServiceImplTest {
 	private Semester semester;
 
 	@BeforeEach
-	public void setupTestLessonDateTimes() throws Exception {
+	void setupTestLessonDateTimes() throws Exception {
 		course = courseRepo.save(new Course("Test Course", "TC", "Test Description", 5));
 		classroom = classroomRepo.save(new Classroom("Test Building", 101, "Test Equipment", 30));
 		lecturer = lecturerRepo
@@ -70,7 +70,7 @@ public class LessonDateTimeServiceImplTest {
 	}
 
 	@AfterEach
-	public void cleanupTestLessonDateTimes() throws Exception {
+	void cleanupTestLessonDateTimes() throws Exception {
 		for (LessonDateTime ldt : testLessonDateTimes) {
 			if (lessonDateTimeRepo.existsById(ldt.getLessonDateTimeId())) {
 				lessonDateTimeService.deleteLessonDateTimeById(ldt.getLessonDateTimeId());

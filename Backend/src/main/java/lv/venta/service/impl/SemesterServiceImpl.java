@@ -2,6 +2,7 @@ package lv.venta.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
@@ -28,25 +29,25 @@ public class SemesterServiceImpl implements ISemesterService {
 	}
 
 	@Override
-	public ArrayList<Semester> selectAllSemesters() throws Exception {
+	public List<Semester> selectAllSemesters() {
 		if (semesterRepo.count() == 0)
-			return new ArrayList<Semester>();
-		return (ArrayList<Semester>) semesterRepo.findAll();
+			return new ArrayList<>();
+		return (List<Semester>) semesterRepo.findAll();
 	}
 
 	@Override
-	public Semester selectSemesterById(int id) throws Exception {
+	public Semester selectSemesterById(int id) throws IllegalArgumentException, NoSuchElementException {
 		if (id < 0)
-			throw new Exception("ID cannot be below 0");
+			throw new IllegalArgumentException("ID cannot be below 0");
 		if (!semesterRepo.existsById(id)) {
-			throw new Exception("Semester by that ID does not exist");
+			throw new NoSuchElementException("Semester by that ID does not exist");
 		}
 		return semesterRepo.findById(id).get();
 	}
 
 	@Override
-	public void deleteSemesterById(int id) throws Exception {
-		ArrayList<Lesson> lessons = lessonService.selectBySemesterId(id);
+	public void deleteSemesterById(int id) {
+		List<Lesson> lessons = lessonService.selectBySemesterId(id);
 		if (!lessons.isEmpty()) {
 			for (Lesson lesson : lessons) {
 				lesson.setSemester(null);
@@ -57,18 +58,16 @@ public class SemesterServiceImpl implements ISemesterService {
 	}
 
 	@Override
-	public Semester insertNewSemester(Semester semester) throws Exception {
+	public Semester insertNewSemester(Semester semester) throws NullPointerException, IllegalStateException {
 		if (semester == null)
-			throw new Exception("Semester object cannot be null");
-		List<Semester> semesters = new ArrayList<>();
-		try {
-			semesters = selectAllSemesters();
-		} catch (Exception e) {
-		}
+			throw new NullPointerException("Semester object cannot be null");
+
+		List<Semester> semesters = selectAllSemesters();
+
 		if (!semesters.isEmpty()) {
 			for (Semester dbSemester : semesters) {
 				if (dbSemester.getName().equals(semester.getName())) {
-					throw new Exception("Semester already exists");
+					throw new IllegalStateException("Semester already exists");
 				}
 			}
 		}
@@ -76,7 +75,7 @@ public class SemesterServiceImpl implements ISemesterService {
 	}
 
 	@Override
-	public Semester updateSemesterById(int id, Semester semester) throws Exception {
+	public Semester updateSemesterById(int id, Semester semester) {
 		Semester oldSemester = selectSemesterById(id);
 		oldSemester.setName(semester.getName());
 		oldSemester.setSemesterStatus(semester.getSemesterStatus());

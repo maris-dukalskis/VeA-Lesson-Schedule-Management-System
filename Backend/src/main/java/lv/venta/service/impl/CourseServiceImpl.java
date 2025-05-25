@@ -2,6 +2,7 @@ package lv.venta.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
@@ -38,26 +39,26 @@ public class CourseServiceImpl implements ICourseService {
 	}
 
 	@Override
-	public ArrayList<Course> selectAllCourses() throws Exception {
+	public List<Course> selectAllCourses() {
 		if (courseRepo.count() == 0)
-			return new ArrayList<Course>();
-		return (ArrayList<Course>) courseRepo.findAll();
+			return new ArrayList<>();
+		return (List<Course>) courseRepo.findAll();
 	}
 
 	@Override
-	public Course selectCourseById(int id) throws Exception {
+	public Course selectCourseById(int id) throws IllegalArgumentException, NoSuchElementException {
 		if (id < 0)
-			throw new Exception("ID cannot be below 0");
+			throw new IllegalArgumentException("ID cannot be below 0");
 		if (!courseRepo.existsById(id)) {
-			throw new Exception("Course by that ID does not exist");
+			throw new NoSuchElementException("Course by that ID does not exist");
 		}
 		return courseRepo.findById(id).get();
 	}
 
 	@Override
-	public void deleteCourseById(int id) throws Exception {
+	public void deleteCourseById(int id) {
 
-		ArrayList<User> users = userService.selectByCourseId(id);
+		List<User> users = userService.selectByCourseId(id);
 		if (!users.isEmpty()) {
 			Course course = selectCourseById(id);
 			for (User user : users) {
@@ -66,7 +67,7 @@ public class CourseServiceImpl implements ICourseService {
 			userRepo.saveAll(users);
 		}
 
-		ArrayList<Lesson> lessons = lessonService.selectByCourseId(id);
+		List<Lesson> lessons = lessonService.selectByCourseId(id);
 		if (!lessons.isEmpty()) {
 			for (Lesson lesson : lessons) {
 				lesson.setCourse(null);
@@ -78,18 +79,16 @@ public class CourseServiceImpl implements ICourseService {
 	}
 
 	@Override
-	public Course insertNewCourse(Course course) throws Exception {
+	public Course insertNewCourse(Course course) throws NullPointerException, IllegalStateException {
 		if (course == null)
-			throw new Exception("Course object cannot be null");
-		List<Course> courses = new ArrayList<>();
-		try {
-			courses = selectAllCourses();
-		} catch (Exception e) {
-		}
+			throw new NullPointerException("Course object cannot be null");
+
+		List<Course> courses = selectAllCourses();
+
 		if (!courses.isEmpty()) {
 			for (Course dbCourse : courses) {
 				if (dbCourse.getName().equals(course.getName())) {
-					throw new Exception("Course already exists");
+					throw new IllegalStateException("Course already exists");
 				}
 			}
 		}
@@ -97,7 +96,7 @@ public class CourseServiceImpl implements ICourseService {
 	}
 
 	@Override
-	public Course updateCourseById(int id, Course course) throws Exception {
+	public Course updateCourseById(int id, Course course) {
 		Course oldCourse = selectCourseById(id);
 		oldCourse.setDescription(course.getDescription());
 		oldCourse.setShortName(course.getShortName());
@@ -108,17 +107,17 @@ public class CourseServiceImpl implements ICourseService {
 	}
 
 	@Override
-	public ArrayList<Course> selectByStudyProgrammeId(int id) throws Exception {
+	public List<Course> selectByStudyProgrammeId(int id) {
 		if (courseRepo.count() == 0)
-			return new ArrayList<Course>();
-		return (ArrayList<Course>) courseRepo.findByCourseStudyProgrammeAliasesStudyProgrammeStudyProgrammeId(id);
+			return new ArrayList<>();
+		return (List<Course>) courseRepo.findByCourseStudyProgrammeAliasesStudyProgrammeStudyProgrammeId(id);
 	}
 
 	@Override
-	public ArrayList<Course> selectByUserId(int id) throws Exception {
+	public List<Course> selectByUserId(int id) {
 		if (courseRepo.count() == 0)
-			return new ArrayList<Course>();
-		return (ArrayList<Course>) courseRepo.findByUsersUserId(id);
+			return new ArrayList<>();
+		return (List<Course>) courseRepo.findByUsersUserId(id);
 	}
 
 }

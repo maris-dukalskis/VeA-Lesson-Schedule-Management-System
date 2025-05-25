@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class SemesterServiceImplTest {
+class SemesterServiceImplTest {
 
 	@Autowired
 	private SemesterServiceImpl semesterService;
@@ -28,7 +28,7 @@ public class SemesterServiceImplTest {
 	private final List<Semester> testSemesters = new ArrayList<>();
 
 	@BeforeEach
-	public void setupTestSemesters() {
+	void setupTestSemesters() {
 		Semester semester1 = semesterRepo.save(new Semester("Test1", SemesterStatus.PLANNED));
 		Semester semester2 = semesterRepo.save(new Semester("Test2", SemesterStatus.ONGOING));
 
@@ -37,7 +37,7 @@ public class SemesterServiceImplTest {
 	}
 
 	@AfterEach
-	public void cleanupTestSemesters() throws Exception {
+	void cleanupTestSemesters() throws Exception {
 		for (Semester semester : testSemesters) {
 			if (semesterRepo.existsById(semester.getSemesterId())) {
 				semesterService.deleteSemesterById(semester.getSemesterId());

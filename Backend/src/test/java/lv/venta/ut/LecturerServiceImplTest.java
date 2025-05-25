@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class LecturerServiceImplTest {
+class LecturerServiceImplTest {
 
 	@Autowired
 	private LecturerServiceImpl lecturerService;
@@ -28,7 +28,7 @@ public class LecturerServiceImplTest {
 	private final List<Lecturer> testLecturers = new ArrayList<>();
 
 	@BeforeEach
-	public void setupTestLecturers() {
+	void setupTestLecturers() {
 		Lecturer lecturer1 = lecturerRepo.save(
 				new Lecturer("Test Lecturer A", "lectA@test.com", Role.LECTURER, 10, "Notes A", "Test seniority1"));
 		Lecturer lecturer2 = lecturerRepo.save(
@@ -38,7 +38,7 @@ public class LecturerServiceImplTest {
 	}
 
 	@AfterEach
-	public void cleanupTestLecturers() {
+	void cleanupTestLecturers() {
 		for (Lecturer lecturer : testLecturers) {
 			if (lecturerRepo.existsById(lecturer.getUserId())) {
 				lecturerRepo.deleteById(lecturer.getUserId());

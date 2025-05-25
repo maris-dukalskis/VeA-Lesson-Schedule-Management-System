@@ -2,6 +2,7 @@ package lv.venta.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
@@ -28,25 +29,25 @@ public class ClassroomServiceImpl implements IClassroomService {
 	}
 
 	@Override
-	public ArrayList<Classroom> selectAllClassrooms() throws Exception {
+	public List<Classroom> selectAllClassrooms() {
 		if (classroomRepo.count() == 0)
-			return new ArrayList<Classroom>();
-		return (ArrayList<Classroom>) classroomRepo.findAll();
+			return new ArrayList<>();
+		return (List<Classroom>) classroomRepo.findAll();
 	}
 
 	@Override
-	public Classroom selectClassroomById(int id) throws Exception {
+	public Classroom selectClassroomById(int id) throws IllegalArgumentException, NoSuchElementException {
 		if (id < 0)
-			throw new Exception("ID cannot be below 0");
+			throw new IllegalArgumentException("ID cannot be below 0");
 		if (!classroomRepo.existsById(id)) {
-			throw new Exception("Classroom by that ID does not exist");
+			throw new NoSuchElementException("Classroom by that ID does not exist");
 		}
 		return classroomRepo.findById(id).get();
 	}
 
 	@Override
-	public void deleteClassroomById(int id) throws Exception {
-		ArrayList<Lesson> lessons = lessonService.selectByClassroomId(id);
+	public void deleteClassroomById(int id) {
+		List<Lesson> lessons = lessonService.selectByClassroomId(id);
 		if (!lessons.isEmpty()) {
 			for (Lesson lesson : lessons) {
 				lesson.setClassroom(null);
@@ -57,19 +58,17 @@ public class ClassroomServiceImpl implements IClassroomService {
 	}
 
 	@Override
-	public Classroom insertNewClassroom(Classroom classroom) throws Exception {
+	public Classroom insertNewClassroom(Classroom classroom) throws NullPointerException, IllegalStateException {
 		if (classroom == null)
-			throw new Exception("Classroom object cannot be null");
-		List<Classroom> classrooms = new ArrayList<>();
-		try {
-			classrooms = selectAllClassrooms();
-		} catch (Exception e) {
-		}
+			throw new NullPointerException("Classroom object cannot be null");
+
+		List<Classroom> classrooms = selectAllClassrooms();
+
 		if (!classrooms.isEmpty()) {
 			for (Classroom dbClassroom : classrooms) {
 				if (dbClassroom.getBuilding().equals(classroom.getBuilding())
 						&& dbClassroom.getNumber() == classroom.getNumber()) {
-					throw new Exception("Classroom already exists");
+					throw new IllegalStateException("Classroom already exists");
 				}
 			}
 		}
@@ -77,7 +76,7 @@ public class ClassroomServiceImpl implements IClassroomService {
 	}
 
 	@Override
-	public Classroom updateClassroomById(int id, Classroom classroom) throws Exception {
+	public Classroom updateClassroomById(int id, Classroom classroom) {
 		Classroom oldClassroom = selectClassroomById(id);
 		oldClassroom.setBuilding(classroom.getBuilding());
 		oldClassroom.setEquipmentDescription(classroom.getEquipmentDescription());

@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class ClassroomServiceImplTest {
+class ClassroomServiceImplTest {
 
 	@Autowired
 	private ClassroomServiceImpl classroomService;
@@ -27,7 +27,7 @@ public class ClassroomServiceImplTest {
 	private final List<Classroom> testClassrooms = new ArrayList<>();
 
 	@BeforeEach
-	public void setupTestClassrooms() {
+	void setupTestClassrooms() {
 		Classroom classroom1 = classroomRepo.save(new Classroom("TestBuildingA", 9001, "TestDescriptionA", 20));
 		Classroom classroom2 = classroomRepo.save(new Classroom("TestBuildingB", 9002, "TestDescriptionB", 30));
 		testClassrooms.add(classroom1);
@@ -35,7 +35,7 @@ public class ClassroomServiceImplTest {
 	}
 
 	@AfterEach
-	public void cleanupTestClassrooms() {
+	void cleanupTestClassrooms() {
 		for (Classroom classroom : testClassrooms) {
 			if (classroomRepo.existsById(classroom.getClassroomId())) {
 				classroomRepo.deleteById(classroom.getClassroomId());

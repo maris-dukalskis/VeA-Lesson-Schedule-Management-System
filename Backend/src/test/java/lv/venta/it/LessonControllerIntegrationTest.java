@@ -25,7 +25,7 @@ import lv.venta.model.Semester;
 import lv.venta.model.SemesterStatus;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class LessonControllerIntegrationTest {
+class LessonControllerIntegrationTest {
 
 	@LocalServerPort
 	private int port;
@@ -38,7 +38,7 @@ public class LessonControllerIntegrationTest {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		RestAssured.port = port;
 
 		String email = "admin@test.com";
@@ -49,7 +49,7 @@ public class LessonControllerIntegrationTest {
 	}
 
 	@Test
-	public void testLessonCRUD() throws Exception {
+	void testLessonCRUD() throws Exception {
 		int lessonId = -1;
 		Course course = new Course("Test Course", "TC", "Test Description", 5);
 		Classroom classroom = new Classroom("Test Building", 101, "Test Equipment", 30);
@@ -73,7 +73,6 @@ public class LessonControllerIntegrationTest {
 					.body(objectMapper.writeValueAsString(semester)).when().post("/semester/insert").then()
 					.statusCode(200).extract().as(Semester.class);
 
-			// CREATE /lesson/insert
 			Lesson lesson = new Lesson(course, lecturer, classroom, semester, 1, true, "Test Online Info");
 
 			Response response = RestAssured.given().header("Authorization", "Bearer " + jwtToken)
@@ -82,29 +81,24 @@ public class LessonControllerIntegrationTest {
 
 			lessonId = response.jsonPath().getInt("lessonId");
 
-			// GET BY ID /lesson/get/{id}
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when().get("/lesson/get/" + lessonId)
 					.then().statusCode(200).body("lessonId", equalTo(lessonId)).body("lessonGroup", equalTo(1))
 					.body("online", equalTo(true)).body("onlineInformation", equalTo("Test Online Info"));
 
-			// GET ALL /lesson/all
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when().get("/lesson/all").then()
 					.statusCode(200).body("size()", greaterThan(0));
 
 			Lesson updatedLesson = new Lesson(course, lecturer, classroom, semester, 2, false, "Updated Test Info");
 
-			// UPDATE /lesson/update/{id}
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).contentType(ContentType.JSON)
 					.body(objectMapper.writeValueAsString(updatedLesson)).when().put("/lesson/update/" + lessonId)
 					.then().statusCode(200);
 
-			// VERIFY UPDATE /lesson/get/{id}
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when().get("/lesson/get/" + lessonId)
 					.then().statusCode(200).body("lessonGroup", equalTo(2)).body("online", equalTo(false))
 					.body("onlineInformation", equalTo("Updated Test Info"));
 
 		} finally {
-			// DELETE /lesson/delete/{id}
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when()
 					.delete("/lesson/delete/" + lessonId).then().statusCode(200);
 
@@ -120,7 +114,6 @@ public class LessonControllerIntegrationTest {
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when()
 					.delete("/semester/delete/" + semester.getSemesterId()).then().statusCode(200);
 
-			// VERIFY DELETE /lesson/get/{id}
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when().get("/lesson/get/" + lessonId)
 					.then().statusCode(is(500));
 
