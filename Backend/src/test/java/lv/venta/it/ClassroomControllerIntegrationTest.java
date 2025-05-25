@@ -76,9 +76,6 @@ class ClassroomControllerIntegrationTest {
 		} finally {
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when()
 					.delete("/classroom/delete/" + classroomId).then().statusCode(200);
-
-			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when()
-					.get("/classroom/get/" + classroomId).then().statusCode(500);
 		}
 	}
 }

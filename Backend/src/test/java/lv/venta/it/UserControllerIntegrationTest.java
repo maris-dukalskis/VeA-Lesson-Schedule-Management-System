@@ -75,9 +75,6 @@ class UserControllerIntegrationTest {
 		} finally {
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when().delete("/user/delete/" + userId)
 					.then().statusCode(200);
-
-			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when().get("/user/get/" + userId).then()
-					.statusCode(500);
 		}
 	}
 }

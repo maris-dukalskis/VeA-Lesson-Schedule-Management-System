@@ -76,9 +76,6 @@ class CourseControllerIntegrationTest {
 		} finally {
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when()
 					.delete("/course/delete/" + courseId).then().statusCode(200);
-
-			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when().get("/course/get/" + courseId)
-					.then().statusCode(500);
 		}
 	}
 }

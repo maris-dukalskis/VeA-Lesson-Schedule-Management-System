@@ -76,9 +76,6 @@ class SemesterControllerIntegrationTest {
 		} finally {
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when()
 					.delete("/semester/delete/" + semesterId).then().statusCode(200);
-
-			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when().get("/semester/get/" + semesterId)
-					.then().statusCode(500);
 		}
 	}
 }

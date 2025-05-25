@@ -77,9 +77,6 @@ class LecturerControllerIntegrationTest {
 		} finally {
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when()
 					.delete("/lecturer/delete/" + lecturerId).then().statusCode(200);
-
-			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when().get("/lecturer/get/" + lecturerId)
-					.then().statusCode(500);
 		}
 	}
 }

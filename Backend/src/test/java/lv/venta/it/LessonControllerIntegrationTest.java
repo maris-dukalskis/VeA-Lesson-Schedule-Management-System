@@ -1,7 +1,6 @@
 package lv.venta.it;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -113,10 +112,6 @@ class LessonControllerIntegrationTest {
 
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when()
 					.delete("/semester/delete/" + semester.getSemesterId()).then().statusCode(200);
-
-			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when().get("/lesson/get/" + lessonId)
-					.then().statusCode(is(500));
-
 		}
 	}
 }

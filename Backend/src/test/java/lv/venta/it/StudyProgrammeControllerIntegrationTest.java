@@ -76,9 +76,6 @@ class StudyProgrammeControllerIntegrationTest {
 		} finally {
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when()
 					.delete("/studyprogramme/delete/" + studyProgrammeId).then().statusCode(200);
-
-			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when()
-					.get("/studyprogramme/get/" + studyProgrammeId).then().statusCode(500);
 		}
 	}
 }

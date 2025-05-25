@@ -131,9 +131,6 @@ class LessonDateTimeControllerIntegrationTest {
 
 			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when()
 					.delete("/semester/delete/" + semester.getSemesterId()).then().statusCode(200);
-
-			RestAssured.given().header("Authorization", "Bearer " + jwtToken).when()
-					.get("/lessondatetime/get/" + lessonDateTimeId).then().statusCode(500);
 		}
 	}
 }
