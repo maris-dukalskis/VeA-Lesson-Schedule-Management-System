@@ -40,7 +40,7 @@ public class Semester {
 
 	private SemesterStatus semesterStatus;
 
-	public Semester(String name) {
+	public Semester(String name, SemesterStatus semesterStatus) {
 		setName(name);
 		setSemesterStatus(semesterStatus);
 	}

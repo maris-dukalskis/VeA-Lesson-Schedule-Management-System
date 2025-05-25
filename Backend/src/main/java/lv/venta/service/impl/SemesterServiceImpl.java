@@ -65,7 +65,7 @@ public class SemesterServiceImpl implements ISemesterService {
 		}
 		if (!semesters.isEmpty()) {
 			for (Semester dbSemester : semesters) {
-				if (dbSemester.getName().equals(dbSemester.getName())) {
+				if (dbSemester.getName().equals(semester.getName())) {
 					throw new Exception("Semester already exists");
 				}
 			}

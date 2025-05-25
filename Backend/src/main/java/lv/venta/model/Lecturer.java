@@ -3,6 +3,7 @@ package lv.venta.model;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -17,6 +18,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Lecturer extends User {
 
 	@Min(value = 0, message = "The value must be positive")
