@@ -3,7 +3,6 @@ package lv.venta.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lv.venta.model.Classroom;
@@ -16,14 +15,17 @@ import lv.venta.service.ILessonService;
 @Service
 public class ClassroomServiceImpl implements IClassroomService {
 
-	@Autowired
-	private IClassroomRepo classroomRepo;
+	private final IClassroomRepo classroomRepo;
 
-	@Autowired
-	private ILessonService lessonService;
+	private final ILessonService lessonService;
 
-	@Autowired
-	private ILessonRepo lessonRepo;
+	private final ILessonRepo lessonRepo;
+
+	public ClassroomServiceImpl(IClassroomRepo classroomRepo, ILessonService lessonService, ILessonRepo lessonRepo) {
+		this.classroomRepo = classroomRepo;
+		this.lessonService = lessonService;
+		this.lessonRepo = lessonRepo;
+	}
 
 	@Override
 	public ArrayList<Classroom> selectAllClassrooms() throws Exception {

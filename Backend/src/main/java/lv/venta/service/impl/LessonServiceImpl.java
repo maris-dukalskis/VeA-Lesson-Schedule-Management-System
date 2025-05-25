@@ -3,7 +3,6 @@ package lv.venta.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lv.venta.model.Lesson;
@@ -15,11 +14,14 @@ import lv.venta.service.ILessonService;
 @Service
 public class LessonServiceImpl implements ILessonService {
 
-	@Autowired
-	private ILessonRepo lessonRepo;
+	private final ILessonRepo lessonRepo;
 
-	@Autowired
-	private ILessonDateTimeService lessonDateTimeService;
+	private final ILessonDateTimeService lessonDateTimeService;
+
+	public LessonServiceImpl(ILessonRepo lessonRepo, ILessonDateTimeService lessonDateTimeService) {
+		this.lessonRepo = lessonRepo;
+		this.lessonDateTimeService = lessonDateTimeService;
+	}
 
 	@Override
 	public ArrayList<Lesson> selectAllLessons() throws Exception {
@@ -98,7 +100,7 @@ public class LessonServiceImpl implements ILessonService {
 			return new ArrayList<Lesson>();
 		return (ArrayList<Lesson>) lessonRepo.findByLecturerFullName(name);
 	}
-	
+
 	@Override
 	public ArrayList<Lesson> selectByClassroomBuildingAndNumber(String building, int number) throws Exception {
 		if (lessonRepo.count() == 0)

@@ -1,8 +1,5 @@
 package lv.venta.controller;
 
-import java.util.ArrayList;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,57 +21,60 @@ import lv.venta.service.IUserService;
 @RequestMapping("/user")
 public class UserController {
 
-	@Autowired
-	private IUserService userService;
+	private final IUserService userService;
+
+	public UserController(IUserService userService) {
+		this.userService = userService;
+	}
 
 	@GetMapping("/all")
-	public ResponseEntity<?> getUserList() {
+	public ResponseEntity<Object> getUserList() {
 		try {
-			return new ResponseEntity<ArrayList<User>>(userService.selectAllUsers(), HttpStatus.OK);
+			return new ResponseEntity<>(userService.selectAllUsers(), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@GetMapping("/get/{id}")
-	public ResponseEntity<?> getUserById(@PathVariable("id") int id) {
+	public ResponseEntity<Object> getUserById(@PathVariable("id") int id) {
 		try {
-			return new ResponseEntity<User>(userService.selectUserById(id), HttpStatus.OK);
+			return new ResponseEntity<>(userService.selectUserById(id), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PostMapping("/insert")
-	public ResponseEntity<?> insertUser(@RequestBody @Valid User user) {
+	public ResponseEntity<Object> insertUser(@RequestBody @Valid User user) {
 		try {
-			return new ResponseEntity<User>(userService.insertNewUser(user), HttpStatus.OK);
+			return new ResponseEntity<>(userService.insertNewUser(user), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateUserById(@PathVariable("id") int id, @RequestBody @Valid User user) {
+	public ResponseEntity<Object> updateUserById(@PathVariable("id") int id, @RequestBody @Valid User user) {
 		try {
-			return new ResponseEntity<User>(userService.updateUserById(id, user), HttpStatus.OK);
+			return new ResponseEntity<>(userService.updateUserById(id, user), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteUserById(@PathVariable("id") int id) {
+	public ResponseEntity<Object> deleteUserById(@PathVariable("id") int id) {
 		try {
 			userService.deleteUserById(id);
-			return new ResponseEntity<ArrayList<User>>(userService.selectAllUsers(), HttpStatus.OK);
+			return new ResponseEntity<>(userService.selectAllUsers(), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -21,37 +20,32 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @ToString
-@Table(name = "LessonDateTime")
+@Table(name = "CancelledLessonDateTime")
 @Entity
-public class LessonDateTime {
+public class CancelledLessonDateTime {
 
 	@Id
-	@Column(name = "LessonDateTimeId")
+	@Column(name = "CancelledLessonDateTimeId")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Setter(value = AccessLevel.NONE)
-	private int lessonDateTimeId;
+	private int cancelledLessonDateTimeId;
 
-	@ManyToOne
-	@JoinColumn(name = "LessonId")
-	private Lesson lesson;
+	@OneToOne
+	@JoinColumn(name = "LessonDateTimeId")
+	private LessonDateTime lessonDateTime;
 
-	@OneToOne(mappedBy = "lessonDateTime")
-	private CancelledLessonDateTime cancelledLessonDateTime;
+	private boolean isRescheduled;
 
-	private boolean isCustom;
+	private String reason;
 
 	private Date date;
 
-	private String timeFrom;
-
-	private String timeTo;
-
-	public LessonDateTime(Lesson lesson, boolean isCustom, Date date, String timeFrom, String timeTo) {
-		setLesson(lesson);
-		setCustom(isCustom);
+	public CancelledLessonDateTime(LessonDateTime lessonDateTime, boolean isRescheduled, String reason, Date date,
+			String rescheduledTimeFrom, String rescheduledTimeTo) {
+		setLessonDateTime(lessonDateTime);
+		setRescheduled(isRescheduled);
+		setReason(reason);
 		setDate(date);
-		setTimeFrom(timeFrom);
-		setTimeTo(timeTo);
 	}
 
 }

@@ -3,7 +3,6 @@ package lv.venta.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -30,21 +29,21 @@ import lv.venta.service.IUserService;
 @RequestMapping("/auth")
 public class AuthController {
 
-	private JwtConfig jwtConfig;
-	private CustomJwtDecoder jwtDecoder;
-	private GoogleTokenVerifier googleVerifier;
+	private final JwtConfig jwtConfig;
+	private final CustomJwtDecoder jwtDecoder;
+	private final GoogleTokenVerifier googleVerifier;
+	private final IUserService userService;
 
-	public AuthController(JwtConfig jwtConfig, CustomJwtDecoder jwtDecoder, GoogleTokenVerifier googleVerifier) {
+	public AuthController(JwtConfig jwtConfig, CustomJwtDecoder jwtDecoder, GoogleTokenVerifier googleVerifier,
+			IUserService userService) {
 		this.jwtConfig = jwtConfig;
 		this.jwtDecoder = jwtDecoder;
 		this.googleVerifier = googleVerifier;
+		this.userService = userService;
 	}
 
-	@Autowired
-	private IUserService userService;
-
 	@GetMapping("/user")
-	public ResponseEntity<?> getUser(@RequestHeader("Google") String authorizationHeader) {
+	public ResponseEntity<Object> getUser(@RequestHeader("Google") String authorizationHeader) {
 		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
 			return ResponseEntity.badRequest().body("Invalid or missing Authorization header");
 		}
@@ -64,14 +63,11 @@ public class AuthController {
 			String email = jwt.getClaimAsString("email");
 			String name = jwt.getClaimAsString("name");
 
-			User user = null;
-			try {
-				user = userService.selectByEmail(email);
-			} catch (Exception e) {
-			}
+			User user = userService.selectByEmail(email);
+
 			if (user == null) {
 				if (!email.split("@")[1].equals("venta.lv")) {
-					return new ResponseEntity<String>("You can only use a venta.lv email to login",
+					return new ResponseEntity<>("You can only use a venta.lv email to login",
 							HttpStatus.INTERNAL_SERVER_ERROR);
 				} else {
 					user = new User(name, email, Role.USER);
@@ -81,22 +77,19 @@ public class AuthController {
 
 			String role = user.getRole().toString();
 
-			String newToken = jwtConfig.generateToken(email, role, name);
-
 			Map<String, String> response = new HashMap<>();
-			response.put("token", newToken);
+			response.put("token", jwtConfig.generateToken(email, role, name));
 			response.put("refreshToken", jwtConfig.generateRefreshToken(email));
 
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.err.println("JWT decoding failed: " + e.getMessage());
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PostMapping("/refresh")
-	public ResponseEntity<?> refreshToken(@RequestBody Map<String, String> body) {
+	public ResponseEntity<Object> refreshToken(@RequestBody Map<String, String> body) {
 		String refreshToken = body.get("refreshToken");
 		if (refreshToken == null || refreshToken.isEmpty()) {
 			return ResponseEntity.badRequest().body("Missing refresh token");

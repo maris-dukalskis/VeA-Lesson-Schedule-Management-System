@@ -3,18 +3,31 @@ package lv.venta.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lv.venta.model.CancelledLessonDateTime;
 import lv.venta.model.LessonDateTime;
+import lv.venta.repo.ICancelledLessonDateTimeRepo;
 import lv.venta.repo.ILessonDateTimeRepo;
+import lv.venta.service.ICancelledLessonDateTimeService;
 import lv.venta.service.ILessonDateTimeService;
 
 @Service
 public class LessonDateTimeServiceImpl implements ILessonDateTimeService {
 
-	@Autowired
-	private ILessonDateTimeRepo lessonDateTimeRepo;
+	private final ILessonDateTimeRepo lessonDateTimeRepo;
+
+	private final ICancelledLessonDateTimeService cancelledLessonDateTimeService;
+
+	private final ICancelledLessonDateTimeRepo cancelledLessonDateTimeRepo;
+
+	public LessonDateTimeServiceImpl(ILessonDateTimeRepo lessonDateTimeRepo,
+			ICancelledLessonDateTimeService cancelledLessonDateTimeService,
+			ICancelledLessonDateTimeRepo cancelledLessonDateTimeRepo) {
+		this.lessonDateTimeRepo = lessonDateTimeRepo;
+		this.cancelledLessonDateTimeService = cancelledLessonDateTimeService;
+		this.cancelledLessonDateTimeRepo = cancelledLessonDateTimeRepo;
+	}
 
 	@Override
 	public ArrayList<LessonDateTime> selectAllLessonDateTimes() throws Exception {
@@ -35,6 +48,16 @@ public class LessonDateTimeServiceImpl implements ILessonDateTimeService {
 
 	@Override
 	public void deleteLessonDateTimeById(int id) throws Exception {
+
+		ArrayList<CancelledLessonDateTime> cancelledLessonDateTimes = cancelledLessonDateTimeService
+				.selectByLessonDateTimeId(id);
+		if (!cancelledLessonDateTimes.isEmpty()) {
+			for (CancelledLessonDateTime cancelledLessonDateTime : cancelledLessonDateTimes) {
+				cancelledLessonDateTime.setLessonDateTime(null);
+			}
+			cancelledLessonDateTimeRepo.saveAll(cancelledLessonDateTimes);
+		}
+
 		lessonDateTimeRepo.delete(selectLessonDateTimeById(id));
 	}
 

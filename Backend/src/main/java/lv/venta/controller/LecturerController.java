@@ -1,8 +1,5 @@
 package lv.venta.controller;
 
-import java.util.ArrayList;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,57 +21,61 @@ import lv.venta.service.ILecturerService;
 @RequestMapping("/lecturer")
 public class LecturerController {
 
-	@Autowired
-	private ILecturerService lecturerService;
+	private final ILecturerService lecturerService;
+
+	public LecturerController(ILecturerService lecturerService) {
+		this.lecturerService = lecturerService;
+	}
 
 	@GetMapping("/all")
-	public ResponseEntity<?> getLecturerList() {
+	public ResponseEntity<Object> getLecturerList() {
 		try {
-			return new ResponseEntity<ArrayList<Lecturer>>(lecturerService.selectAllLecturers(), HttpStatus.OK);
+			return new ResponseEntity<>(lecturerService.selectAllLecturers(), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@GetMapping("/get/{id}")
-	public ResponseEntity<?> getLecturerById(@PathVariable("id") int id) {
+	public ResponseEntity<Object> getLecturerById(@PathVariable("id") int id) {
 		try {
-			return new ResponseEntity<Lecturer>(lecturerService.selectLecturerById(id), HttpStatus.OK);
+			return new ResponseEntity<>(lecturerService.selectLecturerById(id), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PostMapping("/insert")
-	public ResponseEntity<?> insertLecturer(@RequestBody @Valid Lecturer lecturer) {
+	public ResponseEntity<Object> insertLecturer(@RequestBody @Valid Lecturer lecturer) {
 		try {
-			return new ResponseEntity<Lecturer>(lecturerService.insertNewLecturer(lecturer), HttpStatus.OK);
+			return new ResponseEntity<>(lecturerService.insertNewLecturer(lecturer), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateLecturerById(@PathVariable("id") int id, @RequestBody @Valid Lecturer lecturer) {
+	public ResponseEntity<Object> updateLecturerById(@PathVariable("id") int id,
+			@RequestBody @Valid Lecturer lecturer) {
 		try {
-			return new ResponseEntity<Lecturer>(lecturerService.updateLecturerById(id, lecturer), HttpStatus.OK);
+			return new ResponseEntity<>(lecturerService.updateLecturerById(id, lecturer), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteLecturerById(@PathVariable("id") int id) {
+	public ResponseEntity<Object> deleteLecturerById(@PathVariable("id") int id) {
 		try {
 			lecturerService.deleteLecturerById(id);
-			return new ResponseEntity<ArrayList<Lecturer>>(lecturerService.selectAllLecturers(), HttpStatus.OK);
+			return new ResponseEntity<>(lecturerService.selectAllLecturers(), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

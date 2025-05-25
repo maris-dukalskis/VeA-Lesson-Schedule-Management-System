@@ -1,8 +1,5 @@
 package lv.venta.controller;
 
-import java.util.ArrayList;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,57 +21,61 @@ import lv.venta.service.IClassroomService;
 @RequestMapping("/classroom")
 public class ClassroomController {
 
-	@Autowired
-	private IClassroomService classroomService;
+	private final IClassroomService classroomService;
+
+	public ClassroomController(IClassroomService classroomService) {
+		this.classroomService = classroomService;
+	}
 
 	@GetMapping("/all")
-	public ResponseEntity<?> getClassroomList() {
+	public ResponseEntity<Object> getClassroomList() {
 		try {
-			return new ResponseEntity<ArrayList<Classroom>>(classroomService.selectAllClassrooms(), HttpStatus.OK);
+			return new ResponseEntity<>(classroomService.selectAllClassrooms(), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@GetMapping("/get/{id}")
-	public ResponseEntity<?> getClassroomById(@PathVariable("id") int id) {
+	public ResponseEntity<Object> getClassroomById(@PathVariable("id") int id) {
 		try {
-			return new ResponseEntity<Classroom>(classroomService.selectClassroomById(id), HttpStatus.OK);
+			return new ResponseEntity<>(classroomService.selectClassroomById(id), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PostMapping("/insert")
-	public ResponseEntity<?> insertClassroom(@RequestBody @Valid Classroom classroom) {
+	public ResponseEntity<Object> insertClassroom(@RequestBody @Valid Classroom classroom) {
 		try {
-			return new ResponseEntity<Classroom>(classroomService.insertNewClassroom(classroom), HttpStatus.OK);
+			return new ResponseEntity<>(classroomService.insertNewClassroom(classroom), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateClassroomById(@PathVariable("id") int id, @RequestBody @Valid Classroom classroom) {
+	public ResponseEntity<Object> updateClassroomById(@PathVariable("id") int id,
+			@RequestBody @Valid Classroom classroom) {
 		try {
-			return new ResponseEntity<Classroom>(classroomService.updateClassroomById(id, classroom), HttpStatus.OK);
+			return new ResponseEntity<>(classroomService.updateClassroomById(id, classroom), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteClassroomById(@PathVariable("id") int id) {
+	public ResponseEntity<Object> deleteClassroomById(@PathVariable("id") int id) {
 		try {
 			classroomService.deleteClassroomById(id);
-			return new ResponseEntity<ArrayList<Classroom>>(classroomService.selectAllClassrooms(), HttpStatus.OK);
+			return new ResponseEntity<>(classroomService.selectAllClassrooms(), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

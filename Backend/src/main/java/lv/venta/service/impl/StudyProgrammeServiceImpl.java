@@ -3,7 +3,6 @@ package lv.venta.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lv.venta.model.CourseStudyProgrammeAlias;
@@ -15,11 +14,15 @@ import lv.venta.service.IStudyProgrammeService;
 @Service
 public class StudyProgrammeServiceImpl implements IStudyProgrammeService {
 
-	@Autowired
-	private IStudyProgrammeRepo studyProgrammeRepo;
+	private final IStudyProgrammeRepo studyProgrammeRepo;
 
-	@Autowired
-	private ICourseStudyProgrammeAliasService courseStudyProgrammeAliasService;
+	private final ICourseStudyProgrammeAliasService courseStudyProgrammeAliasService;
+
+	public StudyProgrammeServiceImpl(IStudyProgrammeRepo studyProgrammeRepo,
+			ICourseStudyProgrammeAliasService courseStudyProgrammeAliasService) {
+		this.studyProgrammeRepo = studyProgrammeRepo;
+		this.courseStudyProgrammeAliasService = courseStudyProgrammeAliasService;
+	}
 
 	@Override
 	public ArrayList<StudyProgramme> selectAllStudyProgrammes() throws Exception {

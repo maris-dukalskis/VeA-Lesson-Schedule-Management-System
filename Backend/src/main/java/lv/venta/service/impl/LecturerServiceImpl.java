@@ -3,7 +3,6 @@ package lv.venta.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lv.venta.model.Lecturer;
@@ -13,8 +12,11 @@ import lv.venta.service.ILecturerService;
 @Service
 public class LecturerServiceImpl implements ILecturerService {
 
-	@Autowired
-	private ILecturerRepo lecturerRepo;
+	private final ILecturerRepo lecturerRepo;
+
+	public LecturerServiceImpl(ILecturerRepo lecturerRepo) {
+		this.lecturerRepo = lecturerRepo;
+	}
 
 	@Override
 	public ArrayList<Lecturer> selectAllLecturers() throws Exception {

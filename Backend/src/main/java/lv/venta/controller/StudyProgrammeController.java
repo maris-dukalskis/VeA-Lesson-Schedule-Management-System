@@ -1,8 +1,5 @@
 package lv.venta.controller;
 
-import java.util.ArrayList;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,63 +21,62 @@ import lv.venta.service.IStudyProgrammeService;
 @RequestMapping("/studyprogramme")
 public class StudyProgrammeController {
 
-	@Autowired
-	private IStudyProgrammeService studyProgrammeService;
+	private final IStudyProgrammeService studyProgrammeService;
+
+	public StudyProgrammeController(IStudyProgrammeService studyProgrammeService) {
+		this.studyProgrammeService = studyProgrammeService;
+	}
 
 	@GetMapping("/all")
-	public ResponseEntity<?> getStudyProgrammeList() {
+	public ResponseEntity<Object> getStudyProgrammeList() {
 		try {
-			return new ResponseEntity<ArrayList<StudyProgramme>>(studyProgrammeService.selectAllStudyProgrammes(),
-					HttpStatus.OK);
+			return new ResponseEntity<>(studyProgrammeService.selectAllStudyProgrammes(), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@GetMapping("/get/{id}")
-	public ResponseEntity<?> getStudyProgrammeById(@PathVariable("id") int id) {
+	public ResponseEntity<Object> getStudyProgrammeById(@PathVariable("id") int id) {
 		try {
-			return new ResponseEntity<StudyProgramme>(studyProgrammeService.selectStudyProgrammeById(id),
-					HttpStatus.OK);
+			return new ResponseEntity<>(studyProgrammeService.selectStudyProgrammeById(id), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PostMapping("/insert")
-	public ResponseEntity<?> insertStudyProgramme(@RequestBody @Valid StudyProgramme studyProgramme) {
+	public ResponseEntity<Object> insertStudyProgramme(@RequestBody @Valid StudyProgramme studyProgramme) {
 		try {
-			return new ResponseEntity<StudyProgramme>(studyProgrammeService.insertNewStudyProgramme(studyProgramme),
-					HttpStatus.OK);
+			return new ResponseEntity<>(studyProgrammeService.insertNewStudyProgramme(studyProgramme), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateStudyProgrammeById(@PathVariable("id") int id,
+	public ResponseEntity<Object> updateStudyProgrammeById(@PathVariable("id") int id,
 			@RequestBody @Valid StudyProgramme studyProgramme) {
 		try {
-			return new ResponseEntity<StudyProgramme>(
-					studyProgrammeService.updateStudyProgrammeById(id, studyProgramme), HttpStatus.OK);
+			return new ResponseEntity<>(studyProgrammeService.updateStudyProgrammeById(id, studyProgramme),
+					HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteStudyProgrammeById(@PathVariable("id") int id) {
+	public ResponseEntity<Object> deleteStudyProgrammeById(@PathVariable("id") int id) {
 		try {
 			studyProgrammeService.deleteStudyProgrammeById(id);
-			return new ResponseEntity<ArrayList<StudyProgramme>>(studyProgrammeService.selectAllStudyProgrammes(),
-					HttpStatus.OK);
+			return new ResponseEntity<>(studyProgrammeService.selectAllStudyProgrammes(), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

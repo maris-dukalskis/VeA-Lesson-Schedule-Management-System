@@ -35,7 +35,7 @@ public class JwtConfig {
 
 				JWTClaimsSet.Builder claimsSetBuilder = new JWTClaimsSet.Builder();
 				parameters.getClaims().getClaims().forEach((key, value) -> claimsSetBuilder.claim(key,
-						value instanceof Instant ? Date.from((Instant) value) : value));
+						value instanceof @SuppressWarnings("unused") Instant instant? Date.from((Instant) value) : value));
 				JWTClaimsSet claimsSet = claimsSetBuilder.build();
 
 				JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
@@ -66,14 +66,12 @@ public class JwtConfig {
 
 		return jwtEncoder().encode(JwtEncoderParameters.from(claims)).getTokenValue();
 	}
-	
+
 	public String generateRefreshToken(String email) {
 		Instant now = Instant.now();
-		JwtClaimsSet claims = JwtClaimsSet.builder()
-			.subject(email)
-			.issuedAt(now)
-			.expiresAt(now.plusSeconds(604800)) // 7 days
-			.build();
+		JwtClaimsSet claims = JwtClaimsSet.builder().subject(email).issuedAt(now).expiresAt(now.plusSeconds(604800)) // 7
+																														// days
+				.build();
 
 		return jwtEncoder().encode(JwtEncoderParameters.from(claims)).getTokenValue();
 	}

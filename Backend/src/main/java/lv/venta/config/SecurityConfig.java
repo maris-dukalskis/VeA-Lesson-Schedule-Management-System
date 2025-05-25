@@ -36,6 +36,7 @@ public class SecurityConfig {
 						.requestMatchers("/student/**").authenticated()
 						.requestMatchers("/user/**").authenticated()
 						.requestMatchers("/coursestudyprogrammealias/**").authenticated()
+						.requestMatchers("/cancelledlessondatetime/**").authenticated()
 						
 						.requestMatchers("/lesson/all").permitAll()
 						.requestMatchers("/lesson/studyprogramme/**").permitAll()

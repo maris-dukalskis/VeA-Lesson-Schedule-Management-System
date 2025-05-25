@@ -14,18 +14,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomJwtDecoder implements JwtDecoder {
 
-	private JwtDecoder customJwtDecoder;
+	private JwtDecoder jwtDecoder;
 
 	public CustomJwtDecoder(@Value("${jwt.secret}") String secretKey) {
 
 		byte[] decodedKey = Base64.getDecoder().decode(secretKey);
 		SecretKeySpec secretKeySpec = new SecretKeySpec(decodedKey, "HmacSHA256");
 
-		this.customJwtDecoder = NimbusJwtDecoder.withSecretKey(secretKeySpec).build();
+		this.jwtDecoder = NimbusJwtDecoder.withSecretKey(secretKeySpec).build();
 	}
 
 	@Override
 	public Jwt decode(String token) throws JwtException {
-		return customJwtDecoder.decode(token);
+		return jwtDecoder.decode(token);
 	}
 }

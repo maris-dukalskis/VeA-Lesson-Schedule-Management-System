@@ -1,8 +1,5 @@
 package lv.venta.controller;
 
-import java.util.ArrayList;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,77 +21,79 @@ import lv.venta.service.ICourseStudyProgrammeAliasService;
 @RequestMapping("/coursestudyprogrammealias")
 public class CourseStudyProgrammeAliasController {
 
-	@Autowired
-	private ICourseStudyProgrammeAliasService courseStudyProgrammeAliasService;
+	private final ICourseStudyProgrammeAliasService courseStudyProgrammeAliasService;
+
+	public CourseStudyProgrammeAliasController(ICourseStudyProgrammeAliasService courseStudyProgrammeAliasService) {
+		this.courseStudyProgrammeAliasService = courseStudyProgrammeAliasService;
+	}
 
 	@GetMapping("/all")
-	public ResponseEntity<?> getCourseStudyProgrammeAliasList() {
+	public ResponseEntity<Object> getCourseStudyProgrammeAliasList() {
 		try {
-			return new ResponseEntity<ArrayList<CourseStudyProgrammeAlias>>(
-					courseStudyProgrammeAliasService.selectAllCourseStudyProgrammeAliases(), HttpStatus.OK);
+			return new ResponseEntity<>(courseStudyProgrammeAliasService.selectAllCourseStudyProgrammeAliases(),
+					HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@GetMapping("/get/{id}")
-	public ResponseEntity<?> getCourseStudyProgrammeAliasById(@PathVariable("id") int id) {
+	public ResponseEntity<Object> getCourseStudyProgrammeAliasById(@PathVariable("id") int id) {
 		try {
-			return new ResponseEntity<CourseStudyProgrammeAlias>(
-					courseStudyProgrammeAliasService.selectCourseStudyProgrammeAliasById(id), HttpStatus.OK);
+			return new ResponseEntity<>(courseStudyProgrammeAliasService.selectCourseStudyProgrammeAliasById(id),
+					HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PostMapping("/insert")
-	public ResponseEntity<?> insertCourseStudyProgrammeAlias(
+	public ResponseEntity<Object> insertCourseStudyProgrammeAlias(
 			@RequestBody @Valid CourseStudyProgrammeAlias courseStudyProgrammeAlias) {
 		try {
-			return new ResponseEntity<CourseStudyProgrammeAlias>(
+			return new ResponseEntity<>(
 					courseStudyProgrammeAliasService.insertNewCourseStudyProgrammeAlias(courseStudyProgrammeAlias),
 					HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateCourseStudyProgrammeAliasById(@PathVariable("id") int id,
+	public ResponseEntity<Object> updateCourseStudyProgrammeAliasById(@PathVariable("id") int id,
 			@RequestBody @Valid CourseStudyProgrammeAlias courseStudyProgrammeAlias) {
 		try {
-			return new ResponseEntity<CourseStudyProgrammeAlias>(
+			return new ResponseEntity<>(
 					courseStudyProgrammeAliasService.updateCourseStudyProgrammeAliasById(id, courseStudyProgrammeAlias),
 					HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteCourseStudyProgrammeAliasById(@PathVariable("id") int id) {
+	public ResponseEntity<Object> deleteCourseStudyProgrammeAliasById(@PathVariable("id") int id) {
 		try {
 			courseStudyProgrammeAliasService.deleteCourseStudyProgrammeAliasById(id);
-			return new ResponseEntity<ArrayList<CourseStudyProgrammeAlias>>(
-					courseStudyProgrammeAliasService.selectAllCourseStudyProgrammeAliases(), HttpStatus.OK);
+			return new ResponseEntity<>(courseStudyProgrammeAliasService.selectAllCourseStudyProgrammeAliases(),
+					HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@GetMapping("/course/{id}")
-	public ResponseEntity<?> getCourseStudyProgrammeAliasesByCourseId(@PathVariable("id") int id) {
+	public ResponseEntity<Object> getCourseStudyProgrammeAliasesByCourseId(@PathVariable("id") int id) {
 		try {
-			return new ResponseEntity<ArrayList<CourseStudyProgrammeAlias>>(
-					courseStudyProgrammeAliasService.selectByCourseId(id), HttpStatus.OK);
+			return new ResponseEntity<>(courseStudyProgrammeAliasService.selectByCourseId(id), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
