@@ -30,13 +30,22 @@ public class SecurityConfig {
 		http.csrf(csrf -> csrf.disable()).cors(cors -> cors.configurationSource(corsConfigurationSource()))
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/auth/**").permitAll()
-						.requestMatchers("/classroom/**").authenticated()
 						.requestMatchers("/course/**").authenticated()
-						.requestMatchers("/lecturer/**").authenticated()
-						.requestMatchers("/student/**").authenticated()
 						.requestMatchers("/user/**").authenticated()
 						.requestMatchers("/coursestudyprogrammealias/**").authenticated()
 						.requestMatchers("/cancelledlessondatetime/**").authenticated()
+						
+						.requestMatchers("/classroom/all").permitAll()
+						.requestMatchers("/classroom/get/**").authenticated()
+						.requestMatchers("/classroom/update/**").authenticated()
+						.requestMatchers("/classroom/insert").authenticated()
+						.requestMatchers("/classroom/delete/**").authenticated()
+						
+						.requestMatchers("/lecturer/all").permitAll()
+						.requestMatchers("/lecturer/get/**").authenticated()
+						.requestMatchers("/lecturer/update/**").authenticated()
+						.requestMatchers("/lecturer/insert").authenticated()
+						.requestMatchers("/lecturer/delete/**").authenticated()
 						
 						.requestMatchers("/lesson/all").permitAll()
 						.requestMatchers("/lesson/studyprogramme/**").permitAll()

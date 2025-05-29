@@ -33,7 +33,6 @@ public class CancelledLessonDateTimeController {
 			return new ResponseEntity<>(cancelledLessonDateTimeService.selectAllCancelledLessonDateTimes(),
 					HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -44,7 +43,6 @@ public class CancelledLessonDateTimeController {
 			return new ResponseEntity<>(cancelledLessonDateTimeService.selectCancelledLessonDateTimeById(id),
 					HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -57,7 +55,6 @@ public class CancelledLessonDateTimeController {
 					cancelledLessonDateTimeService.insertNewCancelledLessonDateTime(cancelledLessonDateTime),
 					HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -70,7 +67,6 @@ public class CancelledLessonDateTimeController {
 					cancelledLessonDateTimeService.updateCancelledLessonDateTimeById(id, cancelledLessonDateTime),
 					HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -82,7 +78,6 @@ public class CancelledLessonDateTimeController {
 			return new ResponseEntity<>(cancelledLessonDateTimeService.selectAllCancelledLessonDateTimes(),
 					HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

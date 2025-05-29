@@ -32,7 +32,6 @@ public class LessonController {
 		try {
 			return new ResponseEntity<>(lessonService.selectAllLessons(), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -42,7 +41,6 @@ public class LessonController {
 		try {
 			return new ResponseEntity<>(lessonService.selectLessonById(id), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -52,7 +50,6 @@ public class LessonController {
 		try {
 			return new ResponseEntity<>(lessonService.insertNewLesson(lesson), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -62,7 +59,6 @@ public class LessonController {
 		try {
 			return new ResponseEntity<>(lessonService.updateLessonById(id, lesson), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -73,7 +69,6 @@ public class LessonController {
 			lessonService.deleteLessonById(id);
 			return new ResponseEntity<>(lessonService.selectAllLessons(), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -84,7 +79,6 @@ public class LessonController {
 		try {
 			return new ResponseEntity<>(lessonService.selectByStudyProgrammeNameAndYear(name, year), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -94,7 +88,6 @@ public class LessonController {
 		try {
 			return new ResponseEntity<>(lessonService.selectByLecturerFullName(name), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -106,7 +99,6 @@ public class LessonController {
 			return new ResponseEntity<>(lessonService.selectByClassroomBuildingAndNumber(building, number),
 					HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

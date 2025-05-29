@@ -32,7 +32,6 @@ public class LessonDateTimeController {
 		try {
 			return new ResponseEntity<>(lessonDateTimeService.selectAllLessonDateTimes(), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -42,7 +41,6 @@ public class LessonDateTimeController {
 		try {
 			return new ResponseEntity<>(lessonDateTimeService.selectLessonDateTimeById(id), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -52,7 +50,6 @@ public class LessonDateTimeController {
 		try {
 			return new ResponseEntity<>(lessonDateTimeService.insertNewLessonDateTime(lessonDateTime), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -64,7 +61,6 @@ public class LessonDateTimeController {
 			return new ResponseEntity<>(lessonDateTimeService.updateLessonDateTimeById(id, lessonDateTime),
 					HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -75,7 +71,6 @@ public class LessonDateTimeController {
 			lessonDateTimeService.deleteLessonDateTimeById(id);
 			return new ResponseEntity<>(lessonDateTimeService.selectAllLessonDateTimes(), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -85,7 +80,6 @@ public class LessonDateTimeController {
 		try {
 			return new ResponseEntity<>(lessonDateTimeService.selectAllByLessonLessonId(id), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

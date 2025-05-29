@@ -32,7 +32,6 @@ public class SemesterController {
 		try {
 			return new ResponseEntity<>(semesterService.selectAllSemesters(), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -42,7 +41,6 @@ public class SemesterController {
 		try {
 			return new ResponseEntity<>(semesterService.selectSemesterById(id), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -52,7 +50,6 @@ public class SemesterController {
 		try {
 			return new ResponseEntity<>(semesterService.insertNewSemester(semester), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -63,7 +60,6 @@ public class SemesterController {
 		try {
 			return new ResponseEntity<>(semesterService.updateSemesterById(id, semester), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -74,7 +70,6 @@ public class SemesterController {
 			semesterService.deleteSemesterById(id);
 			return new ResponseEntity<>(semesterService.selectAllSemesters(), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

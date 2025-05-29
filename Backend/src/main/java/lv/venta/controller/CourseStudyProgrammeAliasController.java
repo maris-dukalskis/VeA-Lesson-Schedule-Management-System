@@ -33,7 +33,6 @@ public class CourseStudyProgrammeAliasController {
 			return new ResponseEntity<>(courseStudyProgrammeAliasService.selectAllCourseStudyProgrammeAliases(),
 					HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -44,7 +43,6 @@ public class CourseStudyProgrammeAliasController {
 			return new ResponseEntity<>(courseStudyProgrammeAliasService.selectCourseStudyProgrammeAliasById(id),
 					HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -57,7 +55,6 @@ public class CourseStudyProgrammeAliasController {
 					courseStudyProgrammeAliasService.insertNewCourseStudyProgrammeAlias(courseStudyProgrammeAlias),
 					HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -70,7 +67,6 @@ public class CourseStudyProgrammeAliasController {
 					courseStudyProgrammeAliasService.updateCourseStudyProgrammeAliasById(id, courseStudyProgrammeAlias),
 					HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -82,7 +78,6 @@ public class CourseStudyProgrammeAliasController {
 			return new ResponseEntity<>(courseStudyProgrammeAliasService.selectAllCourseStudyProgrammeAliases(),
 					HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -92,7 +87,6 @@ public class CourseStudyProgrammeAliasController {
 		try {
 			return new ResponseEntity<>(courseStudyProgrammeAliasService.selectByCourseId(id), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

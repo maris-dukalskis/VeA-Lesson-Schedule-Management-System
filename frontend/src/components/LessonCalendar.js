@@ -5,6 +5,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import lessonServiceInstance from "../api/LessonService";
 import lecturerServiceInstance from "../api/LecturerService";
+import classroomServiceInstance from "../api/ClassroomService";
 import studyProgrammeServiceInstance from "../api/StudyProgrammeService";
 import lessonDateTimeServiceInstance from "../api/LessonDateTimeService";
 import { Form, Row, Col, Container, Nav, Tab } from 'react-bootstrap';
@@ -32,6 +33,8 @@ const LessonCalendar = () => {
   const [selectedLecturer, setSelectedLecturer] = useState(null);
   const [activeTab, setActiveTab] = useState('programme');
   const [currentView, setCurrentView] = useState('dayGridMonth');
+  const [classrooms, setClassrooms] = useState([]);
+  const [selectedClassroom, setSelectedClassroom] = useState(null);
 
   useEffect(() => {
     const fetchStudyProgrammes = async () => {
@@ -54,8 +57,18 @@ const LessonCalendar = () => {
       }
     };
 
+    const fetchClassrooms = async () => {
+      try {
+        const response = await classroomServiceInstance.getAll();
+        setClassrooms(response.data);
+      } catch (error) {
+        console.error("Error fetching classrooms", error);
+      }
+    };
+
     fetchStudyProgrammes();
     fetchLecturers();
+    fetchClassrooms();
   }, []);
 
   useEffect(() => {
@@ -92,8 +105,12 @@ const LessonCalendar = () => {
       if (selectedLecturer) {
         handleShowLessonsByLecturer();
       }
+    } else if (activeTab === 'classroom') {
+      if (selectedClassroom) {
+        handleShowLessonsByClassroom();
+      }
     }
-  }, [selectedStudyProgrammeName, selectedStudyProgrammeYear, selectedLecturer, activeTab]);
+  }, [selectedStudyProgrammeName, selectedStudyProgrammeYear, selectedLecturer, activeTab, selectedClassroom]);
 
   const fetchLessonDateTimes = async (lessons) => {
     const allLessonDateTimes = await Promise.all(
@@ -159,6 +176,10 @@ const LessonCalendar = () => {
     setSelectedLecturer(event.target.value);
   };
 
+  const handleClassroomChange = (event) => {
+    setSelectedClassroom(event.target.value);
+  };
+
   const handleShowLessonsByLecturer = async () => {
     if (!selectedLecturer) return;
 
@@ -190,6 +211,24 @@ const LessonCalendar = () => {
     }
   };
 
+  const handleShowLessonsByClassroom = async () => {
+    if (!selectedClassroom) return;
+
+    const [building, number] = selectedClassroom.split(' ');
+
+    try {
+      const response = await lessonServiceInstance.getByClassroomBuildingAndNumber(building, number);
+      const filteredLessons = response.data;
+
+      const ldtMap = await fetchLessonDateTimes(filteredLessons);
+
+      const eventData = convertToEvents(filteredLessons, ldtMap);
+      setEvents(eventData);
+    } catch (error) {
+      console.error("Error fetching lessons by classroom", error);
+    }
+  };
+
   return (
     <Container className="mt-4">
       <div style={{ border: '1px solid #ced4da', padding: '15px', borderRadius: '5px', marginBottom: '1rem' }}>
@@ -200,6 +239,9 @@ const LessonCalendar = () => {
             </Nav.Item>
             <Nav.Item>
               <Nav.Link eventKey="lecturer">Lecturer</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="classroom">Classroom</Nav.Link>
             </Nav.Item>
           </Nav>
           <Tab.Content>
@@ -255,6 +297,29 @@ const LessonCalendar = () => {
                         <option value="" disabled hidden>Select Lecturer</option>
                         {lecturers.map(lecturer => (
                           <option key={lecturer.id} value={lecturer.fullName}>{lecturer.fullName}</option>
+                        ))}
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Form>
+            </Tab.Pane>
+            <Tab.Pane eventKey="classroom">
+              <Form className="mb-0">
+                <Row className="align-items-center">
+                  <Col xs={12} md={4}>
+                    <Form.Group>
+                      <Form.Label>Classroom</Form.Label>
+                      <Form.Control
+                        as="select"
+                        value={selectedClassroom || ""}
+                        onChange={handleClassroomChange}
+                      >
+                        <option value="" disabled hidden>Select Classroom</option>
+                        {classrooms.map(classroom => (
+                          <option key={classroom.id} value={`${classroom.building} ${classroom.number}`}>
+                            {`${classroom.building} ${classroom.number}`}
+                          </option>
                         ))}
                       </Form.Control>
                     </Form.Group>

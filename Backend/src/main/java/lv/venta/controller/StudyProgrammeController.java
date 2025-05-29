@@ -32,7 +32,6 @@ public class StudyProgrammeController {
 		try {
 			return new ResponseEntity<>(studyProgrammeService.selectAllStudyProgrammes(), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -42,7 +41,6 @@ public class StudyProgrammeController {
 		try {
 			return new ResponseEntity<>(studyProgrammeService.selectStudyProgrammeById(id), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -52,7 +50,6 @@ public class StudyProgrammeController {
 		try {
 			return new ResponseEntity<>(studyProgrammeService.insertNewStudyProgramme(studyProgramme), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -64,7 +61,6 @@ public class StudyProgrammeController {
 			return new ResponseEntity<>(studyProgrammeService.updateStudyProgrammeById(id, studyProgramme),
 					HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -75,7 +71,6 @@ public class StudyProgrammeController {
 			studyProgrammeService.deleteStudyProgrammeById(id);
 			return new ResponseEntity<>(studyProgrammeService.selectAllStudyProgrammes(), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

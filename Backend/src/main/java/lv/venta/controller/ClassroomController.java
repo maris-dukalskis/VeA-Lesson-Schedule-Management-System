@@ -32,7 +32,6 @@ public class ClassroomController {
 		try {
 			return new ResponseEntity<>(classroomService.selectAllClassrooms(), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -42,7 +41,6 @@ public class ClassroomController {
 		try {
 			return new ResponseEntity<>(classroomService.selectClassroomById(id), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -52,7 +50,6 @@ public class ClassroomController {
 		try {
 			return new ResponseEntity<>(classroomService.insertNewClassroom(classroom), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -63,7 +60,6 @@ public class ClassroomController {
 		try {
 			return new ResponseEntity<>(classroomService.updateClassroomById(id, classroom), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -74,7 +70,6 @@ public class ClassroomController {
 			classroomService.deleteClassroomById(id);
 			return new ResponseEntity<>(classroomService.selectAllClassrooms(), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

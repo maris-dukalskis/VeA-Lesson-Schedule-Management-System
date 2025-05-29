@@ -32,7 +32,6 @@ public class LecturerController {
 		try {
 			return new ResponseEntity<>(lecturerService.selectAllLecturers(), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -42,7 +41,6 @@ public class LecturerController {
 		try {
 			return new ResponseEntity<>(lecturerService.selectLecturerById(id), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -52,7 +50,6 @@ public class LecturerController {
 		try {
 			return new ResponseEntity<>(lecturerService.insertNewLecturer(lecturer), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -63,7 +60,6 @@ public class LecturerController {
 		try {
 			return new ResponseEntity<>(lecturerService.updateLecturerById(id, lecturer), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -74,7 +70,6 @@ public class LecturerController {
 			lecturerService.deleteLecturerById(id);
 			return new ResponseEntity<>(lecturerService.selectAllLecturers(), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

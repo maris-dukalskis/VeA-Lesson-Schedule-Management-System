@@ -12,6 +12,10 @@ class LessonService extends BaseService {
     getByLecturerName(name) {
         return axios.get(`${this.baseUrl}/lecturer/${name}`, super.getAuthHeaders());
     }
+
+    getByClassroomBuildingAndNumber(building, number){
+        return axios.get(`${this.baseUrl}/classroom/${building}/${number}`, super.getAuthHeaders());
+    }
 }
 
 const lessonServiceInstance = new LessonService();

@@ -31,6 +31,7 @@ import SemesterEdit from './components/crud/Semester/SemesterEdit';
 import Logout from './components/auth/Logout';
 import Admin from './components/Admin';
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 import LessonCalendar from './components/LessonCalendar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -86,7 +87,7 @@ function App() {
           </div>
         </main>
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 }

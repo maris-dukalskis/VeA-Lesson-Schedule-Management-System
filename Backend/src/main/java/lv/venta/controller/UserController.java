@@ -32,7 +32,6 @@ public class UserController {
 		try {
 			return new ResponseEntity<>(userService.selectAllUsers(), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -42,7 +41,6 @@ public class UserController {
 		try {
 			return new ResponseEntity<>(userService.selectUserById(id), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -52,7 +50,6 @@ public class UserController {
 		try {
 			return new ResponseEntity<>(userService.insertNewUser(user), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -62,7 +59,6 @@ public class UserController {
 		try {
 			return new ResponseEntity<>(userService.updateUserById(id, user), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -73,7 +69,6 @@ public class UserController {
 			userService.deleteUserById(id);
 			return new ResponseEntity<>(userService.selectAllUsers(), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

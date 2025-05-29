@@ -32,7 +32,6 @@ public class CourseController {
 		try {
 			return new ResponseEntity<>(courseService.selectAllCourses(), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -42,7 +41,6 @@ public class CourseController {
 		try {
 			return new ResponseEntity<>(courseService.selectCourseById(id), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -52,7 +50,6 @@ public class CourseController {
 		try {
 			return new ResponseEntity<>(courseService.insertNewCourse(course), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -62,7 +59,6 @@ public class CourseController {
 		try {
 			return new ResponseEntity<>(courseService.updateCourseById(id, course), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -73,7 +69,6 @@ public class CourseController {
 			courseService.deleteCourseById(id);
 			return new ResponseEntity<>(courseService.selectAllCourses(), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
