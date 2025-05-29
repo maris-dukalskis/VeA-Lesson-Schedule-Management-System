@@ -7,6 +7,7 @@ import Login from "./auth/Login";
 
 const Header = () => {
     const navigate = useNavigate();
+    
     const token = localStorage.getItem("token");
     let userRole = null;
     let userName = null;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -9,6 +9,7 @@ import classroomServiceInstance from "../api/ClassroomService";
 import studyProgrammeServiceInstance from "../api/StudyProgrammeService";
 import lessonDateTimeServiceInstance from "../api/LessonDateTimeService";
 import { Form, Row, Col, Container, Nav, Tab } from 'react-bootstrap';
+import { jwtDecode } from "jwt-decode";
 
 const dayNames = {
   0: 'Svētdiena',
@@ -35,6 +36,7 @@ const LessonCalendar = () => {
   const [currentView, setCurrentView] = useState('dayGridMonth');
   const [classrooms, setClassrooms] = useState([]);
   const [selectedClassroom, setSelectedClassroom] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(null);
 
   useEffect(() => {
     const fetchStudyProgrammes = async () => {
@@ -66,9 +68,23 @@ const LessonCalendar = () => {
       }
     };
 
+    const checkUserLogin = async () => {
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        try {
+          const decodedToken = jwtDecode(token);
+          setLoggedIn(decodedToken != null);
+        } catch (error) {
+          console.error("Invalid token:", error);
+        }
+      }
+    };
+
     fetchStudyProgrammes();
     fetchLecturers();
     fetchClassrooms();
+    checkUserLogin();
   }, []);
 
   useEffect(() => {
@@ -240,9 +256,11 @@ const LessonCalendar = () => {
             <Nav.Item>
               <Nav.Link eventKey="lecturer">Lecturer</Nav.Link>
             </Nav.Item>
-            <Nav.Item>
-              <Nav.Link eventKey="classroom">Classroom</Nav.Link>
-            </Nav.Item>
+            {loggedIn && (
+              <Nav.Item>
+                <Nav.Link eventKey="classroom">Classroom</Nav.Link>
+              </Nav.Item>
+            )}
           </Nav>
           <Tab.Content>
             <Tab.Pane eventKey="programme">

@@ -22,7 +22,7 @@ function Login() {
             localStorage.setItem("refreshToken", refreshToken);
             StartTokenAutoRefresh(navigate);
 
-            navigate(`/`);
+            window.location.href = '/';
         } catch (error) {
             console.error("Error fetching user data:", error);
             if (error.response) {
